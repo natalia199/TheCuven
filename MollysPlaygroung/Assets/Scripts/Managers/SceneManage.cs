@@ -8,7 +8,7 @@ public class SceneManage : MonoBehaviour
     public int sceneTracker;
 
     //public string[] levelNames = {"Lust", "Gluttony", "Greed", "Sloth", "Wrath", "Envy", "Pride"};
-    public string[] tempLevelNames = {"Gluttony", "Greed"};
+    public string[] tempLevelNames = { "Sloth", "Gluttony", "Greed"};
 
     void Start()
     {
