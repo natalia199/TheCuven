@@ -20,7 +20,7 @@ public class PlayerTransition : MonoBehaviour
         {
             if (view.IsMine)
             {
-                view.RPC("playerCleanUp", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
+                view.RPC("playerCleanUp", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.NickName);
             }
         }
     }

@@ -17,7 +17,7 @@ public class PlayerStart : MonoBehaviour
         // Naming player's gameobject corresponding actor number
         if (view.IsMine)
         {
-            view.RPC("getPlayersNickName", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.NickName);
+            view.RPC("getPlayersNickName", RpcTarget.All, PhotonNetwork.LocalPlayer.NickName);
         }
 
         this.name = playersUsername;
