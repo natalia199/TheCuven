@@ -8,27 +8,26 @@ using Photon.Realtime;
 public class CreateRoomMenu : MonoBehaviourPunCallbacks
 {
     [SerializeField]
-    private TextMeshProUGUI _roomName;
+    private TextMeshProUGUI _roomName;                                                          // room name
 
-    public TextMeshProUGUI warning;
+    public TextMeshProUGUI warning;                                                             // warning message for incorrect input
 
     private void Awake()
     {
-        _roomName.GetComponentInParent<TMP_InputField>().characterLimit = 15;
+        _roomName.GetComponentInParent<TMP_InputField>().characterLimit = 15;                   // username letter limit
     }
 
     public void OnClick_CreateRoom()
     {
+        // If input is not empty
         if (_roomName.text.Length > 1)
         {
-            if (!PhotonNetwork.IsConnected)
+            if (!PhotonNetwork.IsConnected)                                                     // Checking if connected
                 return;
 
-            //CreateRoom
-            //JoinedOrCreateRoom
-            RoomOptions options = new RoomOptions();
-            //options.MaxPlayers = 2;
-            PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);
+            RoomOptions options = new RoomOptions();                                            // Room conditions; ex. 8 max players
+            options.MaxPlayers = 8;
+            PhotonNetwork.JoinOrCreateRoom(_roomName.text, options, TypedLobby.Default);        // Creating room or joining room if already existing, takes you to room
         }
         else
         {
@@ -36,11 +35,14 @@ public class CreateRoomMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    // Room has been successfully created
     public override void OnCreatedRoom()
     {
         Debug.Log("Created room successfully.", this);
     }
 
+    // Failing to join or create a room for X reason(s)
+    // Nothing will happen
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.Log("Room creation failed: " + message, this);
