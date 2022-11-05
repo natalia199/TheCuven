@@ -11,7 +11,7 @@ public class LevelTransitions : MonoBehaviour
     //PhotonView view;
 
     //public string[] levelTransitions = { "Lust Transition", "Gluttony Transition", "Greed Transition", "Sloth Transition", "Wrath Transition", "Envy Transition", "Pride Transition" };
-    public string[] tempLevelTransitions = { "Sloth Transition", "Gluttony Transition", "Greed Transition", };
+    public string[] tempLevelTransitions = {  "Gluttony Transition", "Greed Transition", "Sloth Transition" };
 
     void Start()
     {
