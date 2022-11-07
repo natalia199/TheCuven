@@ -5,10 +5,14 @@ using UnityEngine;
 public class PlayerMovement3D : MonoBehaviour
 {
     public CharacterController controller;
-    public Rigidbody rigidBody;
-
+    private Rigidbody rigidBody;
+    [SerializeField] Transform groundCheck;
+    [SerializeField] LayerMask ground;
     [SerializeField] float speed = 5f;
     [SerializeField] float jumpForce = 5f;
+
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 2f;
 
     void Start()
     {
@@ -24,10 +28,15 @@ public class PlayerMovement3D : MonoBehaviour
 
         rigidBody.velocity = new Vector3(horizontalInput * speed, rigidBody.velocity.y, verticalInput * speed);
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && isGrounded())
         {
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
         }
+        if(rigidBody.velocity.y < 0)
+        {
+            rigidBody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime; //fallMultipler - 1 accounts for build in gravity mutliplier
+        }
+
     }
 
     float getVelocity(string axis)
@@ -43,5 +52,10 @@ public class PlayerMovement3D : MonoBehaviour
 
         return 0.0f;
         
+    }
+
+    bool isGrounded()
+    {
+        return Physics.CheckSphere(groundCheck.position, 0.1f, ground);
     }
 }
