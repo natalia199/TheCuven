@@ -719,10 +719,8 @@ GameObject:
   - component: {fileID: 828296346}
   - component: {fileID: 828296345}
   - component: {fileID: 828296347}
-  - component: {fileID: 828296348}
   - component: {fileID: 828296349}
   - component: {fileID: 828296350}
-  - component: {fileID: 828296351}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -775,7 +773,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ac94688158e4cc49b0a773d3181328a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 828296348}
   groundCheck: {fileID: 1384466366}
   ground:
     serializedVersion: 2
@@ -784,24 +781,6 @@ MonoBehaviour:
   jumpForce: 5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
---- !u!143 &828296348
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828296344}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &828296349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -842,21 +821,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.9744579, z: 1}
   m_Center: {x: 0, y: 0.019992292, z: 0}
---- !u!114 &828296351
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 828296344}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86efa04f59c33c643a676c862a8bd1c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rigidBody: {fileID: 828296345}
-  speed: 5
-  turnSpeed: 360
 --- !u!1 &906016424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1003,7 +967,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: -8
   far clip plane: 100000
   field of view: 60
   orthographic: 1
@@ -1806,6 +1770,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108694292}
+  - component: {fileID: 2108694293}
   m_Layer: 0
   m_Name: CameraPivot
   m_TagString: Untagged
@@ -1829,3 +1794,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
+--- !u!114 &2108694293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108694291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843b588e4e5b86f4daf51e083d9e8cc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPosition: {fileID: 828296346}
+  cameraPosition: {fileID: 2108694292}
