@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement3D : MonoBehaviour
 {
-    public CharacterController controller;
     private Rigidbody rigidBody;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
@@ -19,14 +18,11 @@ public class PlayerMovement3D : MonoBehaviour
         rigidBody = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        MovePlayer();
 
-        rigidBody.velocity = new Vector3(horizontalInput * speed, rigidBody.velocity.y, verticalInput * speed);
 
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
@@ -36,6 +32,24 @@ public class PlayerMovement3D : MonoBehaviour
         {
             rigidBody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime; //fallMultipler - 1 accounts for build in gravity mutliplier
         }
+
+    }
+
+    void MovePlayer()
+    {
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
+
+        var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+
+        Vector3 movement = isometricOffset.MultiplyPoint3x4(new Vector3(moveHorizontal, 0.0f, moveVertical));
+        if(movement != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(movement);
+        }
+        
+
+        transform.Translate(movement * speed * Time.deltaTime, Space.World);
 
     }
 
