@@ -4,38 +4,62 @@ using UnityEngine;
 
 public class PlayerMovement3D : MonoBehaviour
 {
-    public CharacterController controller;
+
+    [SerializeField] GluttonyLevel LevelController;
+    private bool isGameStarted;
     private Rigidbody rigidBody;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
     [SerializeField] float speed = 5f;
-    [SerializeField] float jumpForce = 5f;
+    [SerializeField] float jumpForce = 8f;
 
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    public float fallMultiplier = 5f;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
+        isGameStarted = !LevelController.isStartTimerOn;
+        if (isGameStarted)
+        {
+            MovePlayer();
+            Jump();
+        }
+        
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+    }
 
-        rigidBody.velocity = new Vector3(horizontalInput * speed, rigidBody.velocity.y, verticalInput * speed);
-
+    void Jump()
+    {
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
         }
-        if(rigidBody.velocity.y < 0)
+        if (rigidBody.velocity.y < 0)
         {
             rigidBody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime; //fallMultipler - 1 accounts for build in gravity mutliplier
         }
+    }
+
+    void MovePlayer()
+    {
+        float moveHorizontal = Input.GetAxisRaw("Horizontal");
+        float moveVertical = Input.GetAxisRaw("Vertical");
+
+        var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+
+        Vector3 movement = isometricOffset.MultiplyPoint3x4(new Vector3(moveHorizontal, 0.0f, moveVertical));
+        if(movement != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(movement);
+        }
+        
+
+        transform.Translate(movement * speed * Time.deltaTime, Space.World);
 
     }
 

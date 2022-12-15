@@ -7,6 +7,7 @@ public class animationStateController : MonoBehaviour
 
     Animator animator;
     int isWalkingHash;
+    [SerializeField] GluttonyLevel LevelController;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,19 +18,24 @@ public class animationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (Input.GetAxis("Horizontal") > 0.01f || Input.GetAxis("Horizontal") < -0.01f)
+
+        if (!LevelController.isStartTimerOn)
         {
-            animator.SetBool("isWalking", true);
-        }*/
-        bool isWalking = animator.GetBool("isWalking");
-        bool forwardPressed = Input.GetKey("up");
-        if (!isWalking && forwardPressed)
-        {
-            animator.SetBool(isWalkingHash, true);
+            bool isWalking = animator.GetBool("isWalking");
+
+            float inputHorizontal = Input.GetAxisRaw("Horizontal");
+            float inputVertical = Input.GetAxisRaw("Vertical");
+            bool directionPressed = inputHorizontal != 0 || inputVertical != 0;
+
+            if (!isWalking && directionPressed)
+            {
+                animator.SetBool(isWalkingHash, true);
+            }
+            if (isWalking && !directionPressed)
+            {
+                animator.SetBool(isWalkingHash, false);
+            }
         }
-        if (isWalking && !forwardPressed)
-        {
-            animator.SetBool(isWalkingHash, false);
-        }
+        
     }
 }
