@@ -4,35 +4,45 @@ using UnityEngine;
 
 public class PlayerMovement3D : MonoBehaviour
 {
+
+    [SerializeField] GluttonyLevel LevelController;
+    private bool isGameStarted;
     private Rigidbody rigidBody;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
     [SerializeField] float speed = 5f;
-    [SerializeField] float jumpForce = 5f;
+    [SerializeField] float jumpForce = 8f;
 
-    public float fallMultiplier = 2.5f;
-    public float lowJumpMultiplier = 2f;
+    public float fallMultiplier = 5f;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody>();
+        
     }
 
     void Update()
     {
+        isGameStarted = !LevelController.isStartTimerOn;
+        if (isGameStarted)
+        {
+            MovePlayer();
+            Jump();
+        }
+        
 
-        MovePlayer();
+    }
 
-
+    void Jump()
+    {
         if (Input.GetButtonDown("Jump") && isGrounded())
         {
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
         }
-        if(rigidBody.velocity.y < 0)
+        if (rigidBody.velocity.y < 0)
         {
             rigidBody.velocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime; //fallMultipler - 1 accounts for build in gravity mutliplier
         }
-
     }
 
     void MovePlayer()
