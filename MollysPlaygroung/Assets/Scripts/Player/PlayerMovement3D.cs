@@ -24,6 +24,7 @@ public class PlayerMovement3D : MonoBehaviour
     void Update()
     {
         isGameStarted = !LevelController.isStartTimerOn;
+
         if (isGameStarted)
         {
             MovePlayer();
