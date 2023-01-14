@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5931858804551007079}
+  - component: {fileID: 270156650}
   m_Layer: 0
   m_Name: throwTarget
-  m_TagString: Untagged
+  m_TagString: HomeZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 5931858805197871645}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &270156650
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5931858804551007078}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.088899225, y: 1, z: 0.2302438}
+  m_Center: {x: -0.070003875, y: 0, z: -0.0019333027}
 --- !u!1 &5931858805197871617
 GameObject:
   m_ObjectHideFlags: 0

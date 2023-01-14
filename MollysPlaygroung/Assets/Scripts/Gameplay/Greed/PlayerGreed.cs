@@ -36,6 +36,8 @@ public class PlayerGreed : MonoBehaviour
         {
             if (throwCount >= GameObject.Find("GameManager").GetComponent<GreedGameManager>().diceValueRolled)
             {
+                carryCount = 0;
+                throwCount = 0;
                 GameObject.Find("GameManager").GetComponent<GreedGameManager>().diceProcedure = true;
             }
 
