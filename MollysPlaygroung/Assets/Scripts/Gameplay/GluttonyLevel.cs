@@ -21,6 +21,10 @@ public class GluttonyLevel : MonoBehaviour
     void Start()
     {
         InvokeRepeating("SpawnFood", spawnTime, spawnDelay);
+        if (!isStartTimerOn) // Disabling the timer by defualt
+        {
+            startTimerText.gameObject.SetActive(false);
+        }
     }
 
     void Update()
