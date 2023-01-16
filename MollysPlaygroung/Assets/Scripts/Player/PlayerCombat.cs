@@ -7,6 +7,8 @@ public class PlayerCombat : MonoBehaviour
 
     [SerializeField] Animator animator;
     public bool isPunching = false;  //Maybe create a public instance of the isPunching animation state. This will be used to access the animation state over networking since the animation controller is localized to current machine?
+    public bool isPulling = false;
+    public bool isDragged = false;
     private int isHitHash;
                                     //I implemented this if it's needed. Not really sure if that's useful or if the animator can be accessed by PUN
 
@@ -19,6 +21,8 @@ public class PlayerCombat : MonoBehaviour
     void Update()
     {
         isPunching = animator.GetBool("isPunching");
+        isPulling = animator.GetBool("isPulling");
+        isDragged = animator.GetBool("isDragged");
     }
 
     private void OnTriggerStay(Collider other)
@@ -32,10 +36,24 @@ public class PlayerCombat : MonoBehaviour
             {
 
                 //change animation state
-                animator.SetBool(isHitHash, true);
                 animator.SetTrigger("isHitTrigger");
-                Debug.Log("Puking CombatScript");
+
             }
+            else if(opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged"))
+            {
+                //animate the player being dragged
+                animator.SetTrigger("isDraggedTrigger");
+                animator.SetBool("isDragged", true);
+
+                //parenting to move the object with teh oponent
+                Transform oppTransform = other.GetComponent<Transform>(); //transform of opponent
+                Transform currentTransform = GetComponent<Transform>();
+                currentTransform.parent = oppTransform;
+            }
+
+
+
+
         }
 
 

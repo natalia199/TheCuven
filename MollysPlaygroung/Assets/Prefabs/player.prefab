@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 683004721995767064}
   m_Layer: 6
   m_Name: player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -213,6 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 370188868282191199}
   isPunching: 0
+  isPulling: 0
 --- !u!1 &370188867339309848
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +697,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 2541cc0f213d03841a1269ca95a7a4be, type: 3}
   m_PrefabInstance: {fileID: 370188867132532507}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &893645953984039967
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712207565184834122}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.1058424, z: 1}
+  m_Center: {x: 0, y: 1.2173861, z: 0}
 --- !u!95 &370188868282191199
 Animator:
   serializedVersion: 4
@@ -728,17 +742,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16bf8ba37cdcde04ebb4d1c0e7a1843d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTestDummy: 0
   LevelController: {fileID: 0}
---- !u!65 &893645953984039967
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 712207565184834122}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1.1058424, z: 1}
-  m_Center: {x: 0, y: 1.2173861, z: 0}
