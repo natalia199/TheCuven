@@ -7,7 +7,7 @@ public class PlayerGreed : MonoBehaviour
     bool carryChip;
     bool withinZone;
 
-    public Rigidbody rb;
+    Rigidbody rb;
     public float moveSpeed;
 
     Vector3 keyboardMovement;
@@ -22,6 +22,8 @@ public class PlayerGreed : MonoBehaviour
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+
         carryChip = false;
         withinZone = true;
         throwCount = 0;
