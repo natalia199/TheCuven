@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 88647194}
   - component: {fileID: 88647193}
   - component: {fileID: 88647192}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ground_temp (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 240043912}
   - component: {fileID: 240043911}
   - component: {fileID: 240043910}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ground_temp (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -409,7 +409,7 @@ GameObject:
   - component: {fileID: 444517332}
   - component: {fileID: 444517331}
   - component: {fileID: 444517330}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ground_temp (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1873,8 +1873,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: otherPlayer
+      value: 
+      objectReference: {fileID: 828296346}
     - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
       propertyPath: LevelController
       value: 
@@ -1939,8 +1943,56 @@ PrefabInstance:
       propertyPath: animator
       value: 
       objectReference: {fileID: 342912150}
+    - target: {fileID: 683004721995767064, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1871968504}
+    - target: {fileID: 683004721995767064, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: foodItems.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 683004721995767064, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: foodItems.Array.data[0]
+      value: 
+      objectReference: {fileID: 5368396760037177234, guid: 19315bb5b21cc7f42b528a44f0e2262a, type: 3}
+    - target: {fileID: 683004721995767064, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: foodItems.Array.data[1]
+      value: 
+      objectReference: {fileID: 5368396760037177234, guid: 5fd4db30791867e46a63099fd2e78a43, type: 3}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.data[0]
+      value: 
+      objectReference: {fileID: 828296346}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.data[1]
+      value: 
+      objectReference: {fileID: 5368396760037177229, guid: 19315bb5b21cc7f42b528a44f0e2262a, type: 3}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.data[2]
+      value: 
+      objectReference: {fileID: 5368396760037177229, guid: 5fd4db30791867e46a63099fd2e78a43, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+--- !u!114 &1871968504 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 370188866604924216, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+  m_PrefabInstance: {fileID: 1719082797}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 278249fc35537564cab997c4f0d137aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1871968507 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 370188866604924223, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+  m_PrefabInstance: {fileID: 1719082797}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1926276730
 GameObject:
   m_ObjectHideFlags: 0
@@ -1953,7 +2005,7 @@ GameObject:
   - component: {fileID: 1926276733}
   - component: {fileID: 1926276732}
   - component: {fileID: 1926276731}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ground_temp (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2153,7 +2205,7 @@ GameObject:
   - component: {fileID: 2008475434}
   - component: {fileID: 2008475433}
   - component: {fileID: 2008475432}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: ground_temp (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2334,6 +2386,18 @@ PrefabInstance:
       value: player
       objectReference: {fileID: 0}
     - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: food1
+      value: 
+      objectReference: {fileID: 5368396760037177229, guid: 19315bb5b21cc7f42b528a44f0e2262a, type: 3}
+    - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: food2
+      value: 
+      objectReference: {fileID: 5368396760037177229, guid: 5fd4db30791867e46a63099fd2e78a43, type: 3}
+    - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: otherPlayer
+      value: 
+      objectReference: {fileID: 1871968507}
+    - target: {fileID: 370188866604924222, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
       propertyPath: LevelController
       value: 
       objectReference: {fileID: 1102564258}
@@ -2393,5 +2457,25 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: collider
+      value: 
+      objectReference: {fileID: 1871968507}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.data[0]
+      value: 
+      objectReference: {fileID: 1871968507}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.data[1]
+      value: 
+      objectReference: {fileID: 5368396760037177229, guid: 5fd4db30791867e46a63099fd2e78a43, type: 3}
+    - target: {fileID: 5038438295316625378, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}
+      propertyPath: colliders.Array.data[2]
+      value: 
+      objectReference: {fileID: 5368396760037177229, guid: 19315bb5b21cc7f42b528a44f0e2262a, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 60533f4ade1a7f54fb0cb0774e20bb80, type: 3}

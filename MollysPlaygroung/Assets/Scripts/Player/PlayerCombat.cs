@@ -10,10 +10,13 @@ public class PlayerCombat : MonoBehaviour
     public bool isPulling = false;
     public bool isDragged = false;
     private int isHitHash;
-                                    //I implemented this if it's needed. Not really sure if that's useful or if the animator can be accessed by PUN
+    PlayerInventory inventory;
+    public GameObject[] foodItems;
+    //I implemented this if it's needed. Not really sure if that's useful or if the animator can be accessed by PUN
 
     void Start()
     {
+        inventory = GetComponent<PlayerInventory>();
         isHitHash = Animator.StringToHash("isHit");
     }
 
@@ -25,6 +28,51 @@ public class PlayerCombat : MonoBehaviour
         isDragged = animator.GetBool("isDragged");
     }
 
+    private void dropFood()
+    {
+
+        if (GetComponentInChildren<animationStateController>().isTestDummy)
+        {
+            spawnFood(3);
+            return;
+        }
+
+
+        int numFood = inventory.NumFoodCollected;
+        if (numFood != 0)
+        {
+
+            for (int i = 0; i <= 3; i++)
+            {
+                if (numFood < i)
+                {
+                    //drop all food
+                    spawnFood(numFood);
+                    break;
+                }
+                if (i == 3)
+                {
+                    //drop 3 food
+                    spawnFood(i);
+                }
+            }
+        }
+        
+    }
+
+    private void spawnFood(int numToSpawn)
+    {
+        for (int i = 0; i < numToSpawn; i++)
+        {
+            int foodItemNum = Random.Range(0, foodItems.Length);
+            Vector3 spawnPosition = transform.position;
+            spawnPosition.y += 4;
+            GameObject spawnedFood = Instantiate(foodItems[foodItemNum], spawnPosition, transform.rotation);
+            spawnedFood.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(-5, 5), 2, Random.Range(-5, 5)), ForceMode.Impulse);
+        }
+
+    }
+
     private void OnTriggerStay(Collider other)
     {
         //check if the colission is another player
@@ -34,9 +82,12 @@ public class PlayerCombat : MonoBehaviour
             PlayerCombat opponentCombatState = other.GetComponentInParent<PlayerCombat>();
             if (opponentCombatState.isPunching && !animator.GetCurrentAnimatorStateInfo(0).IsName("Vomit"))
             {
-
-                //change animation state
                 animator.SetTrigger("isHitTrigger");
+                /* --------------- vvvv GLUTTONY EXCLUSIVE ACTION vvvv ----------------- */
+     
+                dropFood();
+
+                /* --------------- ^^^^ GLUTTONY EXCLUSIVE ACTION ^^^^ ----------------- */
 
             }
             else if(opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged"))
@@ -48,14 +99,11 @@ public class PlayerCombat : MonoBehaviour
                 //parenting to move the object with teh oponent
                 Transform oppTransform = other.GetComponent<Transform>(); //transform of opponent
                 Transform currentTransform = GetComponent<Transform>();
+                currentTransform.SetPositionAndRotation(currentTransform.position, oppTransform.rotation);
                 currentTransform.parent = oppTransform;
+                
+                
             }
-
-
-
-
         }
-
-
     }
 }
