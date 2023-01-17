@@ -9,6 +9,8 @@ public class PlayerCombat : MonoBehaviour
     public bool isPunching = false;  //Maybe create a public instance of the isPunching animation state. This will be used to access the animation state over networking since the animation controller is localized to current machine?
     public bool isPulling = false;
     public bool isDragged = false;
+    public bool isPushing = false;
+    [SerializeField] float dragDistance = 1.5f;
     private int isHitHash;
     PlayerInventory inventory;
     public GameObject[] foodItems;
@@ -26,6 +28,7 @@ public class PlayerCombat : MonoBehaviour
         isPunching = animator.GetBool("isPunching");
         isPulling = animator.GetBool("isPulling");
         isDragged = animator.GetBool("isDragged");
+        isPushing = animator.GetBool("isPushing");
     }
 
     private void dropFood()
@@ -99,10 +102,22 @@ public class PlayerCombat : MonoBehaviour
                 //parenting to move the object with teh oponent
                 Transform oppTransform = other.GetComponent<Transform>(); //transform of opponent
                 Transform currentTransform = GetComponent<Transform>();
-                currentTransform.SetPositionAndRotation(currentTransform.position, oppTransform.rotation);
+                currentTransform.SetPositionAndRotation(oppTransform.position, oppTransform.rotation);
+                currentTransform.position += currentTransform.forward * dragDistance;
                 currentTransform.parent = oppTransform;
-                
-                
+
+
+
+            }
+            else if (opponentCombatState.isPushing)
+            {
+                //animate the player being hit
+
+                //push player back along direction it was hit
+                Transform oppTransform = other.GetComponent<Transform>(); //transform of opponent
+                Transform currentTransform = GetComponent<Transform>();
+                // currentTransform.SetPositionAndRotation(currentTransform.position, oppTransform.rotation);
+                // currentTransform.GetComponent<Rigidbody>().AddForce(oppTransform.forward * 5, ForceMode.Impulse);
             }
         }
     }
