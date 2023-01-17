@@ -11,7 +11,7 @@ public class LevelTransitions : MonoBehaviour
     //PhotonView view;
 
     //public string[] levelTransitions = { "Lust Transition", "Gluttony Transition", "Greed Transition", "Sloth Transition", "Wrath Transition", "Envy Transition", "Pride Transition" };
-    public string[] tempLevelTransitions = {  "Gluttony Transition", "Greed Transition", "Sloth Transition" };
+    //public string[] tempLevelTransitions = {  "Gluttony Transition", "Greed Transition", "Sloth Transition" };
 
     void Start()
     {
@@ -23,7 +23,8 @@ public class LevelTransitions : MonoBehaviour
     IEnumerator TransitionTime(int value)
     {
         Debug.Log("Playing transition");
-        text.text = tempLevelTransitions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+        //text.text = tempLevelTransitions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+        text.text = "Envy";
 
         yield return new WaitForSeconds(value);
 

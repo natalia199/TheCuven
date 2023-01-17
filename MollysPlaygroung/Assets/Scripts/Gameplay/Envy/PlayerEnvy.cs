@@ -1,57 +1,157 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using TMPro;
+using System;
+using System;
 
 public class PlayerEnvy : MonoBehaviour
 {
-    bool atShootingPad;
+    PhotonView view;
 
+    public TextMeshProUGUI horseDisplay;
+    public TextMeshProUGUI username;
+    string playersUsername;
+
+    bool atShootingPad;
     public string horseName;
+    bool movethefknhorse;
 
     Rigidbody rb;
     public float moveSpeed;
-
     Vector3 keyboardMovement;
 
     void Start()
     {
+        view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
-        atShootingPad = true;
+        horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
+        atShootingPad = false;
+        movethefknhorse = false;
     }
 
     void Update()
     {
-        keyboardMovement.x = Input.GetAxisRaw("Horizontal");
-        keyboardMovement.z = Input.GetAxisRaw("Vertical");
-
-        if (Input.GetKey(KeyCode.Space) && atShootingPad)
+        if (view.IsMine)
         {
-            GameObject.Find("GameManager").GetComponent<EnvyGameManager>().MoveHorse(horseName);
+            view.RPC("getPlayersNickName", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
         }
-        else
+        this.name = playersUsername;
+        
+        if (view.IsMine)
         {
-            GameObject.Find("GameManager").GetComponent<EnvyGameManager>().StopHorse(horseName);
+            view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+
+            keyboardMovement.x = Input.GetAxisRaw("Horizontal");
+            keyboardMovement.z = Input.GetAxisRaw("Vertical");
+
+            horseDisplay.text = "#" + GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + horseName;
         }
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + keyboardMovement.normalized * moveSpeed * Time.fixedDeltaTime);
+        if (view.IsMine)
+        {
+            rb.MovePosition(rb.position + keyboardMovement.normalized * moveSpeed * Time.fixedDeltaTime);
+
+            if (Input.GetKey(KeyCode.Space) && atShootingPad)
+            {
+                movethefknhorse = true;
+            }
+            else
+            {
+                movethefknhorse = false;
+            }
+
+            if (movethefknhorse)
+            {
+                float step = 2f * Time.deltaTime; // calculate distance to move
+                Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
+                view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.name == horseName && other.tag == "Horse")
+        if (view.IsMine)
         {
-            atShootingPad = true;
+            if (other.name == horseName)
+            {
+                atShootingPad = true;
+            }
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if(other.name == horseName && other.tag == "Horse")
+        if (view.IsMine)
         {
-            atShootingPad = false;
+            if (other.name == horseName)
+            {
+                atShootingPad = false;
+            }
+        }
+    }
+
+    public void AssigningHorses()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("u is master");
+            view.RPC("neighMofo", RpcTarget.AllBufferedViaServer);
+        }
+        else
+        {
+            Debug.Log("nah cuh");
+        }
+    }
+    
+    // Sharing owner's player number with others
+    [PunRPC]
+    void getPlayersNickName(string name)
+    {
+        playersUsername = name;
+    }
+
+    [PunRPC]
+    void setUsername(string Player)
+    {
+        try
+        {
+            GameObject.Find(Player).GetComponent<PlayerEnvy>().username.text = Player;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void RaceTheHorse(string horse, Vector3 pos)
+    {
+        try
+        {
+            GameObject.Find("GameManager").GetComponent<EnvyGameManager>().MoveHorse(horse, pos);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void neighMofo()
+    {
+        try
+        {
+            GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SetPlayerHorses();
+        }
+        catch (NullReferenceException e)
+        {
+            // error
         }
     }
 }

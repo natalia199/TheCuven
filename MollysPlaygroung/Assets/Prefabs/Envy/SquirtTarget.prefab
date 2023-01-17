@@ -125,7 +125,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7307834283313027576}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5598412, y: 1.565175, z: 6.1041}
+  m_LocalPosition: {x: -0.989, y: 1.565175, z: 6.1041}
   m_LocalScale: {x: 0.36687863, y: 0.16357365, z: 0.48802194}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -144,6 +144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00c2dba5c49390e49ab39865c8a8de83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  finishLinePoint: {fileID: 0}
+  horseID: 0
 --- !u!212 &4079944152155346405
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -234,7 +236,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1996369889455318927}
-  - component: {fileID: 830878991107516483}
   - component: {fileID: 5452827535970101263}
   - component: {fileID: 5891491371806090456}
   - component: {fileID: 354859635398545783}
@@ -262,22 +263,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &830878991107516483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8686545830358633072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b99ce42e33fbbb4ab53c7c556dcd3cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  finishLinePoint: {fileID: 0}
-  race: 0
-  finished: 0
-  horseName: Bitch Ass
 --- !u!33 &5452827535970101263
 MeshFilter:
   m_ObjectHideFlags: 0

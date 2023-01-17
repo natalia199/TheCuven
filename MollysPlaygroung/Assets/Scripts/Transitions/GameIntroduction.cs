@@ -23,6 +23,7 @@ public class GameIntroduction : MonoBehaviour
         yield return new WaitForSeconds(value);
 
         Debug.Log("game intro DONE");
-        PhotonNetwork.LoadLevel("Transition");
+        //PhotonNetwork.LoadLevel("Transition");
+        PhotonNetwork.LoadLevel("Envy");
     }
 }
