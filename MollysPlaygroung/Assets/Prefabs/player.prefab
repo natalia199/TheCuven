@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 370188866604924216}
   - component: {fileID: 370188866604924219}
   - component: {fileID: 683004721995767064}
+  - component: {fileID: 5038438295316625378}
   m_Layer: 6
   m_Name: player
   m_TagString: Player
@@ -158,6 +159,7 @@ MonoBehaviour:
     m_Bits: 128
   speed: 8
   jumpForce: 8
+  isJumping: 0
   fallMultiplier: 5
 --- !u!114 &370188866604924216
 MonoBehaviour:
@@ -214,6 +216,21 @@ MonoBehaviour:
   animator: {fileID: 370188868282191199}
   isPunching: 0
   isPulling: 0
+  isDragged: 0
+  foodItems: []
+--- !u!114 &5038438295316625378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 370188866604924221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35fe7581efac896469c38d4616f3b830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider: {fileID: 0}
 --- !u!1 &370188867339309848
 GameObject:
   m_ObjectHideFlags: 0

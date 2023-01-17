@@ -39,12 +39,14 @@ public class animationStateController : MonoBehaviour
                 bool isWalking = animator.GetBool("isWalking");
                 bool isPunching = animator.GetBool("isPunching");
                 bool isPulling = animator.GetBool("isPulling");
+                bool isPushing = animator.GetBool("isPushing"); 
 
                 float inputHorizontal = Input.GetAxisRaw("Horizontal");
                 float inputVertical = Input.GetAxisRaw("Vertical");
                 float inputPunch = Input.GetAxisRaw("Fire1");
                 bool directionPressed = inputHorizontal != 0 || inputVertical != 0;
                 bool punchingPressed = inputPunch != 0;
+                bool pushingPressed = Input.GetAxisRaw("Fire3") != 0;
 
                 bool pullingPressed = Input.GetAxisRaw("Fire2") != 0;
                 if (!isWalking && directionPressed)
@@ -94,6 +96,14 @@ public class animationStateController : MonoBehaviour
                 if (Input.GetButtonDown("Jump") && !movementScript.isJumping)
                 {
                     animator.SetTrigger("isJumpingTrigger");
+                }
+                if (pushingPressed && !isPushing)
+                {
+                    animator.SetBool("isPushing", true);
+                }
+                if (!pushingPressed && isPushing)
+                {
+                    animator.SetBool("isPushing", false);
                 }
             }
             //Actions for the dummies as well.

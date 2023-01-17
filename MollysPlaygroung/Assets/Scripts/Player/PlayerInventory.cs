@@ -12,6 +12,7 @@ public class PlayerInventory : MonoBehaviour
     public void FoodCollected()
     {
         NumFoodCollected++;
+        Debug.Log(NumFoodCollected);
         onFoodCollection.Invoke(this);
     }
 }
