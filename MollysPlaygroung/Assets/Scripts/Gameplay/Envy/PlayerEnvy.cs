@@ -4,6 +4,9 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using System;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PlayerEnvy : MonoBehaviour
 {
@@ -21,6 +24,10 @@ public class PlayerEnvy : MonoBehaviour
     Rigidbody rb;
     public float moveSpeed;
     Vector3 keyboardMovement;
+
+    public string votingCardID;
+    public string votedFor;
+    public string votedPlayerName;
 
     void Start()
     {
@@ -71,6 +78,34 @@ public class PlayerEnvy : MonoBehaviour
                 Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
                 view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls);
             }
+
+            if (Input.GetMouseButtonDown(0) && GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
+            {
+                RaycastHit die;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out die, 100.0f))
+                {
+                    if (die.transform.tag == "EnvyVote")
+                    {
+                        GameObject.Find("VotingChoice").GetComponent<TextMeshProUGUI>().text = "you picked " + GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SendingVoterName(die.transform.name);
+                        view.RPC("PlayerVote", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName, die.transform.name, GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SendingVoterName(die.transform.name));
+                    }
+                }
+            }
+        }
+    }
+
+    [PunRPC]
+    void PlayerVote(string player, string vote, string votedPlayerName)
+    {
+        try
+        {
+            GameObject.Find(player).GetComponent<PlayerEnvy>().votedFor = vote;
+            GameObject.Find(player).GetComponent<PlayerEnvy>().votedPlayerName = votedPlayerName;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
         }
     }
 

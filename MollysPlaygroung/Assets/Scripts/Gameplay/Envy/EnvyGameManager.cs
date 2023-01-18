@@ -12,6 +12,10 @@ public class EnvyGameManager : MonoBehaviour
     public List<string> playingPlayers = new List<string>();
     public List<GameObject> playerInfoStat = new List<GameObject>();
 
+    // voting shit
+    public GameObject voteIDs;
+    public GameObject voteNames;
+
     public List<bool> playingPlayersStats = new List<bool>();
     public List<GameObject> raceHorses = new List<GameObject>();
 
@@ -19,14 +23,20 @@ public class EnvyGameManager : MonoBehaviour
 
     public TextMeshProUGUI horseDisplay;
 
+    public bool votingSystem = true;
+    public GameObject votingNames;
+    public GameObject votingScreen;
+    public GameObject carnivalScreen;
+
     bool oneAndDone = false;
-    bool IAmMaster = false;
 
     void Start()
     {
         horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
 
         grrr();
+
+        carnivalScreen.SetActive(false);
 
 
         for (int i = 0; i < playingPlayers.Count; i++)
@@ -54,7 +64,7 @@ public class EnvyGameManager : MonoBehaviour
                 }
             }
         }
-        else if(!oneAndDone)
+        else if(!oneAndDone && !votingSystem)
         {
             for (int i = 0; i < playingPlayers.Count; i++)
             {
@@ -66,11 +76,49 @@ public class EnvyGameManager : MonoBehaviour
                 playerInfoStat[i].SetActive(true);
                 playerInfoStat[i].GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
                 playerInfoStat[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().horseName;
-                playerInfoStat[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "N/A";
+                playerInfoStat[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().votedPlayerName;
             }
 
             oneAndDone = true;
         }
+
+        if (checkPlayerVadility() && !votingSystem)
+        {
+            votingScreen.SetActive(false);
+            votingNames.SetActive(false);
+            carnivalScreen.SetActive(true);
+        }
+        else if (checkPlayerVadility())
+        {
+            votingSystem = CheckForAllVotes();
+        }
+
+    }
+
+    public string SendingVoterName(string ID)
+    {
+        for(int i = 0; i < voteNames.transform.childCount; i++)
+        {
+            if(voteIDs.transform.GetChild(i).name == ID)
+            {
+                return voteNames.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text;
+            }
+        }
+
+        return "invalid";
+    }
+
+    bool CheckForAllVotes()
+    {
+        for (int i = 0; i < playingPlayers.Count; i++)
+        {
+            if(GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().votedFor == "0")
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     bool checkPlayerVadility()
@@ -90,9 +138,28 @@ public class EnvyGameManager : MonoBehaviour
     {
         List<string> tempPlayers = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame;
 
-        for(int i = 0; i < tempPlayers.Count; i++)
+        for (int i = 0; i < tempPlayers.Count; i++)
         {
             playingPlayers.Add(tempPlayers[i]);
+        }
+
+        for (int i = 0; i < playingPlayers.Count; i++)
+        {
+            if (playingPlayers[i] != PhotonNetwork.LocalPlayer.NickName)
+            {
+                try
+                {
+                    voteIDs.transform.GetChild(i).gameObject.SetActive(true);
+                    voteNames.transform.GetChild(i).gameObject.SetActive(true);
+
+                    voteNames.transform.GetChild(i).gameObject.GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
+                    GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().votingCardID = voteIDs.transform.GetChild(i).gameObject.name;
+                }
+                catch (NullReferenceException e)
+                {
+                    // error
+                }
+            }
         }
     }
 

@@ -94,7 +94,7 @@ public class PlayerEnvy_ZachyNati : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded() && !stunTheBitch)
+        if (Input.GetButtonDown("Jump") && isGrounded() && !stunTheBitch && !GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
         {
             Vector3 velo = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
             //rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
@@ -114,7 +114,7 @@ public class PlayerEnvy_ZachyNati : MonoBehaviour
 
     void MovePlayer()
     {
-        if (!stunTheBitch)
+        if (!stunTheBitch && !GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
         {
             float moveHorizontal = Input.GetAxisRaw("Horizontal");
             float moveVertical = Input.GetAxisRaw("Vertical");

@@ -35,7 +35,7 @@ public class AnimationEnvy_ZachyNati : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (view.IsMine && !GetComponent<PlayerEnvy_ZachyNati>().stunTheBitch) //disabling punching and running for any testing characters.
+        if (view.IsMine && !GetComponent<PlayerEnvy_ZachyNati>().stunTheBitch && !GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem) //disabling punching and running for any testing characters.
         {
             bool isWalking = animator.GetBool("isWalking");
             bool isPunching = animator.GetBool("isPunching");
