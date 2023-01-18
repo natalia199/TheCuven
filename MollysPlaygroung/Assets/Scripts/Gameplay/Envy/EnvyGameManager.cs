@@ -22,7 +22,7 @@ public class EnvyGameManager : MonoBehaviour
 
     void Start()
     {
-        grrr();
+        //grrr();
 
 
         for (int i = 0; i < playingPlayers.Count; i++)

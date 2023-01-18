@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using System;
-using System;
 
 public class PlayerEnvy : MonoBehaviour
 {
