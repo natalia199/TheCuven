@@ -93,6 +93,9 @@ public class animationStateController : MonoBehaviour
 
                 }
                 //Jump Check
+                Debug.Log(Input.GetButtonDown("Jump") && !movementScript.isJumping);
+                Debug.Log(Input.GetButtonDown("Jump"));
+                Debug.Log(!movementScript.isJumping);
                 if (Input.GetButtonDown("Jump") && !movementScript.isJumping)
                 {
                     animator.SetTrigger("isJumpingTrigger");
