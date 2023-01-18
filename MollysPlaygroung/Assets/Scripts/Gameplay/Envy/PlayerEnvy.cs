@@ -18,6 +18,8 @@ public class PlayerEnvy : MonoBehaviour
     public string horseName;
     bool movethefknhorse;
 
+    public GameObject infoz;
+
     Rigidbody rb;
     public float moveSpeed;
     Vector3 keyboardMovement;

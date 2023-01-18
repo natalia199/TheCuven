@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using System;
+using TMPro;
 using Random = UnityEngine.Random;
 
 public class EnvyGameManager : MonoBehaviour
 {
     //public List<GameObject> playingPlayers = new List<GameObject>();
     public List<string> playingPlayers = new List<string>();
+    public List<GameObject> playerInfoStat = new List<GameObject>();
+
     public List<bool> playingPlayersStats = new List<bool>();
     public List<GameObject> raceHorses = new List<GameObject>();
 
@@ -100,6 +103,11 @@ public class EnvyGameManager : MonoBehaviour
 
             //int index = Random.Range(0, (temp.Count-1));
             GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().horseName = temp[index];
+            playerInfoStat[i].SetActive(true);
+            playerInfoStat[i].GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
+            playerInfoStat[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = temp[index];
+            GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().infoz = playerInfoStat[i];
+            // attach player info g.o
             temp.RemoveAt(index);
         }
     }

@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2155606761697102189}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.0061828955, y: 0.17996956, z: -3.43}
+  m_LocalPosition: {x: -0.0061828955, y: -0, z: -2.9}
   m_LocalScale: {x: 0.43456623, y: 0.0596179, z: 0.42237}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -126,7 +126,7 @@ Transform:
   m_GameObject: {fileID: 7307834283313027576}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.989, y: 1.565175, z: 6.1041}
-  m_LocalScale: {x: 0.36687863, y: 0.16357365, z: 0.48802194}
+  m_LocalScale: {x: 0.305265, y: 0.1361031, z: 0.40606353}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1996369889455318927}
@@ -146,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finishLinePoint: {fileID: 0}
   horseID: 0
+  horsename: 
 --- !u!212 &4079944152155346405
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -324,5 +325,5 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.4979734, y: 0.47376955, z: 5.526468}
-  m_Center: {x: -0.028464334, y: -0.26311505, z: -2.2632334}
+  m_Size: {x: 1.4979734, y: 0.47376955, z: 4.684913}
+  m_Center: {x: -0.028464334, y: -0.26311505, z: -1.8424561}
