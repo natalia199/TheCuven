@@ -21,6 +21,8 @@ public class PlayerEnvy_Combat : MonoBehaviour
 
     PlayerEnvy_Combat opponentCombatState;
 
+    public bool theBitchIsStunned = false;
+
     void Start()
     {
         view = GetComponent<PhotonView>();
@@ -47,7 +49,9 @@ public class PlayerEnvy_Combat : MonoBehaviour
                 
                 if (opponentCombatState.isPunching)
                 {
+                    view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                     animator.SetTrigger("isHitTrigger");
+                    theBitchIsStunned = true;
                 }
                 else if (opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged"))
                 {
@@ -79,7 +83,7 @@ public class PlayerEnvy_Combat : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player")  && view.IsMine)
+        if (other.CompareTag("Player")  && view.IsMine && !theBitchIsStunned)
         {
             killme = true;
             opponentCombatState = other.GetComponent<PlayerEnvy_Combat>();
@@ -89,10 +93,25 @@ public class PlayerEnvy_Combat : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player") && view.IsMine)
+        if (other.CompareTag("Player") && view.IsMine && !theBitchIsStunned)
         {
             killme = false;
             opponentCombatState = null;
+        }
+    }
+
+    [PunRPC]
+    void Ouchies(string player)
+    {
+        try
+        {
+            Debug.Log("Ouchies " + player + " got hit");
+            GameObject.Find(player).GetComponent<PlayerEnvy_ZachyNati>().CallStunah();
+            GameObject.Find(player).GetComponent<AnimationEnvy_ZachyNati>().resetAnimations();
+        }
+        catch (NullReferenceException e)
+        {
+            // error
         }
     }
 

@@ -9,8 +9,7 @@ public class PlayerEnvy : MonoBehaviour
 {
     PhotonView view;
 
-    public TextMeshProUGUI horseDisplay;
-    public TextMeshProUGUI username;
+    //public TextMeshProUGUI horseDisplay;
     string playersUsername;
 
     bool atShootingPad;
@@ -27,27 +26,27 @@ public class PlayerEnvy : MonoBehaviour
     {
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
-        horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
+        //horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
         atShootingPad = false;
         movethefknhorse = false;
     }
 
     void Update()
     {
-        if (view.IsMine)
+        /*if (view.IsMine)
         {
             view.RPC("getPlayersNickName", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
         }
-        this.name = playersUsername;
+        this.name = playersUsername;*/
         
         if (view.IsMine)
         {
-            view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+            //view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
-            keyboardMovement.x = Input.GetAxisRaw("Horizontal");
-            keyboardMovement.z = Input.GetAxisRaw("Vertical");
+            //keyboardMovement.x = Input.GetAxisRaw("Horizontal");
+            //keyboardMovement.z = Input.GetAxisRaw("Vertical");
 
-            horseDisplay.text = "#" + GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + horseName;
+            //horseDisplay.text = "#" + GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + horseName;
         }
     }
 
@@ -55,9 +54,9 @@ public class PlayerEnvy : MonoBehaviour
     {
         if (view.IsMine)
         {
-            rb.MovePosition(rb.position + keyboardMovement.normalized * moveSpeed * Time.fixedDeltaTime);
+            //rb.MovePosition(rb.position + keyboardMovement.normalized * moveSpeed * Time.fixedDeltaTime);
 
-            if (Input.GetKey(KeyCode.Space) && atShootingPad)
+            if (Input.GetKey(KeyCode.Return) && atShootingPad)
             {
                 movethefknhorse = true;
             }
@@ -111,7 +110,7 @@ public class PlayerEnvy : MonoBehaviour
     }
     
     // Sharing owner's player number with others
-    [PunRPC]
+   /* [PunRPC]
     void getPlayersNickName(string name)
     {
         playersUsername = name;
@@ -122,14 +121,14 @@ public class PlayerEnvy : MonoBehaviour
     {
         try
         {
-            GameObject.Find(Player).GetComponent<PlayerEnvy>().username.text = Player;
+            //GameObject.Find(Player).GetComponent<PlayerEnvy>().username.text = Player;
         }
         catch (NullReferenceException e)
         {
             // error
         }
     }
-
+   */
     [PunRPC]
     void RaceTheHorse(string horse, Vector3 pos)
     {

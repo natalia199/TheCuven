@@ -1864,6 +1864,7 @@ GameObject:
   - component: {fileID: 6868656522760175879}
   - component: {fileID: 2278067732225346521}
   - component: {fileID: 2278067732225346520}
+  - component: {fileID: 2171603958387015606}
   - component: {fileID: 2278067732225346526}
   - component: {fileID: 3139504900582414968}
   - component: {fileID: 1606519062263595661}
@@ -1944,6 +1945,7 @@ MonoBehaviour:
   jumpForce: 4
   isJumping: 0
   fallMultiplier: 5
+  stunTheBitch: 0
 --- !u!114 &2278067732225346520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1963,6 +1965,22 @@ MonoBehaviour:
   isPushing: 0
   dragDistance: 1.5
   foodItems: []
+  theBitchIsStunned: 0
+--- !u!114 &2171603958387015606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6868656522760175873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3e38d7fd4e832d40bfd62424eac18da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  horseName: 
+  infoz: {fileID: 0}
+  moveSpeed: 0
 --- !u!114 &2278067732225346526
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1205,7 +1205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &455828132
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1444,7 +1444,7 @@ GameObject:
   - component: {fileID: 469029775}
   - component: {fileID: 469029774}
   m_Layer: 5
-  m_Name: score
+  m_Name: horse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2711,7 +2711,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &864260131
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4028,7 +4028,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1457004309
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4600,6 +4600,7 @@ MonoBehaviour:
   - {fileID: 1487726599}
   - {fileID: 140783532}
   raceResults: []
+  horseDisplay: {fileID: 0}
 --- !u!4 &1615780907
 Transform:
   m_ObjectHideFlags: 0
@@ -5426,7 +5427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1907147538
 RectTransform:
   m_ObjectHideFlags: 0

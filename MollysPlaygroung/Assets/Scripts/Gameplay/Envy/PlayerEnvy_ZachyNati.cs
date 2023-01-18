@@ -22,6 +22,8 @@ public class PlayerEnvy_ZachyNati : MonoBehaviour
 
     public float fallMultiplier = 5f;
 
+    public bool stunTheBitch = false;
+
     void Start()
     {
         view = GetComponent<PhotonView>();
@@ -61,7 +63,6 @@ public class PlayerEnvy_ZachyNati : MonoBehaviour
         {
             GameObject.Find(Player).GetComponent<PlayerEnvy_ZachyNati>().username.text = Player;
             GameObject.Find(Player).GetComponent<PlayerEnvy_ZachyNati>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
-            GameObject.Find(Player).GetComponent<PlayerEnvy_ZachyNati>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
             GameObject.Find(Player).GetComponent<PlayerEnvy_ZachyNati>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
         }
         catch (NullReferenceException e)
@@ -93,7 +94,7 @@ public class PlayerEnvy_ZachyNati : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded())
+        if (Input.GetButtonDown("Jump") && isGrounded() && !stunTheBitch)
         {
             Vector3 velo = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
             //rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpForce, rigidBody.velocity.z);
@@ -113,28 +114,46 @@ public class PlayerEnvy_ZachyNati : MonoBehaviour
 
     void MovePlayer()
     {
-        float moveHorizontal = Input.GetAxisRaw("Horizontal");
-        float moveVertical = Input.GetAxisRaw("Vertical");
-
-        var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-        float moveSpeed = speed; //Making this a seperate variable to make speed adjustments for different animations
-
-        Vector3 movement = isometricOffset.MultiplyPoint3x4(new Vector3(moveHorizontal, 0.0f, moveVertical));
-        if (movement != Vector3.zero)
+        if (!stunTheBitch)
         {
-            //flip looking direction if pulling to simulate walking backward
-            if (combatState.isPulling || combatState.isDragged)
-            {
-                transform.rotation = Quaternion.LookRotation(-movement);
-                moveSpeed = 3;
-            }
-            else
-            {
-                transform.rotation = Quaternion.LookRotation(movement);
-            }
-        }
+            float moveHorizontal = Input.GetAxisRaw("Horizontal");
+            float moveVertical = Input.GetAxisRaw("Vertical");
 
-        transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+            var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+            float moveSpeed = speed; //Making this a seperate variable to make speed adjustments for different animations
+
+            Vector3 movement = isometricOffset.MultiplyPoint3x4(new Vector3(moveHorizontal, 0.0f, moveVertical));
+            if (movement != Vector3.zero)
+            {
+                //flip looking direction if pulling to simulate walking backward
+                if (combatState.isPulling || combatState.isDragged)
+                {
+                    transform.rotation = Quaternion.LookRotation(-movement);
+                    moveSpeed = 3;
+                }
+                else
+                {
+                    transform.rotation = Quaternion.LookRotation(movement);
+                }
+            }
+
+            transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+        }
+    }
+
+    public void CallStunah()
+    {
+        StartCoroutine("Stunah", 10);
+    }
+
+    IEnumerator Stunah(int value)
+    {
+        stunTheBitch = true;
+
+        yield return new WaitForSeconds(value);
+
+        stunTheBitch = false;
+        GetComponent<PlayerEnvy_Combat>().theBitchIsStunned = false;
     }
 
     public bool isGrounded()

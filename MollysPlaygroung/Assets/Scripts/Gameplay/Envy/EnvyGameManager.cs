@@ -17,12 +17,16 @@ public class EnvyGameManager : MonoBehaviour
 
     public List<string> raceResults = new List<string>();
 
+    public TextMeshProUGUI horseDisplay;
+
     bool oneAndDone = false;
     bool IAmMaster = false;
 
     void Start()
     {
-        //grrr();
+        horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
+
+        grrr();
 
 
         for (int i = 0; i < playingPlayers.Count; i++)
@@ -56,7 +60,15 @@ public class EnvyGameManager : MonoBehaviour
             {
                 GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().AssigningHorses();
             }
-                
+
+            for (int i = 0; i < playingPlayers.Count; i++)
+            {
+                playerInfoStat[i].SetActive(true);
+                playerInfoStat[i].GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
+                playerInfoStat[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().horseName;
+                playerInfoStat[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "N/A";
+            }
+
             oneAndDone = true;
         }
     }
@@ -107,6 +119,9 @@ public class EnvyGameManager : MonoBehaviour
             playerInfoStat[i].GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
             playerInfoStat[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = temp[index];
             GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().infoz = playerInfoStat[i];
+
+            horseDisplay.text = "#" + GameObject.Find(temp[index]).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + temp[index];
+
             // attach player info g.o
             temp.RemoveAt(index);
         }
