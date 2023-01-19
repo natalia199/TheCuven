@@ -58,7 +58,7 @@ public class PlatformShakeWrath : MonoBehaviour
         directionIndex = Random.Range(0, 3);
         startTilt = true;
 
-        float timez = Random.Range(2, 8);
+        float timez = Random.Range(4, 12);
 
         if (!startTilt)
         {

@@ -136,7 +136,7 @@ public class EnvyGameManager : MonoBehaviour
                 if(results[i] == GameObject.Find(players[y]).GetComponent<PlayerEnvy>().horseName)
                 {
                     winningCircle.transform.GetChild(i).gameObject.SetActive(true);
-                    winningCircle.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count).GetComponent<TextMeshProUGUI>().text + players[y];
+                    winningCircle.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text + players[y];
                     placements.Add(players[y]);
                     players.RemoveAt(y);
                     break;
