@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 using TMPro;
-using Random = UnityEngine.Random;
+using System.Linq;
 
 public class EnvyGameManager : MonoBehaviour
 {
@@ -24,9 +24,12 @@ public class EnvyGameManager : MonoBehaviour
     public TextMeshProUGUI horseDisplay;
 
     public bool votingSystem = true;
+    public bool gameover = false;
     public GameObject votingNames;
     public GameObject votingScreen;
     public GameObject carnivalScreen;
+    public GameObject resultScreen;
+    public GameObject winningCircle;
 
     bool oneAndDone = false;
 
@@ -37,6 +40,7 @@ public class EnvyGameManager : MonoBehaviour
         grrr();
 
         carnivalScreen.SetActive(false);
+        resultScreen.SetActive(false);
 
 
         for (int i = 0; i < playingPlayers.Count; i++)
@@ -82,13 +86,24 @@ public class EnvyGameManager : MonoBehaviour
             oneAndDone = true;
         }
 
-        if (checkPlayerVadility() && !votingSystem)
+        if (raceResults.Count == (playingPlayers.Count - 1) && !votingSystem)
+        {
+            carnivalScreen.SetActive(false);
+            resultScreen.SetActive(true);
+            if (!gameover)
+            {
+                PostResults();
+            }
+            Debug.Log("GAMEOVER");
+            votingSystem = true;
+        }
+        else if (checkPlayerVadility() && !votingSystem)
         {
             votingScreen.SetActive(false);
             votingNames.SetActive(false);
             carnivalScreen.SetActive(true);
         }
-        else if (checkPlayerVadility())
+        else if (checkPlayerVadility() && raceResults.Count == 0)
         {
             votingSystem = CheckForAllVotes();
         }
@@ -106,6 +121,79 @@ public class EnvyGameManager : MonoBehaviour
         }
 
         return "invalid";
+    }
+
+    void PostResults()
+    {
+        List<string> players = new List<string>(playingPlayers);
+        List<string> results = new List<string>(raceResults);
+        List<string> placements = new List<string>();
+
+        for(int i = 0; i < results.Count; i++)
+        {
+            for(int y = 0; y < players.Count; y++)
+            {
+                if(results[i] == GameObject.Find(players[y]).GetComponent<PlayerEnvy>().horseName)
+                {
+                    winningCircle.transform.GetChild(i).gameObject.SetActive(true);
+                    winningCircle.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count).GetComponent<TextMeshProUGUI>().text + players[y];
+                    placements.Add(players[y]);
+                    players.RemoveAt(y);
+                    break;
+                }
+            }
+        }
+
+        winningCircle.transform.GetChild(results.Count).gameObject.SetActive(true);
+        winningCircle.transform.GetChild(results.Count).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count).GetComponent<TextMeshProUGUI>().text + players[0];
+        placements.Add(players[0]);
+
+        List<int> points = new List<int>();
+        for (int x = 0; x < placements.Count; x++)
+        {
+            int pts = PointSystem(placements[x], x + 1, placements[placements.Count-1]);
+            points.Add(pts);
+            winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text = pts + "";
+        }
+
+        int max_num = points.AsQueryable().Max();
+        int min_num = points.AsQueryable().Min();
+
+        for (int x = 0; x < winningCircle.transform.childCount; x++)
+        {
+            if(winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (max_num + ""))
+            {
+                winningCircle.transform.GetChild(x).GetChild(1).gameObject.SetActive(true);
+            }
+            else if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (min_num + ""))
+            {
+                winningCircle.transform.GetChild(x).GetChild(2).gameObject.SetActive(true);
+            }
+        }
+
+        gameover = true;
+    }
+
+    int PointSystem(string player, int place, string loser)
+    {
+        int totalPts = 0;
+
+        if(place == 1)
+        {
+            totalPts++;
+        }
+
+        if(place == playingPlayers.Count)
+        {
+            totalPts--;
+        }
+
+        if(GameObject.Find(player).GetComponent<PlayerEnvy>().votedPlayerName == loser)
+        {
+            totalPts++;
+        }
+
+        return totalPts;
     }
 
     bool CheckForAllVotes()

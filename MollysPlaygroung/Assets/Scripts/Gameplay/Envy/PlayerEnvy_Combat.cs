@@ -83,7 +83,7 @@ public class PlayerEnvy_Combat : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player")  && view.IsMine && !theBitchIsStunned)
+        if (other.CompareTag("Player") && !theBitchIsStunned)
         {
             killme = true;
             opponentCombatState = other.GetComponent<PlayerEnvy_Combat>();

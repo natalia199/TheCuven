@@ -22,7 +22,7 @@ public class HorseFinishLine : MonoBehaviour
         if(letsgo)
         {
             float step = 2f * Time.deltaTime; // calculate distance to move
-            transform.GetChild(0).position = Vector3.MoveTowards(transform.position, finishLinePoint.position, step);
+            transform.position = Vector3.MoveTowards(transform.position, finishLinePoint.position, step);
 
         }
     }

@@ -74,7 +74,7 @@ public class PlayerEnvy : MonoBehaviour
 
             if (movethefknhorse)
             {
-                float step = 2f * Time.deltaTime; // calculate distance to move
+                float step = 10f * Time.deltaTime; // calculate distance to move
                 Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
                 view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls);
             }
@@ -111,13 +111,11 @@ public class PlayerEnvy : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (view.IsMine)
-        {
-            if (other.name == horseName)
+        if (other.name == horseName)
             {
                 atShootingPad = true;
             }
-        }
+        
     }
 
     void OnTriggerExit(Collider other)
