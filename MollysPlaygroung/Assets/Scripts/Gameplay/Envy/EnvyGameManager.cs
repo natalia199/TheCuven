@@ -31,6 +31,11 @@ public class EnvyGameManager : MonoBehaviour
 
     bool oneAndDone = false;
 
+    TextMeshProUGUI horseDisplay;
+
+    public string ownersHorse;
+    public string currentOwner;
+
     void Start()
     {
         grrr();
@@ -44,6 +49,8 @@ public class EnvyGameManager : MonoBehaviour
             playingPlayersStats.Add(false);
         }
         //SetPlayerHorses();
+
+        currentOwner = PhotonNetwork.LocalPlayer.NickName;
     }
 
     void Update()
@@ -86,6 +93,7 @@ public class EnvyGameManager : MonoBehaviour
         {
             carnivalScreen.SetActive(false);
             resultScreen.SetActive(true);
+
             if (!gameover)
             {
                 PostResults();
@@ -98,6 +106,15 @@ public class EnvyGameManager : MonoBehaviour
             votingScreen.SetActive(false);
             votingNames.SetActive(false);
             carnivalScreen.SetActive(true);
+
+            try
+            {
+                GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>().text = "#" + GameObject.Find(GameObject.Find(currentOwner).GetComponent<PlayerEnvy>().horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " " + GameObject.Find(currentOwner).GetComponent<PlayerEnvy>().horseName;
+            }
+            catch (NullReferenceException e)
+            {
+                // error
+            }
         }
         else if (checkPlayerVadility() && raceResults.Count == 0)
         {
@@ -267,7 +284,7 @@ public class EnvyGameManager : MonoBehaviour
             //int index = Random.Range(0, (temp.Count-1));
             GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().horseName = temp[index];
 
-            GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().endScale = GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().orgScale;
+            //GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().endScale = GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().orgScale;
 
             playerInfoStat[i].SetActive(true);
             playerInfoStat[i].GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
@@ -279,20 +296,9 @@ public class EnvyGameManager : MonoBehaviour
         }
     }
 
-    public void MoveHorse(string horse, Vector3 position, Vector3 squirtScale, Vector3 squirtPos, bool state)
+    public void MoveHorse(string horse, Vector3 position)
     {
-        if (state)
-        {
-            GameObject.Find(horse).transform.GetChild(0).transform.position = position;
-
-            GameObject.Find(horse).transform.GetChild(1).transform.localScale = squirtScale;
-            GameObject.Find(horse).transform.GetChild(1).transform.position = squirtPos;
-        }
-        else
-        {
-            GameObject.Find(horse).transform.GetChild(1).transform.localScale = squirtScale;
-            GameObject.Find(horse).transform.GetChild(1).transform.position = squirtPos;
-        }
+        GameObject.Find(horse).transform.GetChild(0).transform.position = position;
     }
 
     public void UpdateRaceResult(string name)

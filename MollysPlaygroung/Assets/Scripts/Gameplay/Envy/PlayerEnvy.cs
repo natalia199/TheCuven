@@ -29,120 +29,98 @@ public class PlayerEnvy : MonoBehaviour
     public string votedFor;
     public string votedPlayerName;
 
-    public float maxScale;
-    public float speed;
+    /* public float maxScale;
+     public float speed;
 
-    public Vector3 v3OrgPos;
-    public float orgScale;
-    public float endScale;
-
-    TextMeshProUGUI horseDisplay;
+     public Vector3 v3OrgPos;
+     public float orgScale;
+     public float endScale;
+    */
 
     void Start()
     {
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody>();
-        //horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
+
         atShootingPad = false;
         movethefknhorse = false;
-
-        horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
-        horseDisplay.gameObject.SetActive(false);
     }
 
     void Update()
     {
-        /*if (view.IsMine)
-        {
-            view.RPC("getPlayersNickName", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
-        }
-        this.name = playersUsername;*/
-        
-        if (view.IsMine)
-        {
-            //view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
-            //keyboardMovement.x = Input.GetAxisRaw("Horizontal");
-            //keyboardMovement.z = Input.GetAxisRaw("Vertical");
-
-            //horseDisplay.text = "#" + GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + horseName;
-        }
     }
 
     void FixedUpdate()
     {
         if (view.IsMine)
         {
-            //rb.MovePosition(rb.position + keyboardMovement.normalized * moveSpeed * Time.fixedDeltaTime);
-
-            if (Input.GetKey(KeyCode.Return) && atShootingPad)
+            if (!GameObject.Find("GameManager").GetComponent<EnvyGameManager>().gameover)
             {
-                movethefknhorse = true;
-                float step = 10f * Time.deltaTime; // calculate distance to move
-                Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
-
-                Vector3 grr = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(transform.localScale.z, endScale, Time.deltaTime * speed));
-                Vector3 pls = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
-                endScale = maxScale;
-                view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls, grr, pls);
-            }
-            else if(!GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
-            {
-                movethefknhorse = false;
-                try
+                if (Input.GetKey(KeyCode.Return) && atShootingPad)
                 {
-                    Vector3 grr = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(transform.localScale.z, endScale, Time.deltaTime * speed));
-                    Vector3 pls = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
-                    endScale = orgScale;
-                    view.RPC("ReverseDaSquirt", RpcTarget.AllBufferedViaServer, horseName, Vector3.zero, grr, pls);
+                    movethefknhorse = true;
+                    float step = 10f * Time.deltaTime; // calculate distance to move
+                    Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
+
+                    //Vector3 grr = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(transform.localScale.z, endScale, Time.deltaTime * speed));
+                    //Vector3 pls = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
+                    //endScale = maxScale;
+                    view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls);
+                    //view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls, grr, pls);
                 }
-                catch (NullReferenceException e)
+                /*else if(!GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
                 {
-                    // error
-                }
-            }
-            /*
-            if (movethefknhorse)
-            {
-                float step = 10f * Time.deltaTime; // calculate distance to move
-                Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
-                view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls);
-
-                GameObject.Find(horseName).transform.GetChild(1).position = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(GameObject.Find(horseName).transform.GetChild(1).localScale.z, endScale, Time.deltaTime * speed));
-                GameObject.Find(horseName).transform.GetChild(1).position = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
-                endScale = maxScale;
-            }
-            else
-            {
-                GameObject.Find(horseName).transform.GetChild(1).position = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(GameObject.Find(horseName).transform.GetChild(1).localScale.z, endScale, Time.deltaTime * speed));
-                GameObject.Find(horseName).transform.GetChild(1).position = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
-                endScale = orgScale;
-            }*/
-
-            if (Input.GetMouseButtonDown(0) && GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
-            {
-                RaycastHit die;
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out die, 100.0f))
-                {
-                    if (die.transform.tag == "EnvyVote")
+                    movethefknhorse = false;
+                    try
                     {
-                        GameObject.Find("VotingChoice").GetComponent<TextMeshProUGUI>().text = "you picked " + GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SendingVoterName(die.transform.name);
-                        view.RPC("PlayerVote", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName, die.transform.name, GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SendingVoterName(die.transform.name));
+                        Vector3 grr = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(transform.localScale.z, endScale, Time.deltaTime * speed));
+                        Vector3 pls = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
+                        endScale = orgScale;
+                        view.RPC("ReverseDaSquirt", RpcTarget.AllBufferedViaServer, horseName, Vector3.zero, grr, pls);
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        // error
+                    }
+                }*/
+                /*
+                if (movethefknhorse)
+                {
+                    float step = 10f * Time.deltaTime; // calculate distance to move
+                    Vector3 diepls = Vector3.MoveTowards(GameObject.Find(horseName).transform.GetChild(0).position, GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().finishLinePoint.position, step);
+                    view.RPC("RaceTheHorse", RpcTarget.AllBufferedViaServer, horseName, diepls);
+
+                    GameObject.Find(horseName).transform.GetChild(1).position = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(GameObject.Find(horseName).transform.GetChild(1).localScale.z, endScale, Time.deltaTime * speed));
+                    GameObject.Find(horseName).transform.GetChild(1).position = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
+                    endScale = maxScale;
+                }
+                else
+                {
+                    GameObject.Find(horseName).transform.GetChild(1).position = new Vector3(GameObject.Find(horseName).transform.GetChild(1).localScale.x, GameObject.Find(horseName).transform.GetChild(1).localScale.y, Mathf.MoveTowards(GameObject.Find(horseName).transform.GetChild(1).localScale.z, endScale, Time.deltaTime * speed));
+                    GameObject.Find(horseName).transform.GetChild(1).position = v3OrgPos + (GameObject.Find(horseName).transform.GetChild(1).forward) * (GameObject.Find(horseName).transform.GetChild(1).localScale.z / 2.0f + orgScale / 2.0f);
+                    endScale = orgScale;
+                }*/
+
+                if (Input.GetMouseButtonDown(0) && GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
+                {
+                    RaycastHit die;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    if (Physics.Raycast(ray, out die, 100.0f))
+                    {
+                        if (die.transform.tag == "EnvyVote")
+                        {
+                            GameObject.Find("VotingChoice").GetComponent<TextMeshProUGUI>().text = "you picked " + GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SendingVoterName(die.transform.name);
+                            view.RPC("PlayerVote", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName, die.transform.name, GameObject.Find("GameManager").GetComponent<EnvyGameManager>().SendingVoterName(die.transform.name));
+                        }
                     }
                 }
-            }
-            else if (!GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
-            {
-                horseDisplay.gameObject.SetActive(true);
-                ShowAssignedHorse();
+                else if (!GameObject.Find("GameManager").GetComponent<EnvyGameManager>().votingSystem)
+                {
+
+                }
             }
         }
-    }
-
-    public void ShowAssignedHorse()
-    {
-        horseDisplay.text = "#" + GameObject.Find(horseName).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + horseName;
     }
 
     [PunRPC]
@@ -183,12 +161,7 @@ public class PlayerEnvy : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("u is master");
             view.RPC("neighMofo", RpcTarget.AllBufferedViaServer);
-        }
-        else
-        {
-            Debug.Log("nah cuh");
         }
     }
     
@@ -213,14 +186,12 @@ public class PlayerEnvy : MonoBehaviour
     }
    */
     [PunRPC]
-    void RaceTheHorse(string horse, Vector3 pos, Vector3 squirtPos, Vector3 scalaz)
+    void RaceTheHorse(string horse, Vector3 pos)
     {
         try
         {
-            GameObject.Find("GameManager").GetComponent<EnvyGameManager>().MoveHorse(horse, pos, squirtPos, scalaz, true);
+            GameObject.Find("GameManager").GetComponent<EnvyGameManager>().MoveHorse(horse, pos);
             //GameObject.Find(player).GetComponent<PlayerEnvy>().endScale = GameObject.Find(player).GetComponent<PlayerEnvy>().orgScale;
-
-            Debug.Log("yes bitch");
         }
         catch (NullReferenceException e)
         {
@@ -228,6 +199,7 @@ public class PlayerEnvy : MonoBehaviour
         }
     }
 
+    /*
     [PunRPC]
     void ReverseDaSquirt(string horse, Vector3 pos, Vector3 squirtPos, Vector3 scalaz)
     {
@@ -241,7 +213,7 @@ public class PlayerEnvy : MonoBehaviour
         {
             // error
         }
-    }
+    }*/
 
     [PunRPC]
     void neighMofo()
