@@ -36,6 +36,8 @@ public class EnvyGameManager : MonoBehaviour
     public string ownersHorse;
     public string currentOwner;
 
+    public string loser;
+
     void Start()
     {
         grrr();
@@ -97,6 +99,7 @@ public class EnvyGameManager : MonoBehaviour
             if (!gameover)
             {
                 PostResults();
+                StartCoroutine("WaitBeforeGameChange", 10);
             }
             Debug.Log("GAMEOVER");
             votingSystem = true;
@@ -183,6 +186,8 @@ public class EnvyGameManager : MonoBehaviour
                 winningCircle.transform.GetChild(x).GetChild(2).gameObject.SetActive(true);
             }
         }
+
+        loser = players[0];
 
         gameover = true;
     }
@@ -304,5 +309,14 @@ public class EnvyGameManager : MonoBehaviour
     public void UpdateRaceResult(string name)
     {        
         raceResults.Add(name);
+    }
+
+    IEnumerator WaitBeforeGameChange(int value)
+    {
+        Debug.Log("moment of silence for " + loser);
+
+        yield return new WaitForSeconds(value);
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().DeadPlayer(loser);
     }
 }

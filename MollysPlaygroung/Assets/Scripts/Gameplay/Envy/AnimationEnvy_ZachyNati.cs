@@ -60,15 +60,16 @@ public class AnimationEnvy_ZachyNati : MonoBehaviour
                 //view.RPC("Walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
                 animator.SetBool(isWalkingHash, false);
             }
+
             if (!isPunching && punchingPressed)
             {
-                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
                 animator.SetBool(isPunchingHash, true);
+                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
             }
-            if (isPunching && !punchingPressed)
+            else if (isPunching && !punchingPressed)
             {
-                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
                 animator.SetBool(isPunchingHash, false);
+                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
             }
 
             if (!isPulling && pullingPressed)
@@ -150,6 +151,8 @@ public class AnimationEnvy_ZachyNati : MonoBehaviour
         {
             GameObject.Find(draggedPlayer).GetComponent<PlayerEnvy_Combat>().isDragged = state;
             GameObject.Find(draggedPlayer).GetComponentInChildren<Animator>().SetBool("isDragged", false);
+            GameObject.Find(draggedPlayer).GetComponent<PlayerEnvy_Combat>().theBitchIsStunned = false;
+            GameObject.Find(draggedPlayer).GetComponent<PlayerEnvy_ZachyNati>().stunTheBitch = false;
             GameObject.Find(draggedPlayer).transform.parent = null;
         }
         catch (NullReferenceException e)

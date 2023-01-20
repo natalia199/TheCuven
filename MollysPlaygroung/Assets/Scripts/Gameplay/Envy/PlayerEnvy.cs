@@ -57,7 +57,7 @@ public class PlayerEnvy : MonoBehaviour
         {
             if (!GameObject.Find("GameManager").GetComponent<EnvyGameManager>().gameover)
             {
-                if (Input.GetKey(KeyCode.Return) && atShootingPad)
+                if (Input.GetKey(KeyCode.Return) && atShootingPad && !GetComponent<PlayerEnvy_ZachyNati>().stunTheBitch)
                 {
                     movethefknhorse = true;
                     float step = 10f * Time.deltaTime; // calculate distance to move

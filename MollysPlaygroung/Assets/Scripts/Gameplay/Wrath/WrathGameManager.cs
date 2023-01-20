@@ -16,6 +16,7 @@ public class WrathGameManager : MonoBehaviour
     public GameObject resultScreen;
 
     public bool gameover;
+    public string wrathWinner;
 
     void Start()
     {
@@ -57,9 +58,9 @@ public class WrathGameManager : MonoBehaviour
             resultScreen.SetActive(true);
             if (!gameover)
             {
-                //PostResults();
+                gameover = true;
+                PostResults();
             }
-            Debug.Log("GAMEOVER");
         }
     }
 
@@ -99,37 +100,30 @@ public class WrathGameManager : MonoBehaviour
 
         for (int i = 0; i < results.Count; i++)
         {
-            for (int y = 0; y < players.Count; y++)
+            winningCircle.transform.GetChild(results.Count - i).gameObject.SetActive(true);
+            winningCircle.transform.GetChild(results.Count - i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count - i).GetComponent<TextMeshProUGUI>().text + results[i];            break;
+        }
+
+        for (int x = 0; x < playingPlayers.Count; x++)
+        {
+            for (int y = 0; y < results.Count; y++)
             {
-                if (results[i] == GameObject.Find(players[y]).GetComponent<PlayerEnvy>().horseName)
+                if (results[y] == playingPlayers[x])
                 {
-                    winningCircle.transform.GetChild(i).gameObject.SetActive(true);
-                    winningCircle.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(i).GetComponent<TextMeshProUGUI>().text + players[y];
-                    placements.Add(players[y]);
-                    players.RemoveAt(y);
+                    break;
+                }
+                else
+                {
+                    wrathWinner = playingPlayers[x];
                     break;
                 }
             }
         }
 
-        winningCircle.transform.GetChild(results.Count).gameObject.SetActive(true);
-        winningCircle.transform.GetChild(results.Count).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count).GetComponent<TextMeshProUGUI>().text + players[0];
-        placements.Add(players[0]);
+        winningCircle.transform.GetChild(0).gameObject.SetActive(true);
+        winningCircle.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text + wrathWinner;
 
-        /*
-        for (int x = 0; x < winningCircle.transform.childCount; x++)
-        {
-            if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (max_num + ""))
-            {
-                winningCircle.transform.GetChild(x).GetChild(1).gameObject.SetActive(true);
-            }
-            else if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (min_num + ""))
-            {
-                winningCircle.transform.GetChild(x).GetChild(2).gameObject.SetActive(true);
-            }
-        }
-        */
-
-        gameover = true;
+        winningCircle.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
+        winningCircle.transform.GetChild(playingPlayers.Count - 1).GetChild(1).gameObject.SetActive(true);
     }
 }

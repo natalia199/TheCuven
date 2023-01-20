@@ -49,13 +49,16 @@ public class PlayerWrath_Combat : MonoBehaviour
 
                 if (opponentCombatState.isPunching)
                 {
-                    view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                    animator.SetTrigger("isHitTrigger");
                     theBitchIsStunned = true;
+                    GetComponent<PlayerWrath_ZachyNati>().CallStunah();
+                    view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                 }
                 else if (opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged"))
                 {
                     //animate the player being dragged
+                    theBitchIsStunned = true; 
+                    GetComponent<PlayerWrath_ZachyNati>().stunTheBitch = false;
+
                     animator.SetTrigger("isDraggedTrigger");
                     animator.SetBool("isDragged", true);
 
@@ -80,20 +83,20 @@ public class PlayerWrath_Combat : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player") && !theBitchIsStunned)
+        if (other.CompareTag("Player"))
         {
             killme = true;
             opponentCombatState = other.GetComponent<PlayerWrath_Combat>();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player") && view.IsMine && !theBitchIsStunned)
+        if (other.CompareTag("Player"))
         {
             killme = false;
             opponentCombatState = null;
@@ -106,8 +109,11 @@ public class PlayerWrath_Combat : MonoBehaviour
         try
         {
             Debug.Log("Ouchies " + player + " got hit");
-            GameObject.Find(player).GetComponent<PlayerWrath_ZachyNati>().CallStunah();
-            GameObject.Find(player).GetComponent<AnimationWrath_ZachyNati>().resetAnimations();
+            GameObject.Find(player).GetComponent<PlayerWrath_Combat>().animator.SetTrigger("isHitTrigger");
+            //GameObject.Find(player).GetComponent<PlayerWrath_Combat>().theBitchIsStunned = true;
+            //GameObject.Find(player).GetComponent<PlayerWrath_ZachyNati>().CallStunah();
+
+            //GameObject.Find(player).GetComponent<AnimationWrath_ZachyNati>().resetAnimations();
         }
         catch (NullReferenceException e)
         {
@@ -116,14 +122,14 @@ public class PlayerWrath_Combat : MonoBehaviour
     }
 
     [PunRPC]
-    void Draggies(string player, string draggedPlayer, Vector3 DIE, bool state)
+    void Draggies(string player, string draggeePlayer, Vector3 DIE, bool state)
     {
         try
         {
-            Debug.Log("parent " + player + " kiddie " + draggedPlayer);
+            Debug.Log("parent " + player + " kiddie " + draggeePlayer);
             GameObject.Find(player).GetComponent<PlayerWrath_Combat>().isDragged = state;
 
-            GameObject.Find(player).transform.parent = GameObject.Find(draggedPlayer).transform;
+            GameObject.Find(player).transform.parent = GameObject.Find(draggeePlayer).transform;
             GameObject.Find(player).GetComponent<Transform>().position = DIE;
         }
         catch (NullReferenceException e)

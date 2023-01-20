@@ -12,6 +12,7 @@ public class SceneManage : MonoBehaviour
     public string[] tempLevelNames = { "Gluttony", "Greed", "Sloth" };
 
     public List<string> allPlayersInGame = new List<string>();
+    public List<string> allPlayersDead = new List<string>();
 
     void Start()
     {
@@ -35,5 +36,34 @@ public class SceneManage : MonoBehaviour
     {
         sceneTracker++;
         Debug.Log("Scene " + sceneTracker);
+    }
+
+    public void DeadPlayer(string name)
+    {
+        allPlayersDead.Add(name);
+
+        for(int i = 0; 0 < allPlayersInGame.Count; i++)
+        {
+            if(allPlayersInGame[i] == name)
+            {
+                allPlayersInGame.RemoveAt(i);
+                break;
+            }
+        }
+
+        PhotonNetwork.LoadLevel("Wrath");
+    }
+
+    IEnumerator GameIntroTime(int value)
+    {
+        Debug.Log("game intro playing");
+
+        yield return new WaitForSeconds(value);
+
+        Debug.Log("game intro DONE");
+        //PhotonNetwork.LoadLevel("Transition");
+
+        //PhotonNetwork.LoadLevel("Wrath");
+        PhotonNetwork.LoadLevel("TempTransition");
     }
 }

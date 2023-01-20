@@ -46,16 +46,19 @@ public class PlayerEnvy_Combat : MonoBehaviour
             if (killme)
             {
                 //Check if the other player is punching
-                
+
                 if (opponentCombatState.isPunching)
                 {
-                    view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                    animator.SetTrigger("isHitTrigger");
                     theBitchIsStunned = true;
+                    GetComponent<PlayerEnvy_ZachyNati>().CallStunah();
+                    view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                 }
                 else if (opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged"))
                 {
                     //animate the player being dragged
+                    theBitchIsStunned = true;
+                    GetComponent<PlayerEnvy_ZachyNati>().stunTheBitch = false;
+
                     animator.SetTrigger("isDraggedTrigger");
                     animator.SetBool("isDragged", true);
 
@@ -80,20 +83,20 @@ public class PlayerEnvy_Combat : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    void OnTriggerStay(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player") && !theBitchIsStunned)
+        if (other.CompareTag("Player"))
         {
             killme = true;
             opponentCombatState = other.GetComponent<PlayerEnvy_Combat>();
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         //check if the colission is another player
-        if (other.CompareTag("Player") && view.IsMine && !theBitchIsStunned)
+        if (other.CompareTag("Player"))
         {
             killme = false;
             opponentCombatState = null;
@@ -106,8 +109,11 @@ public class PlayerEnvy_Combat : MonoBehaviour
         try
         {
             Debug.Log("Ouchies " + player + " got hit");
-            GameObject.Find(player).GetComponent<PlayerEnvy_ZachyNati>().CallStunah();
-            GameObject.Find(player).GetComponent<AnimationEnvy_ZachyNati>().resetAnimations();
+            GameObject.Find(player).GetComponent<PlayerEnvy_Combat>().animator.SetTrigger("isHitTrigger");
+            //GameObject.Find(player).GetComponent<PlayerWrath_Combat>().theBitchIsStunned = true;
+            //GameObject.Find(player).GetComponent<PlayerWrath_ZachyNati>().CallStunah();
+
+            //GameObject.Find(player).GetComponent<AnimationWrath_ZachyNati>().resetAnimations();
         }
         catch (NullReferenceException e)
         {

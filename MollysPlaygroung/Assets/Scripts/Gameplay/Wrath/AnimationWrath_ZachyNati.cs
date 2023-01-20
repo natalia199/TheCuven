@@ -60,15 +60,16 @@ public class AnimationWrath_ZachyNati : MonoBehaviour
                 //view.RPC("Walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
                 animator.SetBool(isWalkingHash, false);
             }
+
             if (!isPunching && punchingPressed)
-            {
-                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+            {   
                 animator.SetBool(isPunchingHash, true);
+                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
             }
-            if (isPunching && !punchingPressed)
-            {
-                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+            else if (isPunching && !punchingPressed)
+            { 
                 animator.SetBool(isPunchingHash, false);
+                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
             }
 
             if (!isPulling && pullingPressed)
@@ -135,7 +136,7 @@ public class AnimationWrath_ZachyNati : MonoBehaviour
     {
         try
         {
-            GameObject.Find(player).GetComponent<PlayerWrath_Combat>().isPunching = state;
+            GameObject.Find(player).GetComponent<PlayerWrath_Combat>().isPunching = state;            
         }
         catch (NullReferenceException e)
         {
@@ -150,6 +151,8 @@ public class AnimationWrath_ZachyNati : MonoBehaviour
         {
             GameObject.Find(draggedPlayer).GetComponent<PlayerWrath_Combat>().isDragged = state;
             GameObject.Find(draggedPlayer).GetComponentInChildren<Animator>().SetBool("isDragged", false);
+            GameObject.Find(draggedPlayer).GetComponent<PlayerWrath_Combat>().theBitchIsStunned = false;
+            GameObject.Find(draggedPlayer).GetComponent<PlayerWrath_ZachyNati>().stunTheBitch = false;
             GameObject.Find(draggedPlayer).transform.parent = null;
         }
         catch (NullReferenceException e)

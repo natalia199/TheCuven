@@ -27,13 +27,22 @@ public class PlayerWrath : MonoBehaviour
     {
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (other.name == "deathZone" && !oneAndDone)
+        try
         {
-            Debug.Log("ur out");
-            view.RPC("FellOut", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
-            oneAndDone = true;
+            if (view.IsMine)
+            {
+                if (other.name == "deathZone" && !oneAndDone && !GameObject.Find("GameManager").GetComponent<WrathGameManager>().gameover)
+                {
+                    view.RPC("FellOut", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
+                    oneAndDone = true;
+                }
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
         }
     }
 
