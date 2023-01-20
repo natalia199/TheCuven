@@ -20,7 +20,7 @@ public class PlayerTest : MonoBehaviour
 
     void Start()
     {
-        lifeValue = 100;
+        lifeValue = 110;
         outOfLight = true;
         decreaseHer = true;
         obstacleCollision = false;
@@ -36,7 +36,7 @@ public class PlayerTest : MonoBehaviour
         {
             if(decreaseHer)
             {
-                StartCoroutine("LifeDrop", 0.5f);
+                StartCoroutine("LifeDrop", 1.5f);
             }
         }
         //RPC

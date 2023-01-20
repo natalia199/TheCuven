@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GreedGameManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class GreedGameManager : MonoBehaviour
     public GameObject ChipPrefab;
     public GameObject ChipParent;
     public List<Transform> ChipSpawnPoints = new List<Transform>();
+    public List<TextMeshProUGUI> ZoneChips = new List<TextMeshProUGUI>();
 
     public bool diceProcedure;
 
@@ -49,6 +51,11 @@ public class GreedGameManager : MonoBehaviour
             GameObject.Find("Main Camera").transform.rotation = playCameraRot;
             GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = playCameraSize;
         }
+    }
+
+    public void SetZoneChipCount(int num, int amount)
+    {
+        ZoneChips[num].text = "" + amount;
     }
 
     public void RollingTheDice()
@@ -88,7 +95,7 @@ public class GreedGameManager : MonoBehaviour
         chip.transform.parent = null;
         chip.AddComponent<Rigidbody>();
         chip.GetComponent<ChipScript>().Available = true;
-        chip.GetComponent<ChipScript>().throwChip(zone.transform.GetChild(0).position, transform.position);
+        chip.GetComponent<ChipScript>().throwChip(zone.transform.GetChild(0).position, GameObject.Find("Player").transform.position);
     }
 
     public void ChipInstantiation()

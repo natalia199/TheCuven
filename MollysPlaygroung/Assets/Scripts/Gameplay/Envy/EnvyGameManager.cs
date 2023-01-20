@@ -21,8 +21,6 @@ public class EnvyGameManager : MonoBehaviour
 
     public List<string> raceResults = new List<string>();
 
-    public TextMeshProUGUI horseDisplay;
-
     public bool votingSystem = true;
     public bool gameover = false;
     public GameObject votingNames;
@@ -35,8 +33,6 @@ public class EnvyGameManager : MonoBehaviour
 
     void Start()
     {
-        horseDisplay = GameObject.Find("HorseNamies").GetComponent<TextMeshProUGUI>();
-
         grrr();
 
         carnivalScreen.SetActive(false);
@@ -270,21 +266,33 @@ public class EnvyGameManager : MonoBehaviour
 
             //int index = Random.Range(0, (temp.Count-1));
             GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().horseName = temp[index];
+
+            GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().endScale = GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().orgScale;
+
             playerInfoStat[i].SetActive(true);
             playerInfoStat[i].GetComponent<TextMeshProUGUI>().text = playingPlayers[i];
             playerInfoStat[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = temp[index];
             GameObject.Find(playingPlayers[i]).GetComponent<PlayerEnvy>().infoz = playerInfoStat[i];
-
-            horseDisplay.text = "#" + GameObject.Find(temp[index]).transform.GetChild(0).GetComponent<HorseFinishLine>().horseID + " - " + temp[index];
 
             // attach player info g.o
             temp.RemoveAt(index);
         }
     }
 
-    public void MoveHorse(string horse, Vector3 position)
+    public void MoveHorse(string horse, Vector3 position, Vector3 squirtScale, Vector3 squirtPos, bool state)
     {
-        GameObject.Find(horse).transform.GetChild(0).transform.position = position;
+        if (state)
+        {
+            GameObject.Find(horse).transform.GetChild(0).transform.position = position;
+
+            GameObject.Find(horse).transform.GetChild(1).transform.localScale = squirtScale;
+            GameObject.Find(horse).transform.GetChild(1).transform.position = squirtPos;
+        }
+        else
+        {
+            GameObject.Find(horse).transform.GetChild(1).transform.localScale = squirtScale;
+            GameObject.Find(horse).transform.GetChild(1).transform.position = squirtPos;
+        }
     }
 
     public void UpdateRaceResult(string name)

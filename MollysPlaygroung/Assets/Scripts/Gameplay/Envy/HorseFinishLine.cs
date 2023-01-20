@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HorseFinishLine : MonoBehaviour
 {
-    bool letsgo; 
+    bool letsgo;
     public Transform finishLinePoint;
 
     public int horseID;
@@ -19,12 +19,13 @@ public class HorseFinishLine : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(letsgo)
+        if (letsgo)
         {
             float step = 2f * Time.deltaTime; // calculate distance to move
             transform.position = Vector3.MoveTowards(transform.position, finishLinePoint.position, step);
 
         }
+
     }
 
     void OnTriggerEnter(Collider other)

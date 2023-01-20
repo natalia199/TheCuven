@@ -22,7 +22,7 @@ public class PlatformShakeWrath : MonoBehaviour
 
         idek.Add(Vector3.left);
         idek.Add(Vector3.right);
-        idek.Add(Vector3.forward);
+       // idek.Add(Vector3.forward);
         idek.Add(Vector3.back);
 
         GoOffQueen();
