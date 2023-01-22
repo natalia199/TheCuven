@@ -6,6 +6,7 @@ using Photon.Pun;
 public class TransitionToWrath : MonoBehaviour
 {
     // Start is called before the first frame update
+    /*
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
@@ -15,7 +16,7 @@ public class TransitionToWrath : MonoBehaviour
             StartCoroutine("GameIntroTime", 5f);
         }
     }
-
+    */
     IEnumerator GameIntroTime(int value)
     {
         Debug.Log("game intro playing");

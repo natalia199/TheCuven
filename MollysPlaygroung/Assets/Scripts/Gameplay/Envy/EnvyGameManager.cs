@@ -4,7 +4,6 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 using TMPro;
-using System.Linq;
 
 public class EnvyGameManager : MonoBehaviour
 {
@@ -37,6 +36,8 @@ public class EnvyGameManager : MonoBehaviour
     public string currentOwner;
 
     public string loser;
+    public List<int> maxPts = new List<int>();
+    public List<int> minPts = new List<int>();
 
     void Start()
     {
@@ -172,21 +173,74 @@ public class EnvyGameManager : MonoBehaviour
             winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text = pts + "";
         }
 
-        int max_num = points.AsQueryable().Max();
-        int min_num = points.AsQueryable().Min();
+        int max = points[0];
+        int min = points[0];
+
+        for (int x = 0; x < points.Count; x++)
+        {
+            for (int y = 0; y < points.Count; y++)
+            {
+                if (points[x] < points[y])
+                {
+                    max = points[y];
+                }
+                if(points[x] > points[y])
+                {
+                    min = points[y];
+                }
+            }
+        }
 
         for (int x = 0; x < winningCircle.transform.childCount; x++)
         {
-            if(winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (max_num + ""))
+            if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (max + ""))
             {
                 winningCircle.transform.GetChild(x).GetChild(1).gameObject.SetActive(true);
             }
-            else if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (min_num + ""))
+            else if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (min + ""))
             {
                 winningCircle.transform.GetChild(x).GetChild(2).gameObject.SetActive(true);
             }
         }
 
+        //int max = Convert.ToInt32(winningCircle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text);
+
+        /*
+        Debug.Log("final max is " + max);
+
+        int min = -Convert.ToInt32(winningCircle.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text);
+        for (int x = 0; x < winningCircle.transform.childCount; x++)
+        {
+            for (int y = 0; y < winningCircle.transform.childCount; y++)
+            {
+                if (Convert.ToInt32(winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text) > Convert.ToInt32(winningCircle.transform.GetChild(y).GetChild(0).GetComponent<TextMeshProUGUI>().text))
+                {
+                    min = Convert.ToInt32(winningCircle.transform.GetChild(y).GetChild(0).GetComponent<TextMeshProUGUI>().text);
+                    Debug.Log("min is " + min);
+
+                }
+            }
+        }
+
+        Debug.Log("final min is " + min);
+        */
+
+        /*
+    int max_num = points.AsQueryable().Max();
+    int min_num = points.AsQueryable().Min();
+
+    for (int x = 0; x < winningCircle.transform.childCount; x++)
+    {
+        if(winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (max_num + ""))
+        {
+            winningCircle.transform.GetChild(x).GetChild(1).gameObject.SetActive(true);
+        }
+        else if (winningCircle.transform.GetChild(x).GetChild(0).GetComponent<TextMeshProUGUI>().text == (min_num + ""))
+        {
+            winningCircle.transform.GetChild(x).GetChild(2).gameObject.SetActive(true);
+        }
+    }
+        */
         loser = players[0];
 
         gameover = true;
@@ -315,8 +369,10 @@ public class EnvyGameManager : MonoBehaviour
     {
         Debug.Log("moment of silence for " + loser);
 
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().DeadPlayer(loser);
+
         yield return new WaitForSeconds(value);
 
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().DeadPlayer(loser);
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
     }
 }

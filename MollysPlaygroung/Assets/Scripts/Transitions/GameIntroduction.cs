@@ -25,7 +25,7 @@ public class GameIntroduction : MonoBehaviour
         Debug.Log("game intro DONE");
         //PhotonNetwork.LoadLevel("Transition");
         
-        //PhotonNetwork.LoadLevel("Wrath");
-        PhotonNetwork.LoadLevel("Envy");
+        PhotonNetwork.LoadLevel("Wrath");
+        //PhotonNetwork.LoadLevel("Envy");
     }
 }

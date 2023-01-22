@@ -14,7 +14,7 @@ public class SceneManage : MonoBehaviour
     public List<string> allPlayersInGame = new List<string>();
     public List<string> allPlayersDead = new List<string>();
 
-    void Start()
+    void Awake()
     {
         DontDestroyOnLoad(this);
 
@@ -50,20 +50,21 @@ public class SceneManage : MonoBehaviour
                 break;
             }
         }
+    }
 
-        PhotonNetwork.LoadLevel("Wrath");
+    public void NextGameaz()
+    {
+        StartCoroutine("GameIntroTime", 5);
+
+        //PhotonNetwork.LoadLevel("TempTransition");
     }
 
     IEnumerator GameIntroTime(int value)
     {
-        Debug.Log("game intro playing");
+        PhotonNetwork.LoadLevel("TempTransition");
 
         yield return new WaitForSeconds(value);
 
-        Debug.Log("game intro DONE");
-        //PhotonNetwork.LoadLevel("Transition");
-
-        //PhotonNetwork.LoadLevel("Wrath");
-        PhotonNetwork.LoadLevel("TempTransition");
+        PhotonNetwork.LoadLevel("Wrath");
     }
 }

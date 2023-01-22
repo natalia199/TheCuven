@@ -24,7 +24,7 @@ public class WrathGameManager : MonoBehaviour
 
         grrr();
 
-        resultScreen.SetActive(false);
+        //resultScreen.SetActive(false);
 
         for (int i = 0; i < playingPlayers.Count; i++)
         {
@@ -55,7 +55,7 @@ public class WrathGameManager : MonoBehaviour
 
         if (raceResults.Count == (playingPlayers.Count - 1))
         {
-            resultScreen.SetActive(true);
+            //resultScreen.SetActive(true);
             if (!gameover)
             {
                 gameover = true;
@@ -101,7 +101,7 @@ public class WrathGameManager : MonoBehaviour
         for (int i = 0; i < results.Count; i++)
         {
             winningCircle.transform.GetChild(results.Count - i).gameObject.SetActive(true);
-            winningCircle.transform.GetChild(results.Count - i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count - i).GetComponent<TextMeshProUGUI>().text + results[i];            break;
+            winningCircle.transform.GetChild(results.Count - i).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(results.Count - i).GetComponent<TextMeshProUGUI>().text + results[i];            
         }
 
         for (int x = 0; x < playingPlayers.Count; x++)
@@ -121,9 +121,9 @@ public class WrathGameManager : MonoBehaviour
         }
 
         winningCircle.transform.GetChild(0).gameObject.SetActive(true);
+        winningCircle.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
         winningCircle.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = winningCircle.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text + wrathWinner;
 
-        winningCircle.transform.GetChild(0).GetChild(0).gameObject.SetActive(true);
         winningCircle.transform.GetChild(playingPlayers.Count - 1).GetChild(1).gameObject.SetActive(true);
     }
 }

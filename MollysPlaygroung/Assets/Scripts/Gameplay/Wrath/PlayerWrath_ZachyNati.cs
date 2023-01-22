@@ -144,7 +144,7 @@ public class PlayerWrath_ZachyNati : MonoBehaviour
 
     public void CallStunah()
     {
-        StartCoroutine("Stunah", 10);
+        StartCoroutine("Stunah", 5);
     }
 
     IEnumerator Stunah(int value)
