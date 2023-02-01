@@ -12,7 +12,8 @@ public class GameIntroduction : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine("GameIntroTime", 5f);
+            //StartCoroutine("GameIntroTime", 5f);
+            StartCoroutine("GameIntroTime", 2f);
         }
     }
 
@@ -25,7 +26,7 @@ public class GameIntroduction : MonoBehaviour
         Debug.Log("game intro DONE");
         //PhotonNetwork.LoadLevel("Transition");
         
-        PhotonNetwork.LoadLevel("Wrath");
+        PhotonNetwork.LoadLevel("DefaultLevel");
         //PhotonNetwork.LoadLevel("Envy");
     }
 }
