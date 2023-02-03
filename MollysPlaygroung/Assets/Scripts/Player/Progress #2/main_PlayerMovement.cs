@@ -16,6 +16,7 @@ public class main_PlayerMovement : MonoBehaviour
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
     [SerializeField] float speed = 5f;
+    [SerializeField] float speedModifier = 1f;
     [SerializeField] float jumpForce = 8f;
     main_PlayerCombat combatState;
     public bool isJumping = false;
@@ -45,7 +46,7 @@ public class main_PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (view.IsMine)
+        if (view.IsMine && !GetComponent<main_PlayerCombat>().stunned)
         {
             MovePlayer();
 
@@ -59,7 +60,6 @@ public class main_PlayerMovement : MonoBehaviour
             {
                 Vector3 vel = Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
                 view.RPC("Jumpers", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel, false);
-
             }
         }
     }
@@ -69,24 +69,41 @@ public class main_PlayerMovement : MonoBehaviour
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
 
-        var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-        float moveSpeed = speed; //Making this a seperate variable to make speed adjustments for different animations
+        Vector3 playerPos = rigidBody.position;
+        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical).normalized;
 
-        Vector3 movement = isometricOffset.MultiplyPoint3x4(new Vector3(moveHorizontal, 0.0f, moveVertical));
-        if (movement != Vector3.zero)
+        Quaternion targetRotation;
+
+        if (movement == Vector3.zero)
         {
-            //flip looking direction if pulling to simulate walking backward
+            return;
+        }
+        else
+        {
             if (combatState.isPulling || combatState.isDragged)
             {
-                transform.rotation = Quaternion.LookRotation(-movement);
-                moveSpeed = 3;
+                targetRotation = Quaternion.LookRotation(-movement);
+
+                targetRotation = Quaternion.Lerp(transform.rotation, Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    360 * Time.fixedDeltaTime), 0.4f);
             }
             else
             {
-                transform.rotation = Quaternion.LookRotation(movement);
+                targetRotation = Quaternion.LookRotation(movement);
+
+                targetRotation = Quaternion.Lerp(transform.rotation, Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRotation,
+                    360 * Time.fixedDeltaTime), 0.8f);
             }
         }
-        transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+
+        //transform.position = Vector3.Lerp(transform.position, playerPos + movement * speedModifier * speed * Time.fixedDeltaTime, 0.5f);
+        rigidBody.MovePosition(playerPos + movement * speedModifier * speed * Time.fixedDeltaTime);
+        rigidBody.MoveRotation(targetRotation);
+
     }
 
     float getVelocity(string axis)
@@ -134,19 +151,19 @@ public class main_PlayerMovement : MonoBehaviour
 
     // jumpies
     [PunRPC]
-    void Jumpers(string player, Vector3 vel, bool pls)
+    void Jumpers(string player, Vector3 vel, bool state)
     {
         try
         {
-            if (pls)
+            if (state)
             {
                 GameObject.Find(player).GetComponent<Rigidbody>().velocity = vel;
-                GameObject.Find(player).GetComponent<main_PlayerMovement>().isJumping = true;
+                GameObject.Find(player).GetComponent<main_PlayerMovement>().isJumping = state;
             }
             else
             {
                 GameObject.Find(player).GetComponent<Rigidbody>().velocity += vel;
-                GameObject.Find(player).GetComponent<main_PlayerMovement>().isJumping = false;
+                GameObject.Find(player).GetComponent<main_PlayerMovement>().isJumping = state;
             }
         }
         catch (NullReferenceException e)
@@ -154,4 +171,5 @@ public class main_PlayerMovement : MonoBehaviour
             // error
         }
     }
+
 }

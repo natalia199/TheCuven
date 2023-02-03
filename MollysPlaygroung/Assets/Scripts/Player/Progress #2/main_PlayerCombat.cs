@@ -15,15 +15,24 @@ public class main_PlayerCombat : MonoBehaviour
 
     private main_PlayerMovement movementScript;
     [SerializeField] Animator animator;
-    main_PlayerCombat opponentCombatState;
+    //main_PlayerCombat opponentCombatState;
+    die_PlayerCombat opponentCombatState;
 
     int isWalkingHash;
     public bool isPunching = false;
     public bool isPulling = false;
     public bool isDragged = false;
+    public bool isPushing = false;
+
+    bool urdone = false;
 
     [SerializeField] float dragDistance = 1.5f;
 
+    public bool stunned = false;
+
+    int stunBreaker = 0;
+    public bool freedom = false;
+    float timeRemaining = 0;
 
     void Start()
     {
@@ -37,6 +46,37 @@ public class main_PlayerCombat : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (isDragged)
+        {
+            if (timeRemaining < 5)
+            {
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    stunBreaker++;
+                }
+
+                timeRemaining += Time.deltaTime;
+            }
+            else
+            {
+                timeRemaining = 0;
+                stunBreaker = 0;
+            }
+
+            if(stunBreaker >= 5)
+            {
+                freedom = true;
+            }
+        }
+        else
+        {
+            timeRemaining = 0;
+            stunBreaker = 0;
+        }
+    }
+
     void FixedUpdate()
     {
         if (view.IsMine)
@@ -44,6 +84,7 @@ public class main_PlayerCombat : MonoBehaviour
             isPunching = animator.GetBool("isPunching");
             isPulling = animator.GetBool("isPulling");
             isDragged = animator.GetBool("isDragged");
+            isPushing = animator.GetBool("isPushing");
             bool isWalkingCheck = animator.GetBool("isWalking");
 
             // Controls
@@ -53,70 +94,102 @@ public class main_PlayerCombat : MonoBehaviour
             bool directionPressed = inputHorizontal != 0 || inputVertical != 0;
             bool punchingPressed = inputPunch != 0;
             bool pullingPressed = Input.GetAxisRaw("Fire2") != 0;
+            bool pushingPressed = Input.GetAxisRaw("Fire3") != 0;
 
-            // Walking
-            if (!isWalkingCheck && directionPressed)
+            if (!stunned)
             {
-                animator.SetBool(isWalkingHash, true);
-            }
-            if (isWalkingCheck && !directionPressed)
-            {
-                animator.SetBool(isWalkingHash, false);
-            }
-
-            //Jump Check
-            Debug.Log(Input.GetButtonDown("Jump"));
-            if (Input.GetButtonDown("Jump") && !movementScript.isJumping)
-            {
-                view.RPC("Jumpy", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-            }
-
-            // Punching
-            if (!isPunching && punchingPressed)
-            {
-                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
-            }
-            if (isPunching && !punchingPressed)
-            {
-                view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-            }
-
-            // Pulling
-            if (!isPulling && pullingPressed)
-            {
-                view.RPC("Pullies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
-            }
-            if (isPulling && !pullingPressed)
-            {
-                view.RPC("Pullies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-
-                for (int i = 0; i < transform.childCount; i++)
+                // Walking
+                if (!isWalkingCheck && directionPressed)
                 {
-                    if (transform.GetChild(i).tag == "Player")
+                    animator.SetBool(isWalkingHash, true);
+                }
+                if (isWalkingCheck && !directionPressed && !isPulling)
+                {
+                    animator.SetBool(isWalkingHash, false);
+                }
+
+                //Jump Check
+                Debug.Log(Input.GetKeyDown(KeyCode.Space));
+                if (Input.GetKeyDown(KeyCode.Space) && movementScript.isGrounded())
+                {
+                    view.RPC("Jumpy", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                }
+
+                // Punching
+                if (!isPunching && punchingPressed)
+                {
+                    view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                }
+                if (isPunching && !punchingPressed)
+                {
+                    view.RPC("Punchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+                }
+
+                // Pushing
+                if (pushingPressed && !isPushing)
+                {
+                    view.RPC("Pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                }
+                if (!pushingPressed && isPushing)
+                {
+                    view.RPC("Pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+                }
+
+                // Pulling
+                if (!isPulling && pullingPressed)
+                {
+                    view.RPC("Pullies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                }
+                if (isPulling && !pullingPressed)
+                {
+                    view.RPC("Pullies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+
+                    for (int i = 0; i < transform.childCount; i++)
                     {
-                        view.RPC("Releasies", RpcTarget.AllBufferedViaServer, transform.GetChild(i).name);
-                        break;
+                        if (transform.GetChild(i).tag == "Player")
+                        {
+                            view.RPC("Releasies", RpcTarget.AllBufferedViaServer, transform.GetChild(i).name);
+                            break;
+                        }
                     }
                 }
             }
 
+            if (isDragged && freedom)
+            {
+                view.RPC("Pullies", RpcTarget.AllBufferedViaServer, transform.parent.name, false);
+                view.RPC("Releasies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+            }
+
             if (opponentCombatState != null)
             {
-                // punchies
+                // getting punchies
                 if (opponentCombatState.isPunching)
                 {
                     view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                 }
 
                 // being dragged
-                else if (opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged"))
+                else if (opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged")&& !freedom)
                 {
                     //parenting to move the object with teh oponent
                     Transform oppTransform = opponentCombatState.GetComponent<Transform>();
 
                     view.RPC("Draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, opponentCombatState.gameObject.name, oppTransform.position, oppTransform.rotation);
                 }
+
+                else if (opponentCombatState.isPushing)
+                {
+                    //animate the player being hit
+                    view.RPC("Ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                    //push player back along direction it was hit
+                    //Transform oppTransform = opponentCombatState.GetComponent<Transform>(); //transform of opponent
+                    //Transform currentTransform = GetComponent<Transform>();
+                    // currentTransform.SetPositionAndRotation(currentTransform.position, oppTransform.rotation);
+                    // currentTransform.GetComponent<Rigidbody>().AddForce(oppTransform.forward * 5, ForceMode.Impulse);
+                }
             }
+
         }
     }
 
@@ -124,7 +197,6 @@ public class main_PlayerCombat : MonoBehaviour
     /// <summary>
     /// 
     /// TO DO:
-    /// play with zachs drag code
     /// clean up player
     /// make a WEBGL to test player actions
     /// if it goes well then start networking all 7 levels
@@ -135,13 +207,21 @@ public class main_PlayerCombat : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        // photonnetwork doesnt like this!!!!!!!!!!!
-        if (view.IsMine)
+        try
         {
-            if (other.tag == "Player")
+            // photonnetwork doesnt like this!!!!!!!!!!!
+            if (view.IsMine && PhotonNetwork.IsConnected)
             {
-                opponentCombatState = other.GetComponent<main_PlayerCombat>();
+                if (other.tag == "Player")
+                {
+                    //opponentCombatState = other.GetComponent<main_PlayerCombat>();
+                    opponentCombatState = other.GetComponent<die_PlayerCombat>();
+                }
             }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
         }
     }
 
@@ -176,6 +256,7 @@ public class main_PlayerCombat : MonoBehaviour
         try
         {
             GameObject.Find(player).GetComponent<main_PlayerCombat>().animator.SetTrigger("isHitTrigger");
+            GameObject.Find(player).GetComponent<main_PlayerCombat>().Stun();
         }
         catch (NullReferenceException e)
         {
@@ -189,15 +270,17 @@ public class main_PlayerCombat : MonoBehaviour
     {
         try
         {
-            GameObject.Find(thisPlayer).transform.GetChild(0).GetComponent<Animator>().SetTrigger("isDraggedTrigger");
-            GameObject.Find(thisPlayer).transform.GetChild(0).GetComponent<Animator>().SetBool("isDragged", true);
 
             GameObject.Find(thisPlayer).transform.position = pos;
             GameObject.Find(thisPlayer).transform.rotation = rot;
             GameObject.Find(thisPlayer).transform.position += GameObject.Find(thisPlayer).transform.forward * dragDistance;
             GameObject.Find(thisPlayer).transform.parent = GameObject.Find(playerDragging).transform;
 
+            GameObject.Find(thisPlayer).transform.GetChild(0).GetComponent<Animator>().SetTrigger("isDraggedTrigger");
+            GameObject.Find(thisPlayer).transform.GetChild(0).GetComponent<Animator>().SetBool("isDragged", true);
+
             GameObject.Find(thisPlayer).GetComponent<main_PlayerCombat>().isDragged = true;
+            GameObject.Find(thisPlayer).GetComponent<main_PlayerCombat>().stunned = true;
         }
         catch (NullReferenceException e)
         {
@@ -211,8 +294,26 @@ public class main_PlayerCombat : MonoBehaviour
     {
         try
         {
-            GameObject.Find(player).transform.GetChild(0).GetComponent<Animator>().SetBool("isPunching", state);
+            Debug.Log("punchaz");
+            GameObject.Find(player).GetComponent<main_PlayerCombat>().animator.SetBool("isWalking", false);
+            GameObject.Find(player).GetComponent<main_PlayerCombat>().animator.SetBool("isPunching", state);
+            //GameObject.Find(player).transform.GetChild(0).GetComponent<Animator>().SetBool("isPunching", state);
             GameObject.Find(player).GetComponent<main_PlayerCombat>().isPunching = state;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    // pushies
+    [PunRPC]
+    void Pushies(string player, bool state)
+    {
+        try
+        {
+            GameObject.Find(player).transform.GetChild(0).GetComponent<Animator>().SetBool("isPushing", state);
+            GameObject.Find(player).GetComponent<main_PlayerCombat>().isPushing = state;
         }
         catch (NullReferenceException e)
         {
@@ -227,7 +328,8 @@ public class main_PlayerCombat : MonoBehaviour
         try
         {
             GameObject.Find(player).transform.GetChild(0).GetComponent<Animator>().SetBool("isPulling", state);
-            GameObject.Find(player).GetComponent<main_PlayerCombat>().isPulling = state;
+            //GameObject.Find(player).GetComponent<main_PlayerCombat>().isPulling = state;
+            GameObject.Find(player).GetComponent<die_PlayerCombat>().isPulling = state;
         }
         catch (NullReferenceException e)
         {
@@ -241,13 +343,48 @@ public class main_PlayerCombat : MonoBehaviour
     {
         try
         {
+            GameObject.Find(releasedPlayer).GetComponent<main_PlayerCombat>().freedom = false;
             GameObject.Find(releasedPlayer).transform.parent = null;
+            GameObject.Find(releasedPlayer).GetComponent<Rigidbody>().isKinematic = false;
             GameObject.Find(releasedPlayer).transform.GetChild(0).GetComponent<Animator>().SetBool("isDragged", false);
             GameObject.Find(releasedPlayer).GetComponent<main_PlayerCombat>().isDragged = false;
+            GameObject.Find(releasedPlayer).GetComponent<main_PlayerCombat>().stunned = false;
+
+            //GameObject.Find(releasedPlayer).GetComponent<die_PlayerCombat>().isDragged = false;
+            //GameObject.Find(releasedPlayer).GetComponent<die_PlayerCombat>().stunned = false;
+            //GameObject.Find(releasedPlayer).GetComponent<die_PlayerCombat>().freedom = false;
         }
         catch (NullReferenceException e)
         {
             // error
         }
+    }
+
+    // releasing the draggie
+    [PunRPC]
+    void BreakOutStun(string releasedPlayer)
+    {
+        try
+        {
+            GameObject.Find(releasedPlayer).GetComponent<main_PlayerCombat>().freedom = true;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    public void Stun()
+    {
+        StartCoroutine("StunPeriod", 5);
+    }
+
+    IEnumerator StunPeriod(int value)
+    {
+        stunned = true;
+
+        yield return new WaitForSeconds(value);
+
+        stunned = false;
     }
 }

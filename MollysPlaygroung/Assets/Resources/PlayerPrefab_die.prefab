@@ -1403,7 +1403,6 @@ GameObject:
   - component: {fileID: 5060413211950559898}
   - component: {fileID: 5961283960424151317}
   - component: {fileID: 5149338724344160907}
-  - component: {fileID: 2520325457355253484}
   m_Layer: 6
   m_Name: Y Bot@Breathing Idle
   m_TagString: Untagged
@@ -1462,54 +1461,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &2520325457355253484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5580491748975700000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters:
-  - Type: 4
-    SynchronizeType: 2
-    Name: isWalking
-  - Type: 4
-    SynchronizeType: 2
-    Name: isPunching
-  - Type: 4
-    SynchronizeType: 2
-    Name: isHit
-  - Type: 9
-    SynchronizeType: 2
-    Name: isHitTrigger
-  - Type: 4
-    SynchronizeType: 2
-    Name: isPulling
-  - Type: 9
-    SynchronizeType: 2
-    Name: isDraggedTrigger
-  - Type: 4
-    SynchronizeType: 2
-    Name: isDragged
-  - Type: 9
-    SynchronizeType: 2
-    Name: isJumpingTrigger
-  - Type: 9
-    SynchronizeType: 2
-    Name: isKickingTrigger
-  - Type: 4
-    SynchronizeType: 2
-    Name: isPushing
-  m_SynchronizeLayers:
-  - SynchronizeType: 0
-    LayerIndex: 0
 --- !u!1 &5671592002799537019
 GameObject:
   m_ObjectHideFlags: 0
@@ -1895,12 +1846,10 @@ GameObject:
   - component: {fileID: 6868656522760175872}
   - component: {fileID: 6868656522760175879}
   - component: {fileID: 2278067732225346526}
-  - component: {fileID: 7252400500273875835}
-  - component: {fileID: 7812008321181011821}
-  - component: {fileID: 1606519062263595661}
-  - component: {fileID: 8198332432977632426}
+  - component: {fileID: 7116936721641837891}
+  - component: {fileID: 1682477670540508064}
   m_Layer: 6
-  m_Name: PlayerPrefab_Updated
+  m_Name: PlayerPrefab_die
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1967,7 +1916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colliders: []
---- !u!114 &7252400500273875835
+--- !u!114 &7116936721641837891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1976,7 +1925,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6868656522760175873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6ec62fdae9f15540aab15aac7124019, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dfb9065501579042889378e23bccac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   username: {fileID: 440233013198247634}
@@ -1985,11 +1934,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   speed: 3
-  speedModifier: 1
-  jumpForce: 7
+  jumpForce: 5
   isJumping: 0
   fallMultiplier: 5
---- !u!114 &7812008321181011821
+--- !u!114 &1682477670540508064
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1998,74 +1946,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6868656522760175873}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03f05227d50f4124591037540ffd94a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 9aa88558eae7f98479198241cb5f50a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5149338724344160907}
   isPunching: 0
   isPulling: 0
   isDragged: 0
-  isPushing: 0
   dragDistance: 1.4
   stunned: 0
   freedom: 0
---- !u!114 &1606519062263595661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6868656522760175873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents:
-  - {fileID: 8198332432977632426}
-  - {fileID: 2520325457355253484}
-  sceneViewId: 0
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
---- !u!114 &8198332432977632426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6868656522760175873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8efc6b1d64977384eb3405357896c656, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_PositionModel:
-    SynchronizeEnabled: 1
-    TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
-    InterpolateOption: 2
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 1
-    ExtrapolateOption: 0
-    ExtrapolateSpeed: 1
-    ExtrapolateIncludingRoundTripTime: 1
-    ExtrapolateNumberOfStoredPositions: 1
-  m_RotationModel:
-    SynchronizeEnabled: 1
-    InterpolateOption: 1
-    InterpolateRotateTowardsSpeed: 180
-    InterpolateLerpSpeed: 5
-  m_ScaleModel:
-    SynchronizeEnabled: 0
-    InterpolateOption: 0
-    InterpolateMoveTowardsSpeed: 1
-    InterpolateLerpSpeed: 0
 --- !u!1 &6868656523251403300
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,7 +1981,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6868656523251403300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.000000029802, y: -0.932, z: 0}
+  m_LocalPosition: {x: -0.000000029802, y: -1, z: 0}
   m_LocalScale: {x: 0.13379, y: 0.13379, z: 0.13379}
   m_ConstrainProportionsScale: 0
   m_Children: []
