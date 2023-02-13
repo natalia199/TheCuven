@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1154791229954733596}
   - component: {fileID: 1154791229954733570}
   - component: {fileID: 1154791229954733571}
-  - component: {fileID: 1154791229954733569}
+  - component: {fileID: 160502667159009460}
   m_Layer: 0
   m_Name: Chip
-  m_TagString: Untagged
+  m_TagString: ChipInZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -64,7 +64,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &1154791229954733569
+--- !u!65 &160502667159009460
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,11 +72,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1154791229954733598}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8407576, y: 0.18615198, z: 0.85702777}
-  m_Center: {x: -0.02562064, y: -0.42798686, z: -0.0010877848}
+  m_Size: {x: 1, y: 0.6475781, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1154791230155864983
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,6 +89,8 @@ GameObject:
   - component: {fileID: 1154791230155864980}
   - component: {fileID: 1154791230155864981}
   - component: {fileID: 1154791230155864986}
+  - component: {fileID: 5175258794480106314}
+  - component: {fileID: 3087117360169877365}
   m_Layer: 0
   m_Name: Chip
   m_TagString: Chip
@@ -171,7 +173,34 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.64757204
-  m_Height: 23.818895
+  m_Radius: 0.7393023
+  m_Height: 27.192904
   m_Direction: 1
-  m_Center: {x: 0.00000006474369, y: 0, z: 0.0009782771}
+  m_Center: {x: -0.009673095, y: 0, z: -0.003914662}
+--- !u!64 &5175258794480106314
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154791230155864983}
+  m_Material: {fileID: 13400000, guid: 48a09193a13ed064bb6a19c95945e8f4, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &3087117360169877365
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154791230155864983}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.7114589, y: 4.5824156, z: 0.72448665}
+  m_Center: {x: 0.003760961, y: -0.05983538, z: -0.008207201}

@@ -33,12 +33,24 @@ public class SlothGameManager : MonoBehaviour
 
     public void DisplayerLifeBar(int score)
     {
-        lifeBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = score + "%";
+        lifeBar.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = score + "";
+
+        if (score >= 100) {
+            lifeBar.transform.GetChild(1).gameObject.transform.position = new Vector3(400f, lifeBar.transform.GetChild(1).gameObject.transform.position.y, lifeBar.transform.GetChild(1).gameObject.transform.position.z) ;
+        }
+        else if(score > 9 && score < 100)
+        {
+            lifeBar.transform.GetChild(1).gameObject.transform.position = new Vector3(340f, lifeBar.transform.GetChild(1).gameObject.transform.position.y, lifeBar.transform.GetChild(1).gameObject.transform.position.z);
+        }
+        else
+        {
+            lifeBar.transform.GetChild(1).gameObject.transform.position = new Vector3(270f, lifeBar.transform.GetChild(1).gameObject.transform.position.y, lifeBar.transform.GetChild(1).gameObject.transform.position.z);
+        }
     }
 
     public void NewLight()
     {
-        StartCoroutine("LightInstantiationFlow", Random.Range(3, 8));
+        StartCoroutine("LightInstantiationFlow", Random.Range(5, 10));
     }
 
     public void LightInstantiation()

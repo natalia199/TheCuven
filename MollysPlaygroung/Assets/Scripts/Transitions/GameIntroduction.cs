@@ -5,6 +5,7 @@ using Photon.Pun;
 
 public class GameIntroduction : MonoBehaviour
 {
+    /*
     // Start is called before the first frame update
     void Start()
     {
@@ -12,7 +13,7 @@ public class GameIntroduction : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            StartCoroutine("GameIntroTime", 5f);
+            StartCoroutine("GameIntroTime", 2f);
         }
     }
 
@@ -23,6 +24,10 @@ public class GameIntroduction : MonoBehaviour
         yield return new WaitForSeconds(value);
 
         Debug.Log("game intro DONE");
-        PhotonNetwork.LoadLevel("Transition");
+        //PhotonNetwork.LoadLevel("Transition");
+        
+        PhotonNetwork.LoadLevel("Sloth");
+        //PhotonNetwork.LoadLevel("Envy");
     }
+    */
 }

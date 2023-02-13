@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement3D : MonoBehaviour
 {
 
-    [SerializeField] GluttonyLevel LevelController;
+    //[SerializeField] GluttonyLevel LevelController;
     private bool isGameStarted;
     private Rigidbody rigidBody;
     [SerializeField] Transform groundCheck;
@@ -25,7 +25,7 @@ public class PlayerMovement3D : MonoBehaviour
 
     void Update()
     {
-        isGameStarted = !LevelController.isStartTimerOn;
+        //isGameStarted = !LevelController.isStartTimerOn;
 
         if (isGameStarted)
         {

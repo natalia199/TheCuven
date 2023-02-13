@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerGreed : MonoBehaviour
 {
     bool carryChip;
     bool withinZone;
 
-    public Rigidbody rb;
+    Rigidbody rb;
     public float moveSpeed;
 
     Vector3 keyboardMovement;
@@ -17,13 +18,18 @@ public class PlayerGreed : MonoBehaviour
 
     public List<GameObject> carriedChips = new List<GameObject>();
 
+    public TextMeshProUGUI ThrowDisplay;
+
     public int throwCount;
     public int carryCount;
 
     void Start()
     {
+        rb = GetComponent<Rigidbody>();
+        ThrowDisplay = GameObject.Find("ToThrow").GetComponent<TextMeshProUGUI>();
+
         carryChip = false;
-        withinZone = true;
+        withinZone = false;
         throwCount = 0;
     }
 
@@ -39,7 +45,10 @@ public class PlayerGreed : MonoBehaviour
                 carryCount = 0;
                 throwCount = 0;
                 GameObject.Find("GameManager").GetComponent<GreedGameManager>().diceProcedure = true;
+                this.transform.position = new Vector3(-6f, -7f, 7f);
             }
+
+            ThrowDisplay.text = carryCount + "/" + GameObject.Find("GameManager").GetComponent<GreedGameManager>().diceValueRolled;
 
             if (Input.GetKeyDown(KeyCode.Return))
             {

@@ -33,6 +33,6 @@ public class ChipScript : MonoBehaviour
     {
         Vector3 dir = targetPos - startPos;
         dir = dir.normalized;
-        GetComponent<Rigidbody>().AddForce(dir * 200);
+        GetComponent<Rigidbody>().AddForce(dir * 300);
     }
 }

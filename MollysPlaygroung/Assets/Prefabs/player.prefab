@@ -217,6 +217,8 @@ MonoBehaviour:
   isPunching: 0
   isPulling: 0
   isDragged: 0
+  isPushing: 0
+  dragDistance: 1.5
   foodItems: []
 --- !u!114 &5038438295316625378
 MonoBehaviour:
@@ -230,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35fe7581efac896469c38d4616f3b830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collider: {fileID: 0}
+  colliders: []
 --- !u!1 &370188867339309848
 GameObject:
   m_ObjectHideFlags: 0
