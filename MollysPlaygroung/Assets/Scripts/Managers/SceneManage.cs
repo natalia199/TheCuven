@@ -36,8 +36,8 @@ public class SceneManage : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            //StartCoroutine("BeginGame", 3);
-            StartCoroutine("TestGame", 2);
+            StartCoroutine("BeginGame", 3);
+            //StartCoroutine("TestGame", 2);
         }
     }
 

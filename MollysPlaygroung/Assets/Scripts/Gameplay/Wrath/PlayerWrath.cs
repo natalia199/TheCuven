@@ -27,6 +27,7 @@ public class PlayerWrath : MonoBehaviour
     {
     }
 
+    /*
     void OnTriggerStay(Collider other)
     {
         try
@@ -58,4 +59,5 @@ public class PlayerWrath : MonoBehaviour
             // error
         }
     }
+    */
 }

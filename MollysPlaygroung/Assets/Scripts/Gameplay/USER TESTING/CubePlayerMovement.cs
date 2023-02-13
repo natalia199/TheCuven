@@ -5,7 +5,7 @@ using Photon.Pun;
 using System;
 using TMPro;
 
-public class main_PlayerMovement : MonoBehaviour
+public class CubePlayerMovement : MonoBehaviour
 {
     PhotonView view;
 
@@ -18,7 +18,6 @@ public class main_PlayerMovement : MonoBehaviour
     [SerializeField] float speed = 5f;
     [SerializeField] float speedModifier = 1f;
     [SerializeField] float jumpForce = 8f;
-    main_PlayerCombat combatState;
     public bool isJumping = false;
 
     public float fallMultiplier = 5f;
@@ -27,7 +26,6 @@ public class main_PlayerMovement : MonoBehaviour
     {
         view = GetComponent<PhotonView>();
         rigidBody = GetComponent<Rigidbody>();
-        combatState = GetComponent<main_PlayerCombat>();
     }
 
     void Update()
@@ -46,7 +44,7 @@ public class main_PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (view.IsMine && !GetComponent<main_PlayerCombat>().stunned)
+        if (view.IsMine)
         {
             MovePlayer();
 
@@ -80,24 +78,12 @@ public class main_PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (combatState.isPulling || combatState.isDragged)
-            {
-                targetRotation = Quaternion.LookRotation(-movement);
+            targetRotation = Quaternion.LookRotation(movement);
 
-                targetRotation = Quaternion.Lerp(transform.rotation, Quaternion.RotateTowards(
-                    transform.rotation,
-                    targetRotation,
-                    360 * Time.fixedDeltaTime), 0.4f);
-            }
-            else
-            {
-                targetRotation = Quaternion.LookRotation(movement);
-
-                targetRotation = Quaternion.Lerp(transform.rotation, Quaternion.RotateTowards(
-                    transform.rotation,
-                    targetRotation,
-                    360 * Time.fixedDeltaTime), 0.8f);
-            }
+            targetRotation = Quaternion.Lerp(transform.rotation, Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                360 * Time.fixedDeltaTime), 0.8f);
         }
 
         //transform.position = Vector3.Lerp(transform.position, playerPos + movement * speedModifier * speed * Time.fixedDeltaTime, 0.5f);
@@ -127,7 +113,7 @@ public class main_PlayerMovement : MonoBehaviour
     }
 
     /// NETWORKING
-    
+
     [PunRPC]
     void getPlayersNickName(string name)
     {
@@ -139,9 +125,9 @@ public class main_PlayerMovement : MonoBehaviour
     {
         try
         {
-            GameObject.Find(Player).GetComponent<main_PlayerMovement>().username.text = Player;
-            GameObject.Find(Player).GetComponent<main_PlayerMovement>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
-            GameObject.Find(Player).GetComponent<main_PlayerMovement>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
+            GameObject.Find(Player).GetComponent<CubePlayerMovement>().username.text = Player;
+            GameObject.Find(Player).GetComponent<CubePlayerMovement>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
+            GameObject.Find(Player).GetComponent<CubePlayerMovement>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
         }
         catch (NullReferenceException e)
         {
@@ -158,12 +144,12 @@ public class main_PlayerMovement : MonoBehaviour
             if (state)
             {
                 GameObject.Find(player).GetComponent<Rigidbody>().velocity = vel;
-                GameObject.Find(player).GetComponent<main_PlayerMovement>().isJumping = state;
+                GameObject.Find(player).GetComponent<CubePlayerMovement>().isJumping = state;
             }
             else
             {
                 GameObject.Find(player).GetComponent<Rigidbody>().velocity += vel;
-                GameObject.Find(player).GetComponent<main_PlayerMovement>().isJumping = state;
+                GameObject.Find(player).GetComponent<CubePlayerMovement>().isJumping = state;
             }
         }
         catch (NullReferenceException e)

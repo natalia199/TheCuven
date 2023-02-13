@@ -10,6 +10,41 @@ public class WrathGameManager : MonoBehaviour
     public List<string> playingPlayers = new List<string>();
     public List<bool> playingPlayersStats = new List<bool>();
 
+    // Moving platform
+
+
+    void Start()
+    {
+        grrr();
+
+        for (int i = 0; i < playingPlayers.Count; i++)
+        {
+            playingPlayersStats.Add(false);
+        }
+    }
+
+    void Update()
+    {
+
+    }
+
+    void grrr()
+    {
+        List<string> tempPlayers = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame;
+
+        for (int i = 0; i < tempPlayers.Count; i++)
+        {
+            playingPlayers.Add(tempPlayers[i]);
+        }
+    }
+
+
+
+    // PROGRESS ONE CODE
+    /*
+    public List<string> playingPlayers = new List<string>();
+    public List<bool> playingPlayersStats = new List<bool>();
+
     public List<string> raceResults = new List<string>();
 
     public GameObject winningCircle;
@@ -126,4 +161,5 @@ public class WrathGameManager : MonoBehaviour
 
         winningCircle.transform.GetChild(playingPlayers.Count - 1).GetChild(1).gameObject.SetActive(true);
     }
+    */
 }

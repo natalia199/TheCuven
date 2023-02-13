@@ -4,17 +4,16 @@ using UnityEngine;
 using Photon.Pun;
 using System;
 
-public class main_PlayerCombat : MonoBehaviour
+public class CubePlayerCombat : MonoBehaviour
 {
     /// <summary>
     /// This script holds all the major actions needed for the player (walking/punching/pulling/getting hit/getting dragged/jumping)
     /// Each level will have these actions no matter what
     /// </summary>
-    
+
     PhotonView view;
 
     private main_PlayerMovement movementScript;
-    [SerializeField] Animator animator;
     main_PlayerCombat opponentCombatState;
     //die_PlayerCombat opponentCombatState;
 
@@ -40,7 +39,6 @@ public class main_PlayerCombat : MonoBehaviour
 
         if (view.IsMine)
         {
-            animator = transform.GetChild(0).GetComponent<Animator>();
             movementScript = GetComponent<main_PlayerMovement>();
             isWalkingHash = Animator.StringToHash("isWalking");
         }
@@ -65,7 +63,7 @@ public class main_PlayerCombat : MonoBehaviour
                 stunBreaker = 0;
             }
 
-            if(stunBreaker >= 5)
+            if (stunBreaker >= 5)
             {
                 freedom = true;
             }
@@ -81,12 +79,6 @@ public class main_PlayerCombat : MonoBehaviour
     {
         if (view.IsMine)
         {
-            isPunching = animator.GetBool("isPunching");
-            isPulling = animator.GetBool("isPulling");
-            isDragged = animator.GetBool("isDragged");
-            isPushing = animator.GetBool("isPushing");
-            bool isWalkingCheck = animator.GetBool("isWalking");
-
             // Controls
             float inputHorizontal = Input.GetAxisRaw("Horizontal");
             float inputVertical = Input.GetAxisRaw("Vertical");
@@ -98,16 +90,6 @@ public class main_PlayerCombat : MonoBehaviour
 
             if (!stunned)
             {
-                // Walking
-                if (!isWalkingCheck && directionPressed)
-                {
-                    animator.SetBool(isWalkingHash, true);
-                }
-                if (isWalkingCheck && !directionPressed && !isPulling)
-                {
-                    animator.SetBool(isWalkingHash, false);
-                }
-
                 //Jump Check
                 Debug.Log(Input.GetKeyDown(KeyCode.Space));
                 if (Input.GetKeyDown(KeyCode.Space) && GetComponent<main_PlayerMovement>().isGrounded())
@@ -170,7 +152,7 @@ public class main_PlayerCombat : MonoBehaviour
                 }
 
                 // being dragged
-                else if (opponentCombatState.isPulling && !animator.GetCurrentAnimatorStateInfo(0).IsName("Being Dragged")&& !freedom)
+                else if (opponentCombatState.isPulling &&  !freedom)
                 {
                     //parenting to move the object with teh oponent
                     Transform oppTransform = opponentCombatState.GetComponent<Transform>();
@@ -180,8 +162,6 @@ public class main_PlayerCombat : MonoBehaviour
 
                 else if (opponentCombatState.isPushing)
                 {
-                    GetComponent<main_PlayerCombat>().animator.SetTrigger("isHitTrigger");
-
                     Vector3 force = transform.position - opponentCombatState.transform.position;
                     force.Normalize();
                     GetComponent<Rigidbody>().AddForce(force * 50);
@@ -232,7 +212,7 @@ public class main_PlayerCombat : MonoBehaviour
     }
 
     /// NETWORKING 
-    
+
     // jumpies
     [PunRPC]
     void Jumpy(string player)
@@ -253,7 +233,6 @@ public class main_PlayerCombat : MonoBehaviour
     {
         try
         {
-            GameObject.Find(player).GetComponent<main_PlayerCombat>().animator.SetTrigger("isHitTrigger");
             GameObject.Find(player).GetComponent<main_PlayerCombat>().Stun();
         }
         catch (NullReferenceException e)
@@ -293,8 +272,6 @@ public class main_PlayerCombat : MonoBehaviour
         try
         {
             Debug.Log("punchaz");
-            GameObject.Find(player).GetComponent<main_PlayerCombat>().animator.SetBool("isWalking", false);
-            GameObject.Find(player).GetComponent<main_PlayerCombat>().animator.SetBool("isPunching", state);
             //GameObject.Find(player).transform.GetChild(0).GetComponent<Animator>().SetBool("isPunching", state);
             GameObject.Find(player).GetComponent<main_PlayerCombat>().isPunching = state;
         }
