@@ -6,7 +6,7 @@ public class PlayerMovement3D : MonoBehaviour
 {
 
     //[SerializeField] GluttonyLevel LevelController;
-    private bool isGameStarted;
+    private bool isGameStarted = true;
     private Rigidbody rigidBody;
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
@@ -55,7 +55,7 @@ public class PlayerMovement3D : MonoBehaviour
         float moveHorizontal = Input.GetAxisRaw("Horizontal");
         float moveVertical = Input.GetAxisRaw("Vertical");
 
-        var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+        var isometricOffset = Matrix4x4.Rotate(Quaternion.Euler(0, 0, 0));
         float moveSpeed = speed; //Making this a seperate variable to make speed adjustments for different animations
 
         Vector3 movement = isometricOffset.MultiplyPoint3x4(new Vector3(moveHorizontal, 0.0f, moveVertical));
