@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8905546461425838964}
   - component: {fileID: 8905546461425838965}
   - component: {fileID: 3685148093581243549}
+  - component: {fileID: 8540264100253082483}
   m_Layer: 0
   m_Name: Gluttony_Chair
   m_TagString: Untagged
@@ -167,3 +168,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0016493218, y: 0.16618519, z: 0.001757251}
   m_Center: {x: 0.004021352, y: -0.08732082, z: 0.00408531}
+--- !u!64 &8540264100253082483
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599538290540615211}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4068373912626513877, guid: 8289ad1a77860604299d09e466784ed6, type: 3}
