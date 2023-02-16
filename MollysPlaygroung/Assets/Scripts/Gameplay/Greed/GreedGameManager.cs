@@ -95,7 +95,7 @@ public class GreedGameManager : MonoBehaviour
         chip.transform.parent = null;
         chip.AddComponent<Rigidbody>();
         chip.GetComponent<ChipScript>().Available = true;
-        chip.GetComponent<ChipScript>().throwChip(zone.transform.GetChild(0).position, GameObject.Find("Player").transform.position);
+        chip.GetComponent<ChipScript>().throwChip(zone.transform.GetChild(0).position, GameObject.Find("Player").transform.position, 300);
     }
 
     public void ChipInstantiation()

@@ -35,7 +35,7 @@ public class PlatformShakeWrath : MonoBehaviour
         }
         else if (returnHome)
         {
-            if(transform.rotation == Quaternion.identity)
+            if (transform.rotation == Quaternion.identity)
             {
                 StartCoroutine("HoldIt", homeHold);
             }
@@ -44,7 +44,7 @@ public class PlatformShakeWrath : MonoBehaviour
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity, Time.deltaTime * homeSpeed);
             }
         }
-        else if(!newTilt && !returnHome)
+        else if (!newTilt && !returnHome)
         {
             transform.Rotate(idek[directionIndex], speed * Time.deltaTime);
         }

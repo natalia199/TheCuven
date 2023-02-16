@@ -10,6 +10,8 @@ public class GreedGameplayManager : MonoBehaviour
     public GameObject ChipParent;
 
     public int AmountOfChips;
+    public int rolledValue;
+    public bool goodToGo = false;
 
     void Start()
     {

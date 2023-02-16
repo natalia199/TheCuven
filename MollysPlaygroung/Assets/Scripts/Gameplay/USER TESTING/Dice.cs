@@ -26,11 +26,6 @@ public class Dice : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            RollDice();
-        }
-
         if (rb.IsSleeping() && !hasLanded && thrown)
         {
             hasLanded = true;
@@ -73,8 +68,9 @@ public class Dice : MonoBehaviour
             if (diceSides[i].GetComponent<DiceSides>().onGround)
             {
                 rolledValue = diceSides[i].GetComponent<DiceSides>().sideValue;
-                Debug.Log("Dice rolled " + rolledValue);
-                //GameObject.Find("GameManager").GetComponent<GreedGameManager>().DiceValueUpdate(rolledValue);
+                //Debug.Log("Dice rolled " + rolledValue);
+                GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue = rolledValue;
+                GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = true;
                 //GameObject.Find("GameManager").GetComponent<GreedGameManager>().diceProcedure = false;
                 ResetDice();
             }

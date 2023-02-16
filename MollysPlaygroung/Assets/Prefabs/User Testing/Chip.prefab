@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 4319895241549984813}
   - component: {fileID: 4319895241549984814}
   - component: {fileID: 4319895241549984815}
-  m_Layer: 0
+  - component: {fileID: 3287181190828448056}
+  - component: {fileID: 1767080793317363818}
+  m_Layer: 10
   m_Name: Chip
-  m_TagString: Untagged
+  m_TagString: Chip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4319895241549984817}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3318875, y: 0.076518625, z: 1.5131574}
+  m_LocalScale: {x: 1.3318875, y: 0.076518625, z: 1.331887}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,3 +100,30 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &3287181190828448056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319895241549984817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc7c5300624012640a3a186d46e0e438, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Available: 1
+--- !u!136 &1767080793317363818
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319895241549984817}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.58054936
+  m_Height: 22.96075
+  m_Direction: 1
+  m_Center: {x: 0.00000008950403, y: 0, z: -0.00000007878182}

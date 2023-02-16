@@ -13,6 +13,8 @@ public class LightFlickerSloth : MonoBehaviour
     bool onState = false;
     public bool flickerLifeLength = true;
 
+    public int step;
+
     void Start()
     {
         Timer = Random.Range(MinTime, MaxTime);
@@ -61,6 +63,9 @@ public class LightFlickerSloth : MonoBehaviour
 
     IEnumerator DieOut(float time)
     {
+        // added step, test it out by adding a vlue in inpector and seeing if collider moves downward
+        transform.GetChild(0).GetComponent<CapsuleCollider>().center = Vector3.MoveTowards(transform.GetChild(0).GetComponent<CapsuleCollider>().center, new Vector3(transform.GetChild(0).GetComponent<CapsuleCollider>().center.x, transform.GetChild(0).GetComponent<CapsuleCollider>().center.y - 20f, transform.GetChild(0).GetComponent<CapsuleCollider>().center.z), step);
+
         yield return new WaitForSeconds(time);
 
         Destroy(this.gameObject);

@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 1310498964214565616}
   - component: {fileID: 1310498964214565623}
   - component: {fileID: 1310498964214565622}
+  - component: {fileID: 1343215110920932202}
   m_Layer: 0
   m_Name: FoodPrefab
-  m_TagString: Untagged
+  m_TagString: Food
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,14 +27,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310498964214565611}
-  m_LocalRotation: {x: -0, y: 0.20281, z: -0, w: 0.9792181}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6022499, y: 0.60225, z: 0.60225004}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 23.403, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1310498964214565616
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -91,9 +92,23 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310498964214565611}
+  m_Material: {fileID: 13400000, guid: 48a09193a13ed064bb6a19c95945e8f4, type: 2}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.459129, y: 1.4685453, z: 1.4825473}
+  m_Center: {x: -0.014743207, y: 1.1774762e-16, z: -0.017648764}
+--- !u!64 &1343215110920932202
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310498964214565611}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}

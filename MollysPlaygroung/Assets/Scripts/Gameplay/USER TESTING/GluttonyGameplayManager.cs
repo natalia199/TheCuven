@@ -11,6 +11,7 @@ public class GluttonyGameplayManager : MonoBehaviour
 
     public int AmountOfFood;
 
+    public float force;
     void Start()
     {
         
@@ -36,6 +37,35 @@ public class GluttonyGameplayManager : MonoBehaviour
         }
     }
 
+    public void VomittedFood(Vector3 playerPos)
+    {
+        GameObject food = Instantiate(FoodPrefab, new Vector3(playerPos.x, playerPos.y + 1.5f, playerPos.z), Quaternion.identity, FoodParent.transform);
+        food.AddComponent<Rigidbody>();
+
+        throwParabola(food);
+    }
+
+    void throwParabola( GameObject food)
+    {
+        float xVal = Random.Range(-5, 5);
+        while(xVal < -1 || xVal > 1)
+        {
+            xVal = Random.Range(-5, 5);
+        }
+
+        float yVal = Random.Range(-5, 5);
+        while (yVal < -1 || yVal > 1)
+        {
+            yVal = Random.Range(-5, 5);
+        }
+
+        Vector3 direction = new Vector3(xVal, Random.Range(3,5), yVal);
+        direction = direction.normalized;
+
+        // dir = dir.normalized;
+        food.GetComponent<Rigidbody>().AddForce(direction * force);
+        food.GetComponent<Rigidbody>().AddTorque(direction * 50);
+    }
 
     IEnumerator HoldIt(float time)
     {

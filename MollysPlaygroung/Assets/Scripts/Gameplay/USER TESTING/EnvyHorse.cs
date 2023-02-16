@@ -7,9 +7,10 @@ public class EnvyHorse : MonoBehaviour
     public Transform finishLinePoint;
 
     public bool finished;
+    public bool squirterActivated;
     public float thpeed;
 
-    public float speed = 1;
+    public float speed;
     public float RotAngleY;
 
     void Start()
@@ -19,7 +20,7 @@ public class EnvyHorse : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!finished && Input.GetKey(KeyCode.Space))
+        if (!finished && squirterActivated)
         {
             transform.position = Vector3.MoveTowards(transform.position, finishLinePoint.position, thpeed);
 
@@ -37,6 +38,16 @@ public class EnvyHorse : MonoBehaviour
             float rY = Mathf.SmoothStep(0, 0, Mathf.PingPong(Time.time * speed, 1));
             transform.rotation = Quaternion.Euler(0, 0, rY);
         }
+    }
+
+    public void MoveYourHorse()
+    {
+        squirterActivated = true;
+    }
+
+    public void StopYourHorse()
+    {
+        squirterActivated = false;
     }
 
     void OnTriggerEnter(Collider other)
