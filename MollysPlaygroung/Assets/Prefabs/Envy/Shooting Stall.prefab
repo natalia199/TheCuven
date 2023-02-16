@@ -110,6 +110,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8571063850783295226}
+  - component: {fileID: 2096604426579791936}
   m_Layer: 0
   m_Name: Shooting Stall
   m_TagString: Untagged
@@ -133,6 +134,19 @@ Transform:
   m_Father: {fileID: 8571063850111874717}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2096604426579791936
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8571063850783295227}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.1971412, y: 1.7980988, z: 2.2212703}
+  m_Center: {x: -0.18567386, y: -4.0661077, z: 5.1572804}
 --- !u!1 &8571063851127877180
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +190,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8571063851747297176}
+  - component: {fileID: 1502537584762993840}
   m_Layer: 0
   m_Name: Clouds
   m_TagString: Untagged
@@ -199,6 +214,19 @@ Transform:
   m_Father: {fileID: 8571063850111874717}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1502537584762993840
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8571063851747297177}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.8592303, y: 1.1856767, z: 0.70981425}
+  m_Center: {x: -0.18691811, y: -2.9088907, z: 5.445618}
 --- !u!1 &8571063852135755933
 GameObject:
   m_ObjectHideFlags: 0
