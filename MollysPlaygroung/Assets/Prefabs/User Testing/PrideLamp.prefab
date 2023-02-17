@@ -45,7 +45,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5663811139058052332}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 1.9230039
   m_Height: 5.5843616
   m_Direction: 1
@@ -76,7 +76,7 @@ Transform:
   m_GameObject: {fileID: 6199901120193735776}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.7045, y: -1.4328, z: 5.7818}
-  m_LocalScale: {x: 1.2092437, y: 1.0732037, z: 1.2092437}
+  m_LocalScale: {x: 5.6843963, y: 2.2577317, z: 3.1227493}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3113323575809893375}
@@ -90,7 +90,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6199901120193735776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c80ccd680165d7419f1feda47d44c33, type: 3}
   m_Name: 
@@ -126,7 +126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8653353027160267115}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2.9987817, y: 3.645887, z: -5.194897}
+  m_LocalPosition: {x: -2.9987817, y: 9.85, z: -5.194897}
   m_LocalScale: {x: 1.7710512, y: 1.9093, z: 12.327533}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -145,9 +145,9 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 188.84
-  m_Range: 11.6
-  m_SpotAngle: 23
+  m_Intensity: 20.11
+  m_Range: 30.8
+  m_SpotAngle: 53
   m_InnerSpotAngle: 18.276348
   m_CookieSize: 10
   m_Shadows:
@@ -213,7 +213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8653353027283225440
 Transform:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ Transform:
   m_GameObject: {fileID: 8653353028328616846}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.9883323, y: 5.838215, z: -5.194897}
-  m_LocalScale: {x: 1.9499576, y: 13.826049, z: 1.9093}
+  m_LocalScale: {x: 2.4146326, y: 13.826049, z: 1.9093}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3113323575809893375}
@@ -418,7 +418,7 @@ Transform:
   m_GameObject: {fileID: 8653353028423764340}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -2.9987817, y: 0.08, z: -5.194897}
-  m_LocalScale: {x: 0.37841892, y: 0.4133153, z: 6.574298}
+  m_LocalScale: {x: 5.0966372, y: 0.5885756, z: 9.362032}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3113323575809893375}
@@ -432,7 +432,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8653353028423764340}
   serializedVersion: 8
-  lengthInSec: 8
+  lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -507,7 +507,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 7
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -560,7 +560,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.2
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -676,7 +676,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.57
+      scalar: 0.04
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -729,7 +729,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.12
+      scalar: 0.19
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -782,7 +782,7 @@ ParticleSystem:
     startSizeZ:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.45
+      scalar: 0
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1052,7 +1052,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 18
+    type: 10
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -1137,7 +1137,7 @@ ParticleSystem:
     m_TextureBilinearFiltering: 0
     randomDirectionAmount: 1
     sphericalDirectionAmount: 0.73
-    randomPositionAmount: 1.03
+    randomPositionAmount: 0.79
     radius:
       value: 1
       mode: 0
@@ -1258,7 +1258,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 7
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -2962,7 +2962,7 @@ ParticleSystem:
     magnitude:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2.19
+      scalar: 0.6
       minScalar: 1
       maxCurve:
         serializedVersion: 2
