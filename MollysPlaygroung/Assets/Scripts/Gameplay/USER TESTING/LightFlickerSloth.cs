@@ -13,7 +13,8 @@ public class LightFlickerSloth : MonoBehaviour
     bool onState = false;
     public bool flickerLifeLength = true;
 
-    public int step;
+    bool lerpCollider = false;
+    public float step;
 
     void Start()
     {
@@ -32,6 +33,14 @@ public class LightFlickerSloth : MonoBehaviour
         else
         {
             light.SetActive(true);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (lerpCollider)
+        {
+            transform.GetChild(0).GetComponent<CapsuleCollider>().center = Vector3.Lerp(transform.GetChild(0).GetComponent<CapsuleCollider>().center, new Vector3(transform.GetChild(0).GetComponent<CapsuleCollider>().center.x, transform.GetChild(0).GetComponent<CapsuleCollider>().center.y - 20f, transform.GetChild(0).GetComponent<CapsuleCollider>().center.z), step);
         }
     }
 
@@ -58,13 +67,12 @@ public class LightFlickerSloth : MonoBehaviour
 
     public void LightsOut()
     {
-        StartCoroutine("DieOut", Random.Range(2, 4));
+        StartCoroutine("DieOut", Random.Range(2, 3));
     }
 
     IEnumerator DieOut(float time)
     {
-        // added step, test it out by adding a vlue in inpector and seeing if collider moves downward
-        transform.GetChild(0).GetComponent<CapsuleCollider>().center = Vector3.MoveTowards(transform.GetChild(0).GetComponent<CapsuleCollider>().center, new Vector3(transform.GetChild(0).GetComponent<CapsuleCollider>().center.x, transform.GetChild(0).GetComponent<CapsuleCollider>().center.y - 20f, transform.GetChild(0).GetComponent<CapsuleCollider>().center.z), step);
+        lerpCollider = true;
 
         yield return new WaitForSeconds(time);
 
