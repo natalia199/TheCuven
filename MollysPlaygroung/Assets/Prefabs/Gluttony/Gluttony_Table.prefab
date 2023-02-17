@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 982428899177284998}
   - component: {fileID: 982428899177284999}
   - component: {fileID: 982428899177284996}
-  - component: {fileID: 982428899177284992}
+  - component: {fileID: 982428898128193352}
   m_Layer: 0
   m_Name: Gluttony_Table
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99959011902191787}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.707625, y: -0.7415271, z: 1.9566481}
   m_LocalScale: {x: 1132.9965, y: 35.3627, z: 691.2255}
   m_ConstrainProportionsScale: 0
@@ -140,17 +140,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.0007662582, y: 0.16991055, z: 0.0014084284}
   m_Center: {x: -0.0046702907, y: -0.08136627, z: -0.00443792}
---- !u!64 &982428899177284992
-MeshCollider:
+--- !u!65 &982428898128193352
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 99959011902191787}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 4defa2189a399f346bedfe7142d84cc1, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6692290496178104961, guid: a0792e0ad80f97d46aafe3a47a714ac5, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.014561041, y: 0.021626735, z: 0.013415445}
+  m_Center: {x: 0.0000083297355, y: 0.011337065, z: -0.000008344342}
