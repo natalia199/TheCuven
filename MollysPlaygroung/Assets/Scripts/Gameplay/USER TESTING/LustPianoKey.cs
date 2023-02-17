@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class LustPianoKey : MonoBehaviour
 {
-    bool keyPressed = false;
+    public bool keyPressed = false;
+
+    public bool activatedPianoKey = false;
 
     public float _rotateSpeed;
     public float _speed;
 
-    public Color keyColour;
+    public Material originalColour;
+    public Material selectedColour;
 
     void Start()
     {
@@ -20,24 +23,33 @@ public class LustPianoKey : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (keyPressed)
+        if (!keyPressed)
         {
-            Debug.Log("get off");
-
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.identity, _rotateSpeed * Time.deltaTime);
+        }
+    }
 
-        }
-        else
-        {
-            Debug.Log("on it");
-        }
+    public void selectedKey()
+    {
+        GetComponent<MeshRenderer>().material = selectedColour;
+        transform.GetChild(0).GetComponent<MeshRenderer>().material = selectedColour;
+
+        activatedPianoKey = true;
+    }
+
+    public void deselectedKey()
+    {
+        GetComponent<MeshRenderer>().material = originalColour;
+        transform.GetChild(0).GetComponent<MeshRenderer>().material = originalColour;
+
+        activatedPianoKey = false;
     }
 
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
-            keyPressed = true;
+            keyPressed = false;
         }
     }
 
@@ -45,7 +57,7 @@ public class LustPianoKey : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            keyPressed = false;
+            keyPressed = true;
         }
     }
 }

@@ -41,6 +41,9 @@ public class PlayerUserTest : MonoBehaviour
     bool freezePlayer = false;
     public float lifeDropSpeed;
 
+    // LUST
+    public int hitKeys = 0;
+    public bool resetPosition = true;
 
     void Start()
     {
@@ -136,6 +139,7 @@ public class PlayerUserTest : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "Lust")
         {
+            GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + hitKeys;
 
         }
         else if (SceneManager.GetActiveScene().name == "Gluttony")
@@ -315,6 +319,25 @@ public class PlayerUserTest : MonoBehaviour
         {
             gotBearTrapped = true;
             interactedBearTrap = other.gameObject;
+        }
+
+        // LUST
+        if (other.tag == "PianoKey")
+        {
+            if (other.gameObject.GetComponent<LustPianoKey>().activatedPianoKey && resetPosition)
+            {
+                hitKeys++;
+            }
+
+            resetPosition = false;
+        }
+        if (other.tag == "PianoJumpZone")
+        {
+            resetPosition = true;
+        }
+        if (other.tag == "PianoBase")
+        {
+            resetPosition = false;
         }
     }
 
