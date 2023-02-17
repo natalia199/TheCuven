@@ -14,6 +14,9 @@ public class PlatformShakeWrath : MonoBehaviour
     public bool returnHome;
     bool newTilt;
 
+    public GameObject lava;
+    public float rotationsPerMinute;
+
     void Start()
     {
         newTilt = false;
@@ -28,6 +31,8 @@ public class PlatformShakeWrath : MonoBehaviour
 
     void FixedUpdate()
     {
+        lava.transform.Rotate(0, 6 * rotationsPerMinute * Time.deltaTime, 0);
+
         if (newTilt)
         {
             directionIndex = Random.Range(0, 3);
