@@ -55,6 +55,7 @@ public class EnvyHorse : MonoBehaviour
         if (other.tag == "FinishLine")
         {
             finished = true;
+            GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().endingGameDelay();
         }
     }
 }

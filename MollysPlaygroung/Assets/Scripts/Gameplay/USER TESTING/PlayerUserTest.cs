@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Photon.Pun;
 
 public class PlayerUserTest : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class PlayerUserTest : MonoBehaviour
     bool withinTheLight = false;
     bool pauseForDecrease = false;
     bool gotBearTrapped = false;
+    bool lifeFullyDone = false;
     int lifeSource = 100;
     public GameObject interactedBearTrap = null;
     public int trapHeight;
@@ -140,7 +142,6 @@ public class PlayerUserTest : MonoBehaviour
         else if (SceneManager.GetActiveScene().name == "Lust")
         {
             GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + hitKeys;
-
         }
         else if (SceneManager.GetActiveScene().name == "Gluttony")
         {
@@ -202,27 +203,30 @@ public class PlayerUserTest : MonoBehaviour
         {
             GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + lifeSource;
 
-            if (!withinTheLight && !pauseForDecrease)
+            if (!lifeFullyDone)
             {
-                StartCoroutine("LifeDrop", lifeDropSpeed);
-            }
-
-            if (gotBearTrapped && interactedBearTrap != null)
-            {
-                Destroy(interactedBearTrap.GetComponent<BoxCollider>());
-                Destroy(interactedBearTrap.GetComponent<Rigidbody>());
-                interactedBearTrap.transform.position = new Vector3(transform.position.x, transform.position.y - trapHeight, transform.position.z);
-                freezePlayer = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                if (gotBearTrapped) 
+                if (!withinTheLight && !pauseForDecrease)
                 {
-                    Destroy(interactedBearTrap.gameObject);
-                    interactedBearTrap = null;
-                    freezePlayer = false;
-                    gotBearTrapped = false;
+                    StartCoroutine("LifeDrop", lifeDropSpeed);
+                }
+
+                if (gotBearTrapped && interactedBearTrap != null)
+                {
+                    Destroy(interactedBearTrap.GetComponent<BoxCollider>());
+                    Destroy(interactedBearTrap.GetComponent<Rigidbody>());
+                    interactedBearTrap.transform.position = new Vector3(transform.position.x, transform.position.y - trapHeight, transform.position.z);
+                    freezePlayer = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    if (gotBearTrapped)
+                    {
+                        Destroy(interactedBearTrap.gameObject);
+                        interactedBearTrap = null;
+                        freezePlayer = false;
+                        gotBearTrapped = false;
+                    }
                 }
             }
         }
@@ -279,7 +283,21 @@ public class PlayerUserTest : MonoBehaviour
 
         yield return new WaitForSeconds(value);
 
+        if (lifeSource <= 0)
+        {
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().CurrentLevelState = true;
+            lifeFullyDone = true;
+        }
+
         pauseForDecrease = false;
+    }
+
+    public void OnToTheNextLevel()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().CurrentLevelState = true;
+        }
     }
 
     void OnTriggerEnter(Collider other)

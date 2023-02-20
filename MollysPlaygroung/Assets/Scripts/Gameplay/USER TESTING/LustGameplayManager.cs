@@ -31,7 +31,6 @@ public class LustGameplayManager : MonoBehaviour
             yield return new WaitForSeconds(time);
         }
 
-        Debug.Log("restart");
         pianoKeys[chosenKey].GetComponent<LustPianoKey>().deselectedKey();
         StartCoroutine("NewKeyPick", 3);
     }
