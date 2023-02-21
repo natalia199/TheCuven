@@ -4,10 +4,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using Photon.Pun;
+using System;
 
 public class PlayerUserTest : MonoBehaviour
 {
     Rigidbody rb;
+    PhotonView view;
+
+    public TextMeshProUGUI username;
+    string playersUsername;
 
     [SerializeField] float speed = 5f;
     [SerializeField] float speedModifier = 1f;
@@ -37,150 +42,183 @@ public class PlayerUserTest : MonoBehaviour
     bool pauseForDecrease = false;
     bool gotBearTrapped = false;
     bool lifeFullyDone = false;
-    int lifeSource = 100;
+    public float lifeSource = 100;
     public GameObject interactedBearTrap = null;
     public int trapHeight;
     bool freezePlayer = false;
     public float lifeDropSpeed;
 
+    public Vector2 lightPosition;
+    public GameObject theLight;
+    public bool instantiateLightOnce = false;
+
+    public Vector2 trapPosition;
+    public GameObject theTrap;
+    public bool instantiateTrapOnce = false;
+
+    public float timeRemaining;
+    public bool timerIsRunning = false;
+
     // LUST
     public int hitKeys = 0;
     public bool resetPosition = true;
 
+    // WRATH
+    int directionIndex = 0;
+    bool directionChosen = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        view = GetComponent<PhotonView>();
 
         if (SceneManager.GetActiveScene().name == "Greed")
         {
             CameraOptions.Add(GameObject.Find("Dice_MainCamera"));
             CameraOptions.Add(GameObject.Find("Collect_MainCamera"));
-        }
+        } 
     }
 
     void Update()
-    {        
-        if (SceneManager.GetActiveScene().name == "Greed")
+    {
+        if (view.IsMine)
         {
-            // Dice Roll baby
-            if (!cameraSwitch)
+            view.RPC("getPlayersNickName", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
+        }
+        this.name = playersUsername;
+
+        if (view.IsMine)
+        {
+            view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+
+
+            if (SceneManager.GetActiveScene().name == "Greed")
             {
-                CameraOptions[0].SetActive(true);
-                CameraOptions[1].SetActive(false);
-
-                // Roll Dice
-                if (Input.GetKeyDown(KeyCode.P))
+                // Dice Roll baby
+                if (!cameraSwitch)
                 {
-                    GameObject.Find("Dice").GetComponent<Dice>().RollDice();
-                }
+                    CameraOptions[0].SetActive(true);
+                    CameraOptions[1].SetActive(false);
 
-                // next step
-                if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo)
-                {
-                    collectionTracker = 0;
-                    thrownTracker = 0;
-                    cameraSwitch = true;
-                    GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = false;
-                }
-
-            }
-            // Chip extravaganza
-            else if (cameraSwitch)
-            {
-                CameraOptions[0].SetActive(false);
-                CameraOptions[1].SetActive(true);
-
-                // next step
-                if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
-                {
-                    cameraSwitch = false;
-                }
-
-                GameObject.Find("ZoneCanvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
-
-                // Collecting chip
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    if (chipAccess && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                    // Roll Dice
+                    if (Input.GetKeyDown(KeyCode.P))
                     {
-                        Destroy(interactedChip.GetComponent<Rigidbody>());
-                        interactedChip.transform.position = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
-                        interactedChip.transform.rotation = Quaternion.identity;
-                        interactedChip.transform.parent = this.transform;
-                        interactedChip.GetComponent<MeshCollider>().isTrigger = true;
-
-                        interactedChip.GetComponent<ChipScript>().Available = false;
-
-                        collectedChipies.Add(interactedChip);
-                        collectionTracker++;
-
-                        interactedChip = null;
+                        GameObject.Find("Dice").GetComponent<Dice>().RollDice();
                     }
-                }
-                // Disposing chip
-                else if (Input.GetKeyDown(KeyCode.O))
-                {
-                    if (collectedChipies.Count > 0 && throwAccess)
+
+                    // next step
+                    if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo)
                     {
-                        collectedChipies[0].transform.parent = null;
-                        collectedChipies[0].AddComponent<Rigidbody>();
-                        collectedChipies[0].GetComponent<MeshCollider>().isTrigger = false;
-                        collectedChipies[0].GetComponent<ChipScript>().Available = true;
-                        collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket").transform.GetChild(0).position, transform.position, throwForce);
+                        collectionTracker = 0;
+                        thrownTracker = 0;
+                        cameraSwitch = true;
+                        GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = false;
+                    }
 
-                        collectedChipies.RemoveAt(0);
-                        thrownTracker++;
+                }
+                // Chip extravaganza
+                else if (cameraSwitch)
+                {
+                    CameraOptions[0].SetActive(false);
+                    CameraOptions[1].SetActive(true);
 
-                        for (int i = 0; i < collectedChipies.Count; i++)
+                    // next step
+                    if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                    {
+                        cameraSwitch = false;
+                    }
+
+                    GameObject.Find("ZoneCanvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
+
+                    // Collecting chip
+                    if (Input.GetKeyDown(KeyCode.P))
+                    {
+                        if (chipAccess && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
                         {
-                            collectedChipies[i].transform.position = new Vector3(transform.position.x, collectedChipies[i].transform.position.y - 0.5f, transform.position.z);
+                            Destroy(interactedChip.GetComponent<Rigidbody>());
+                            interactedChip.transform.position = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
+                            interactedChip.transform.rotation = Quaternion.identity;
+                            interactedChip.transform.parent = this.transform;
+                            interactedChip.GetComponent<MeshCollider>().isTrigger = true;
+
+                            interactedChip.GetComponent<ChipScript>().Available = false;
+
+                            collectedChipies.Add(interactedChip);
+                            collectionTracker++;
+
+                            interactedChip = null;
+                        }
+                    }
+                    // Disposing chip
+                    else if (Input.GetKeyDown(KeyCode.O))
+                    {
+                        if (collectedChipies.Count > 0 && throwAccess)
+                        {
+                            collectedChipies[0].transform.parent = null;
+                            collectedChipies[0].AddComponent<Rigidbody>();
+                            collectedChipies[0].GetComponent<MeshCollider>().isTrigger = false;
+                            collectedChipies[0].GetComponent<ChipScript>().Available = true;
+                            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket").transform.GetChild(0).position, transform.position, throwForce);
+
+                            collectedChipies.RemoveAt(0);
+                            thrownTracker++;
+
+                            for (int i = 0; i < collectedChipies.Count; i++)
+                            {
+                                collectedChipies[i].transform.position = new Vector3(transform.position.x, collectedChipies[i].transform.position.y - 0.5f, transform.position.z);
+                            }
                         }
                     }
                 }
             }
-        }
-        else if (SceneManager.GetActiveScene().name == "Lust")
-        {
-            GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + hitKeys;
-        }
-        else if (SceneManager.GetActiveScene().name == "Gluttony")
-        {
-            GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munched: " + collectedFoodies;
-
-            // Eating
-            if (eatFood)
+            else if (SceneManager.GetActiveScene().name == "Lust")
             {
-                collectedFoodies++;
-                eatFood = false;
+                GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + hitKeys;
             }
-
-            // Puking
-            if (Input.GetKeyDown(KeyCode.P))
+            else if (SceneManager.GetActiveScene().name == "Gluttony")
             {
-                if(collectedFoodies > 0 && !vomit)
+                GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munched: " + collectedFoodies;
+
+                // Eating
+                if (eatFood)
                 {
-                    GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().VomittedFood(this.transform.position);
-                    collectedFoodies--;
-                    vomit = true;
+                    collectedFoodies++;
+                    eatFood = false;
+                }
+
+                // Puking
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    if (collectedFoodies > 0 && !vomit)
+                    {
+                        GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().VomittedFood(this.transform.position);
+                        collectedFoodies--;
+                        vomit = true;
+                    }
+                }
+                else
+                {
+                    vomit = false;
                 }
             }
-            else
+            else if (SceneManager.GetActiveScene().name == "Envy")
             {
-                vomit = false;
-            }
-        }
-        else if (SceneManager.GetActiveScene().name == "Envy")
-        {
-            // Move Horse
-            if (Input.GetKey(KeyCode.P))
-            {
-                if (squirtAccess)
+                // Move Horse
+                if (Input.GetKey(KeyCode.P))
                 {
-                    GameObject.Find("water").GetComponent<EnvySquirter>().squirterActivated = true;
-
-                    if (GameObject.Find("water").transform.GetChild(0).GetComponent<EnvyBullseye>().Bullseye)
+                    if (squirtAccess)
                     {
-                        GameObject.Find("Horse").GetComponent<EnvyHorse>().MoveYourHorse();
+                        GameObject.Find("water").GetComponent<EnvySquirter>().squirterActivated = true;
+
+                        if (GameObject.Find("water").transform.GetChild(0).GetComponent<EnvyBullseye>().Bullseye)
+                        {
+                            GameObject.Find("Horse").GetComponent<EnvyHorse>().MoveYourHorse();
+                        }
+                    }
+                    else
+                    {
+                        GameObject.Find("Horse").GetComponent<EnvyHorse>().StopYourHorse();
+                        GameObject.Find("water").GetComponent<EnvySquirter>().squirterActivated = false;
                     }
                 }
                 else
@@ -189,44 +227,75 @@ public class PlayerUserTest : MonoBehaviour
                     GameObject.Find("water").GetComponent<EnvySquirter>().squirterActivated = false;
                 }
             }
-            else
+            else if (SceneManager.GetActiveScene().name == "Wrath")
             {
-                GameObject.Find("Horse").GetComponent<EnvyHorse>().StopYourHorse();
-                GameObject.Find("water").GetComponent<EnvySquirter>().squirterActivated = false;
+                if (PhotonNetwork.IsMasterClient && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().plateState)
+                {
+                    directionIndex = UnityEngine.Random.Range(0, 3);
+                    view.RPC("shakePlatform", RpcTarget.AllBufferedViaServer, directionIndex, view.Owner.NickName);
+                }
             }
-        }
-        else if (SceneManager.GetActiveScene().name == "Wrath")
-        {
-
-        }
-        else if (SceneManager.GetActiveScene().name == "Sloth")
-        {
-            GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + lifeSource;
-
-            if (!lifeFullyDone)
+            else if (SceneManager.GetActiveScene().name == "Sloth")
             {
-                if (!withinTheLight && !pauseForDecrease)
-                {
-                    StartCoroutine("LifeDrop", lifeDropSpeed);
-                }
+                //GameObject.Find("Canvas").transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = "Life: " + (int)lifeSource;
 
-                if (gotBearTrapped && interactedBearTrap != null)
+                // Instantiation
+                if (PhotonNetwork.LocalPlayer.IsMasterClient)
                 {
-                    Destroy(interactedBearTrap.GetComponent<BoxCollider>());
-                    Destroy(interactedBearTrap.GetComponent<Rigidbody>());
-                    interactedBearTrap.transform.position = new Vector3(transform.position.x, transform.position.y - trapHeight, transform.position.z);
-                    freezePlayer = true;
-                }
-
-                if (Input.GetKeyDown(KeyCode.P))
-                {
-                    if (gotBearTrapped)
+                    if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lightReady && theLight == null)
                     {
-                        Destroy(interactedBearTrap.gameObject);
-                        interactedBearTrap = null;
-                        freezePlayer = false;
-                        gotBearTrapped = false;
+                        if (!instantiateLightOnce)
+                        {
+                            float xPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[0].position.x, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[2].position.x);
+                            float zPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[0].position.z, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[1].position.z);
+                            lightPosition = new Vector2(xPos, zPos);
+                            instantiateLightOnce = true;
+                        }
+
+                        view.RPC("setLightPosition", RpcTarget.AllBufferedViaServer, lightPosition, view.Owner.NickName);
                     }
+
+                    if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().trapReady && theTrap == null && GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().AmountOfTraps != GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapParent.transform.childCount)
+                    {
+                        if (!instantiateTrapOnce)
+                        {
+                            float xPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[0].position.x, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[2].position.x);
+                            float zPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[0].position.z, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapSpawnPoints[1].position.z);
+                            trapPosition = new Vector2(xPos, zPos);
+                            instantiateTrapOnce = true;
+                        }
+
+                        view.RPC("setTrapPosition", RpcTarget.AllBufferedViaServer, trapPosition, view.Owner.NickName);
+                    }
+                }
+
+                // Actions
+                if (!lifeFullyDone)
+                {
+                    /*if (!withinTheLight && !pauseForDecrease)
+                    {
+                        StartCoroutine("LifeDrop", lifeDropSpeed);
+                    }
+                    */
+                    if (gotBearTrapped && interactedBearTrap != null)
+                    {
+                        Vector3 pos = new Vector3(transform.position.x, transform.position.y - trapHeight, transform.position.z);
+                        view.RPC("caughtByBearTrap", RpcTarget.AllBufferedViaServer, view.Owner.NickName, pos);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.P))
+                    {
+                        if (gotBearTrapped)
+                        {
+                            view.RPC("unhookedBearTrap", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                        }
+                    }
+                }
+
+                if (!withinTheLight)
+                {
+                    lifeSource -= Time.deltaTime;
+                    view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, lifeSource);
                 }
             }
         }
@@ -234,17 +303,20 @@ public class PlayerUserTest : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!freezePlayer)
+        if (view.IsMine)
         {
-            MovePlayer();
-
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (!freezePlayer)
             {
-                Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-                GetComponent<Rigidbody>().velocity = vel;
+                MovePlayer();
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+                    GetComponent<Rigidbody>().velocity = vel;
+                }
             }
         }
-    }
+    }    
 
     void MovePlayer()
     {
@@ -292,6 +364,128 @@ public class PlayerUserTest : MonoBehaviour
         pauseForDecrease = false;
     }
 
+    public void shakeHer(int dir)
+    {
+        GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().shakePlateVariables(dir);
+    }
+
+    /// RPCs
+
+    // Username
+    [PunRPC]
+    void getPlayersNickName(string name)
+    {
+        playersUsername = name;
+    }
+
+    [PunRPC]
+    void setUsername(string Player)
+    {
+        try
+        {
+            GameObject.Find(Player).GetComponent<PlayerUserTest>().username.text = Player;
+            GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
+            GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    // Levels
+
+    // Wrath
+    [PunRPC]
+    void shakePlatform(int dir, string pName)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().shakeHer(dir);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    // Sloth
+    [PunRPC]
+    void displayLifePercentage(string pName, float v)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().lifeSource = v;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void setLightPosition(Vector2 pos, string pName)
+    {
+        try
+        {
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight == null) 
+            {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, -1.4f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void setTrapPosition(Vector2 pos, string pName)
+    {
+        try
+        {
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theTrap == null)
+            {
+                Debug.Log("imm akms");
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theTrap = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapPrefab, new Vector3(pos.x, 12f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().TrapParent.transform);
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void caughtByBearTrap(string pName, Vector3 pos)
+    {
+        try
+        {
+            Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.GetComponent<BoxCollider>());
+            Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.GetComponent<Rigidbody>());
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.GetComponent<SlothObstacle>().trapSet = true;
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.tag = "Untagged";
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.transform.position = pos;
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().freezePlayer = true;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void unhookedBearTrap(string pName)
+    {
+        try
+        {
+            Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.gameObject);
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap = null;
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().freezePlayer = false;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+
     public void OnToTheNextLevel()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -333,7 +527,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             withinTheLight = true;
         }
-        if(other.tag == "BearTrap")
+        if(other.tag == "BearTrap" && interactedBearTrap == null && !other.GetComponent<SlothObstacle>().trapSet)
         {
             gotBearTrapped = true;
             interactedBearTrap = other.gameObject;

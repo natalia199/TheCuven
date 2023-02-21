@@ -74,7 +74,7 @@ public class SlothGameManager : MonoBehaviour
         Destroy(obstacle.GetComponent<BoxCollider>());
         Destroy(obstacle.GetComponent<Rigidbody>());
         obstacle.transform.position = new Vector3(player.transform.position.x, obstacle.transform.position.y, player.transform.position.z);
-        obstacle.GetComponent<SlothObstacle>().InitiateTrap();
+        //obstacle.GetComponent<SlothObstacle>().InitiateTrap();
     }
 
     IEnumerator LightInstantiationFlow(int value)

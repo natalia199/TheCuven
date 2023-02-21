@@ -50,7 +50,7 @@ public class PlayerTest : MonoBehaviour
             if (obstacleCollision && currentObstacle.GetComponent<SlothObstacle>().trapSet)
             {
                 obstacleCollision = false;
-                currentObstacle.GetComponent<SlothObstacle>().DisintegrateObstacle();
+                //currentObstacle.GetComponent<SlothObstacle>().DisintegrateObstacle();
             }
         }
     }

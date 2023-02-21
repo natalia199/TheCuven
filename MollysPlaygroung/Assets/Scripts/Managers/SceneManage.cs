@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using System;
 
 public class SceneManage : MonoBehaviour
 {
     public int sceneTracker;
 
-    public string[] levelNames = { "Lust", "Gluttony", "Greed", "Sloth", "Wrath", "Envy", "Pride" };
+    public string[] levelNames;
 
     public List<string> allPlayersInGame = new List<string>();
     public List<string> allPlayersDead = new List<string>();
 
     public bool CurrentLevelState;
+
+    public string MasterPlayer;
 
     void Awake()
     {
@@ -54,7 +57,7 @@ public class SceneManage : MonoBehaviour
     }
 
     public void NextGameaz()
-    {
+    {        
         if (PhotonNetwork.IsMasterClient)
         {
             sceneTracker++;
@@ -93,9 +96,25 @@ public class SceneManage : MonoBehaviour
 
     void Update()
     {
-        if (PhotonNetwork.IsMasterClient && CurrentLevelState)
+        if (CurrentLevelState)
         {
             NextGameaz();
+        }
+
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.IsMasterClient)
+            {
+                try
+                {
+                    MasterPlayer = player.NickName;
+                    //GameObject.Find(player.NickName).tag = "MasterClient";
+                }
+                catch (NullReferenceException e)
+                {
+                    // error
+                }
+            }
         }
     }
 

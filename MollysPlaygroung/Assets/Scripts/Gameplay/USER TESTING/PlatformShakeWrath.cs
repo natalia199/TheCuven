@@ -11,16 +11,16 @@ public class PlatformShakeWrath : MonoBehaviour
     List<Vector3> idek = new List<Vector3>();
 
     public int directionIndex;
+    public int oldDirectionIndex = -1;
     public bool returnHome;
-    bool newTilt;
-
-    public GameObject lava;
-    public float rotationsPerMinute;
+    public bool newTilt;
+    public bool onHold;
 
     void Start()
     {
         newTilt = false;
         returnHome = false;
+        onHold = false;
 
         idek.Add(Vector3.left);
         idek.Add(-Vector3.back);
@@ -31,14 +31,7 @@ public class PlatformShakeWrath : MonoBehaviour
 
     void FixedUpdate()
     {
-        lava.transform.Rotate(0, 6 * rotationsPerMinute * Time.deltaTime, 0);
-
-        if (newTilt)
-        {
-            directionIndex = Random.Range(0, 3);
-            newTilt = false;
-        }
-        else if (returnHome)
+        if (returnHome)
         {
             if (transform.rotation == Quaternion.identity)
             {
@@ -49,18 +42,29 @@ public class PlatformShakeWrath : MonoBehaviour
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity, Time.deltaTime * homeSpeed);
             }
         }
-        else if (!newTilt && !returnHome)
+        else if (!newTilt && !returnHome && !onHold)
         {
             transform.Rotate(idek[directionIndex], speed * Time.deltaTime);
         }
     }
 
+    public void setVars(int dir)
+    {
+        directionIndex = dir;
+        newTilt = false;
+    }
+
     IEnumerator HoldIt(float time)
     {
+        newTilt = false;
+        onHold = true;
+        returnHome = false;
+
         yield return new WaitForSeconds(time);
 
         newTilt = true;
         returnHome = false;
+        onHold = false;
     }
 
     void OnTriggerEnter(Collider other)

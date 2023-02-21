@@ -15,14 +15,4 @@ public class SlothObstacle : MonoBehaviour
     {
         
     }
-
-    public void InitiateTrap()
-    {
-        trapSet = true;
-    }
-
-    public void DisintegrateObstacle()
-    {
-        Destroy(this.gameObject);
-    }
 }
