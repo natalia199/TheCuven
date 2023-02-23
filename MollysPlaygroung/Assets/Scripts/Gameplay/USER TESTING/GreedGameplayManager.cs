@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,9 @@ public class GreedGameplayManager : MonoBehaviour
     public int rolledValue;
     public bool goodToGo = false;
 
+    public Vector2 chipPosition;
+    public bool chipReady = true;
+
     void Start()
     {
 
@@ -21,9 +25,42 @@ public class GreedGameplayManager : MonoBehaviour
 
     void Update()
     {
-        UpdateChipAmount();
+        try
+        {
+            // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
+            if (chipReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip != null && AmountOfChips != ChipParent.transform.childCount)
+            {
+                addChip(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip);
+                chipReady = false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
     }
 
+    public void addChip(GameObject chip)
+    {
+        chip.AddComponent<Rigidbody>();
+        ChipInstantiation();
+    }
+
+    public void ChipInstantiation()
+    {
+        StartCoroutine("HoldIt", 0.3f);
+    }
+
+    IEnumerator HoldIt(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip = null;
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateChipOnce = false;
+        chipReady = true;
+    }
+
+    /*
     public void ChipInstantiation()
     {
         StartCoroutine("HoldIt", Random.Range(0, 3));
@@ -52,4 +89,5 @@ public class GreedGameplayManager : MonoBehaviour
 
         chip.AddComponent<Rigidbody>();
     }
+    */
 }

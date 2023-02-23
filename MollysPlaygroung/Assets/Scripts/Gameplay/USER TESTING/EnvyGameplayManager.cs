@@ -27,4 +27,23 @@ public class EnvyGameplayManager : MonoBehaviour
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().CurrentLevelState = true;
     }
+
+    public void MoveHorseForward(string name)
+    {
+        GameObject.Find(name).GetComponent<EnvyHorse>().MoveYourHorse();
+    }
+
+    public void StopHorseForward(string name)
+    {
+        GameObject.Find(name).GetComponent<EnvyHorse>().StopYourHorse();
+    }
+    public void squirtWater(string name)
+    {
+        GameObject.Find(name).transform.GetChild(0).GetComponent<EnvySquirter>().squirterActivated = true;
+    }
+
+    public void desquirtWater(string name)
+    {
+        GameObject.Find(name).transform.GetChild(0).GetComponent<EnvySquirter>().squirterActivated = false;
+    }
 }

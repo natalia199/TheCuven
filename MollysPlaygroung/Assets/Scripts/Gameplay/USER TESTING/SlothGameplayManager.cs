@@ -21,10 +21,9 @@ public class SlothGameplayManager : MonoBehaviour
     public GameObject currentLight;
 
     public bool lightReady = true;
-    public bool trapReady = true;
-
     public Vector2 lightPosition;
     public Vector2 trapPosition;
+    public bool trapReady = true;
 
     void Start()
     {

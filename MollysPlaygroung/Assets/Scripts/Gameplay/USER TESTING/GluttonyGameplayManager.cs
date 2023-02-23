@@ -1,17 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GluttonyGameplayManager : MonoBehaviour
 {
     public List<Transform> FoodSpawnPoints = new List<Transform>();
+    public List<GameObject> LifeSlots = new List<GameObject>();
 
     public GameObject FoodPrefab;
     public GameObject FoodParent;
 
     public int AmountOfFood;
 
+    public Vector2 foodPosition;
+    public bool foodReady = true;
+    public Vector2 vomitedFoodPosition;
+    public bool vomitedFoodReady = true;
+
     public float force;
+
     void Start()
     {
         
@@ -20,23 +29,80 @@ public class GluttonyGameplayManager : MonoBehaviour
 
     void Update()
     {
-        UpdateFoodAmount();
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+        {
+            try
+            {
+                LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+                LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muchies: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+            }
+            catch (NullReferenceException e)
+            {
+                break;
+                // error
+            }
+        }
+
+        try
+        {
+            // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
+            if (foodReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood != null && AmountOfFood != FoodParent.transform.childCount)
+            {
+                addFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood);
+                foodReady = false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+
+        try
+        {
+            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood != null)
+            {
+                addVomitedFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood);
+                //vomitedFoodReady = false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    public void addFood(GameObject food)
+    {
+        food.AddComponent<Rigidbody>();
+        FoodInstantiation();
+    }
+
+    public void addVomitedFood(GameObject food)
+    {
+        //food.AddComponent<Rigidbody>();
+        VomitInstantiation();
     }
 
     public void FoodInstantiation()
     {
-        StartCoroutine("HoldIt", Random.Range(0, 3));
+        StartCoroutine("HoldIt", 2);
     }
 
-    void UpdateFoodAmount()
+    IEnumerator HoldIt(float time)
     {
-        int x = AmountOfFood - FoodParent.transform.childCount;
-        for (int i = 0; i < x; i++)
-        {
-            FoodInstantiation();
-        }
+        yield return new WaitForSeconds(time);
+
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood = null;
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateFoodOnce = false;
+        foodReady = true;
     }
 
+    public void VomitInstantiation()
+    {
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood = null;
+    }
+
+    /*
     public void VomittedFood(Vector3 playerPos)
     {
         GameObject food = Instantiate(FoodPrefab, new Vector3(playerPos.x, playerPos.y + 1.5f, playerPos.z), Quaternion.identity, FoodParent.transform);
@@ -78,5 +144,5 @@ public class GluttonyGameplayManager : MonoBehaviour
 
         food.AddComponent<Rigidbody>();
     }
-
+*/
 }

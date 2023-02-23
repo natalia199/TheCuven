@@ -42,11 +42,13 @@ public class EnvyHorse : MonoBehaviour
 
     public void MoveYourHorse()
     {
+        Debug.Log("moving");
         squirterActivated = true;
     }
 
     public void StopYourHorse()
     {
+        Debug.Log("Stopping");
         squirterActivated = false;
     }
 
@@ -55,7 +57,7 @@ public class EnvyHorse : MonoBehaviour
         if (other.tag == "FinishLine")
         {
             finished = true;
-            GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().endingGameDelay();
+            //GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().endingGameDelay();
         }
     }
 }
