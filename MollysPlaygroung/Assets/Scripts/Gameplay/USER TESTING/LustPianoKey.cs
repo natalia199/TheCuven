@@ -5,7 +5,7 @@ using UnityEngine;
 public class LustPianoKey : MonoBehaviour
 {
     public bool keyPressed = false;
-
+    public bool pressedWhenSelected = false;
     public bool activatedPianoKey = false;
 
     public float _rotateSpeed;
@@ -43,6 +43,7 @@ public class LustPianoKey : MonoBehaviour
         transform.GetChild(0).GetComponent<MeshRenderer>().material = originalColour;
 
         activatedPianoKey = false;
+        pressedWhenSelected = false;
     }
 
     void OnTriggerExit(Collider other)
@@ -58,6 +59,12 @@ public class LustPianoKey : MonoBehaviour
         if (other.tag == "Player")
         {
             keyPressed = true;
+
+            if (activatedPianoKey && !other.GetComponent<PlayerUserTest>().landedOnFloor && !pressedWhenSelected)
+            {
+                Debug.Log("key has been jumped on boy");
+                pressedWhenSelected = true;
+            }
         }
     }
 }

@@ -74,7 +74,11 @@ public class PlayerUserTest : MonoBehaviour
 
     // LUST
     public int hitKeys = 0;
+    public int selectedKey;
     public bool resetPosition = true;
+    public bool readyForNewKey = true;
+    public bool hitKeyScore = false;
+    public bool landedOnFloor = false;
 
     // WRATH
     int directionIndex = 0;
@@ -203,7 +207,39 @@ public class PlayerUserTest : MonoBehaviour
             }
             else if (SceneManager.GetActiveScene().name == "Lust")
             {
-                GameObject.Find("Canvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + hitKeys;
+                if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
+                    {
+                        if (readyForNewKey)
+                        {
+                            int i = UnityEngine.Random.Range(0, 4);
+
+                            // if index was already chosen or the key is being pressed on already don't do anything
+                            if (i == selectedKey || GameObject.Find("GameManager").GetComponent<LustGameplayManager>().pianoKeys[i].GetComponent<LustPianoKey>().keyPressed)
+                            {
+                                readyForNewKey = true;
+                            }
+                            else
+                            {
+                                readyForNewKey = false;
+                                selectedKey = i;
+                            }
+                        }
+                        else
+                        {
+                            view.RPC("setPianoKey", RpcTarget.AllBufferedViaServer, selectedKey);
+                        }
+                    }
+                }
+
+                if (hitKeyScore)
+                {
+                    hitKeys++;
+                    hitKeyScore = false;
+                    view.RPC("keyScoreDisplay", RpcTarget.AllBufferedViaServer, view.Owner.NickName, hitKeys);
+                }
+                
             }
             else if (SceneManager.GetActiveScene().name == "Gluttony")
             {
@@ -709,6 +745,48 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+    
+    // LUST
+    [PunRPC]
+    void setPianoKey(int x)
+    {
+        try
+        {
+            if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey) 
+            {
+                GameObject.Find("GameManager").GetComponent<LustGameplayManager>().NewKey(x);
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void resettingPianoPos(string pName, bool x)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().resetPosition = x;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void keyScoreDisplay(string pName, int k)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().hitKeys = k;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
 
     public void OnToTheNextLevel()
     {
@@ -761,9 +839,9 @@ public class PlayerUserTest : MonoBehaviour
         // LUST
         if (other.tag == "PianoKey")
         {
-            if (other.gameObject.GetComponent<LustPianoKey>().activatedPianoKey && resetPosition)
+            if (other.gameObject.GetComponent<LustPianoKey>().activatedPianoKey && resetPosition && !other.gameObject.GetComponent<LustPianoKey>().pressedWhenSelected)
             {
-                hitKeys++;
+                hitKeyScore = true;
             }
 
             resetPosition = false;
@@ -771,10 +849,12 @@ public class PlayerUserTest : MonoBehaviour
         if (other.tag == "PianoJumpZone")
         {
             resetPosition = true;
+            landedOnFloor = false;
         }
         if (other.tag == "PianoBase")
         {
             resetPosition = false;
+            landedOnFloor = true;
         }
     }
 
