@@ -22,6 +22,8 @@ public class ChipScript : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         throwParabola(targetPt, playerPos, force);
+
+        StartCoroutine("midair", 0.3f);
     }
 
     void MoveBoy(Vector3 vel)
@@ -35,5 +37,12 @@ public class ChipScript : MonoBehaviour
         dir = dir.normalized;
         GetComponent<Rigidbody>().AddForce(dir * force);
         GetComponent<Rigidbody>().AddTorque(dir * 50);
+    }
+
+    IEnumerator midair(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        GetComponent<MeshCollider>().isTrigger = false;
     }
 }

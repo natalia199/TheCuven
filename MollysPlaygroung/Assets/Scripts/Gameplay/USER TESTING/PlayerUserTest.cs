@@ -34,6 +34,10 @@ public class PlayerUserTest : MonoBehaviour
     public GameObject theChip;
     public bool instantiateChipOnce = false;
 
+    bool noMoreChipsNeeded = false;
+    bool oneChipAtATimeThorw = false;
+    bool oneChipAtATimeCarry = false;
+
     // ENVY
     bool squirtAccess = false;
     public string horseName;
@@ -125,10 +129,15 @@ public class PlayerUserTest : MonoBehaviour
 
             if (SceneManager.GetActiveScene().name == "Greed")
             {
+                if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform.childCount)
+                {
+                    noMoreChipsNeeded = true;
+                }
+
                 // Instantiation
                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                 {
-                    if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipReady && theChip == null && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips != GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform.childCount)
+                    if (!noMoreChipsNeeded && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipReady && theChip == null && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips != GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform.childCount)
                     {
                         if (!instantiateChipOnce)
                         {
@@ -178,30 +187,34 @@ public class PlayerUserTest : MonoBehaviour
                         cameraSwitch = false;
                     }
 
-                    //GameObject.Find("ZoneCanvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
+                    GameObject.Find("ZoneCanvas").transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
 
                     // Collecting chip
                     if (Input.GetKeyDown(KeyCode.P))
                     {
-                        if (chipAccess && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                        if (!oneChipAtATimeCarry && chipAccess && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
                         {
                             Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
                             Quaternion carriedChipRot = Quaternion.identity;
-
-                            collectionTracker++;
-
+                            oneChipAtATimeCarry = true;
                             view.RPC("carryChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, carriedChipPos, carriedChipRot);
                         }
+                        oneChipAtATimeThorw = false;
                     }
                     // Disposing chip
                     else if (Input.GetKeyDown(KeyCode.O))
                     {
-                        if (collectedChipies.Count > 0 && throwAccess)
+                        if (collectedChipies.Count > 0 && throwAccess && !oneChipAtATimeThorw)
                         {
                             view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce);
-                            
-                            thrownTracker++;
+                            oneChipAtATimeThorw = true;
                         }
+                        oneChipAtATimeCarry = false;
+                    }
+                    else
+                    {
+                        oneChipAtATimeCarry = false;
+                        oneChipAtATimeThorw = false;
                     }
                 }
             }
@@ -656,14 +669,18 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.GetComponent<Rigidbody>());
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.GetComponent<MeshCollider>().isTrigger = true;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.transform.position = pos;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.transform.rotation = rot;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.transform.parent = GameObject.Find(pName).transform;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.GetComponent<ChipScript>().Available = false;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Add(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip);
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip = null;
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip != null)
+            { 
+                Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.GetComponent<Rigidbody>());
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.GetComponent<MeshCollider>().isTrigger = true;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.transform.position = pos;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.transform.rotation = rot;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.transform.parent = GameObject.Find(pName).transform;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip.GetComponent<ChipScript>().Available = false;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Add(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedChip = null;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectionTracker++;
+            }
         }
         catch (NullReferenceException e)
         {
@@ -677,12 +694,12 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0) 
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = null;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<MeshCollider>().isTrigger = false;
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().Available = true;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket").transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().Available = true;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.RemoveAt(0);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().thrownTracker++;
 
                 for (int i = 0; i < GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count; i++)
                 {
