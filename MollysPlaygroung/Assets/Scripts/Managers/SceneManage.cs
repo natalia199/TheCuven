@@ -15,8 +15,12 @@ public class SceneManage : MonoBehaviour
     public List<string> allPlayersDead = new List<string>();
 
     public bool CurrentLevelState;
+    public bool GameplayDone = false;
 
     public string MasterPlayer;
+
+    // USER DEMO VARIABLES
+    public bool SingleOrMultiPlayer = false;                                        // False = single player, True = multi player
 
     void Awake()
     {
@@ -25,6 +29,8 @@ public class SceneManage : MonoBehaviour
         sceneTracker = 0;
 
         CurrentLevelState = false;
+
+        SingleOrMultiPlayer = false;
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
@@ -57,11 +63,15 @@ public class SceneManage : MonoBehaviour
     }
 
     public void NextGameaz()
-    {        
-        if (PhotonNetwork.IsMasterClient)
+    {
+        GameplayDone = false;
+        CurrentLevelState = false;
+
+        // go to next level, single and multiplayer completed
+        if (SingleOrMultiPlayer)
         {
+            SingleOrMultiPlayer = !SingleOrMultiPlayer;
             sceneTracker++;
-            CurrentLevelState = false;
 
             if (sceneTracker == levelNames.Length)
             {
@@ -72,6 +82,15 @@ public class SceneManage : MonoBehaviour
                 StartCoroutine("LevelTransition", 3);
             }
         }
+        // finish single player
+        else
+        {
+            SingleOrMultiPlayer = !SingleOrMultiPlayer;
+            CurrentLevelState = false;
+
+            StartCoroutine("LevelTransition", 3);
+        }
+
     }
 
     IEnumerator BeginGame(int value)
@@ -96,10 +115,10 @@ public class SceneManage : MonoBehaviour
 
     void Update()
     {
-        if (CurrentLevelState)
+        /*if (CurrentLevelState)
         {
             NextGameaz();
-        }
+        }*/
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
