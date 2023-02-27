@@ -21,25 +21,33 @@ public class TempLevelTimer : MonoBehaviour
     }
     void Update()
     {
-        if (timerIsRunning)
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
-            if (timeRemaining > 0)
+            if (timerIsRunning)
             {
-                timeText.text = "" + Mathf.FloorToInt(timeRemaining);
-                timeRemaining -= Time.deltaTime;
-                //DisplayTime(timeRemaining);
-            }
-            else
-            {
-                Debug.Log("Time has run out!");
-                timeText.text = "0";
-                timeRemaining = 0;
-                timerIsRunning = false;
+                if (timeRemaining > 0)
+                {
+                    timeText.text = "" + Mathf.FloorToInt(timeRemaining);
+                    timeRemaining -= Time.deltaTime;
+                    //DisplayTime(timeRemaining);
+                }
+                else
+                {
+                    Debug.Log("Time has run out!");
+                    timeText.text = "0";
+                    timeRemaining = 0;
+                    timerIsRunning = false;
 
-                //GameObject.Find("Scene Manager").GetComponent<SceneManage>().CurrentLevelState = true;
-                StartCoroutine("DisplayerFinalResults", 10);
+                    //GameObject.Find("Scene Manager").GetComponent<SceneManage>().CurrentLevelState = true;
+                    StartCoroutine("DisplayerFinalResults", 10);
+                }
             }
         }
+    }
+
+    public void CallGameEnd()
+    {
+        StartCoroutine("DisplayerFinalResults", 10);
     }
 
     IEnumerator DisplayerFinalResults(float time)

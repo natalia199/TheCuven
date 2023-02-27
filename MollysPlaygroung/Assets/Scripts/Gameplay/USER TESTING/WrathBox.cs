@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WrathBox : MonoBehaviour
 {
@@ -27,9 +28,20 @@ public class WrathBox : MonoBehaviour
 
         if (other.tag == "OffLimitsWrath")
         {
-            playerInteracted.GetComponent<PlayerUserTest>().boxScore = (playerInteracted.GetComponent<PlayerUserTest>().boxScore + 1) / 2;
-            Debug.Log("box score "+ playerInteracted.GetComponent<PlayerUserTest>().boxScore);
+            if (playerInteracted != null)
+            {
+                playerInteracted.GetComponent<PlayerUserTest>().boxScore++;
+                GameObject.Find("Score").GetComponent<TextMeshProUGUI>().text = "Boxes: " + playerInteracted.GetComponent<PlayerUserTest>().boxScore;
+            }
+
+            GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().TrackBoxes--;
+
             Destroy(this.gameObject);
+        }
+
+        if (other.tag == "WrathPlatform")
+        {
+            playerInteracted = null;
         }
 
     }

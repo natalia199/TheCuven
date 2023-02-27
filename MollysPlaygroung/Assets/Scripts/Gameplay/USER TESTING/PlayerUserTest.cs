@@ -98,6 +98,7 @@ public class PlayerUserTest : MonoBehaviour
     public bool plateMoving = false;
     public int boxThrowForce;
     public int boxScore;
+    bool fellOffPlatform = false;
 
     void Start()
     {
@@ -451,6 +452,11 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
                         }
+
+                        if (fellOffPlatform)
+                        {
+                            GameObject.Find("EndingResult").GetComponent<TempLevelTimer>().CallGameEnd();
+                        }
                     }                
                 }
                 else if (SceneManager.GetActiveScene().name == "Sloth")
@@ -572,7 +578,7 @@ public class PlayerUserTest : MonoBehaviour
         Vector3 dir = targetPos - startPos;
         dir = dir.normalized;
         box.GetComponent<Rigidbody>().AddForce(dir * force);
-        box.GetComponent<Rigidbody>().AddTorque(dir * 50);
+        //box.GetComponent<Rigidbody>().AddTorque(dir * 50);
     }
 
     IEnumerator LifeDrop(int value)
@@ -658,7 +664,7 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            carriedBox.transform.parent = null;
+            carriedBox.transform.parent = GameObject.Find("BoxParent").transform;
             carriedBox.AddComponent<Rigidbody>();
 
             throwParabola(carriedBox, transform.GetChild(1).position, transform.position, boxThrowForce);
@@ -1053,11 +1059,11 @@ public class PlayerUserTest : MonoBehaviour
         }
 
     }
-    
+
     void OnTriggerEnter(Collider other)
     {
         // GREED
-        
+
         if (other.tag == "ChipZone")
         {
             throwAccess = true;
@@ -1069,7 +1075,7 @@ public class PlayerUserTest : MonoBehaviour
             squirtGun = other.gameObject;
             squirtAccess = true;
         }
-        
+
         // GLUTTONY
         if (other.tag == "Food")
         {
@@ -1083,7 +1089,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             withinTheLight = true;
         }
-        if(other.tag == "BearTrap" && interactedBearTrap == null && !other.GetComponent<SlothObstacle>().trapSet)
+        if (other.tag == "BearTrap" && interactedBearTrap == null && !other.GetComponent<SlothObstacle>().trapSet)
         {
             gotBearTrapped = true;
             interactedBearTrap = other.gameObject;
@@ -1111,7 +1117,10 @@ public class PlayerUserTest : MonoBehaviour
         }
 
         // WRATH
-
+        if (other.tag == "OffLimitsWrath")
+        {
+            fellOffPlatform = true;
+        }
     }
 
     void OnTriggerExit(Collider other)

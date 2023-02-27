@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class WrathGameplayManager : MonoBehaviour
 {
@@ -15,10 +16,14 @@ public class WrathGameplayManager : MonoBehaviour
     public bool plateState = false;
 
     public int AmountOfBoxes;
+    public int TrackBoxes;
     public GameObject boxParent;
     public List<Transform> BoxpawnPoints = new List<Transform>();
     public GameObject boxPrefab;
 
+    public GameObject singlePlayerPlatform;
+    public GameObject multiPlayerPlatform;
+    public GameObject boxScoreTxt;
 
     void Start()
     {
@@ -26,21 +31,33 @@ public class WrathGameplayManager : MonoBehaviour
 
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
-            // Instantiation
-            for (int i = 0; i < AmountOfBoxes; i++) 
-            {
-                float xPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.x, BoxpawnPoints[2].position.x);
-                float zPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.z, BoxpawnPoints[1].position.z);
-                Vector3 posy = new Vector3(xPos, 12, zPos);
-
-                Instantiate(boxPrefab, posy, Quaternion.identity, boxParent.transform);
-
-            }
+            singlePlayerPlatform.SetActive(true);
+            multiPlayerPlatform.SetActive(false);
+        }
+        else
+        {
+            boxScoreTxt.SetActive(false);
+            singlePlayerPlatform.SetActive(false);
+            multiPlayerPlatform.SetActive(true);
         }
     }
 
     void FixedUpdate()
     {
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && AmountOfBoxes > TrackBoxes)
+        {
+            // Instantiation
+            for (int i = 0; i < (AmountOfBoxes-TrackBoxes); i++)
+            {
+                float xPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.x, BoxpawnPoints[2].position.x);
+                float zPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.z, BoxpawnPoints[1].position.z);
+                Vector3 posy = new Vector3(xPos, 5, zPos);
+
+                Instantiate(boxPrefab, posy, Quaternion.identity, boxParent.transform);
+                TrackBoxes++;
+            }
+        }
+
 
         lava.transform.Rotate(0, 6 * rotationsPerMinute * Time.deltaTime, 0);
 
