@@ -10,6 +10,8 @@ public class ChipZoneDetection : MonoBehaviour
 
     public Collider[] zoneCollider;
 
+    public TextMeshProUGUI scoreZoneTxt;
+
     void Start()
     {
         m_Started = true;
@@ -17,7 +19,7 @@ public class ChipZoneDetection : MonoBehaviour
 
     void Update()
     {
-        GameObject.Find("ZoneCanvas").transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "" + zoneCollider.Length/2;
+        scoreZoneTxt.text = "" + zoneCollider.Length/2;
     }
 
     void FixedUpdate()

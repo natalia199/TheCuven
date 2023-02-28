@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7963278384204114241
+--- !u!1 &4319895241549984817
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7963278384204114247}
-  - component: {fileID: 7963278384204114245}
-  - component: {fileID: 7963278384204114242}
-  - component: {fileID: 4130822563309893853}
-  m_Layer: 0
-  m_Name: Obstacle
-  m_TagString: SlothObstacle
+  - component: {fileID: 4319895241549984816}
+  - component: {fileID: 4319895241549984813}
+  - component: {fileID: 4319895241549984814}
+  - component: {fileID: 4319895241549984815}
+  - component: {fileID: 3287181190828448056}
+  - component: {fileID: 1767080793317363818}
+  - component: {fileID: 2685929090120803110}
+  m_Layer: 10
+  m_Name: Coin chip 1
+  m_TagString: Chip
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7963278384204114247
+--- !u!4 &4319895241549984816
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384204114241}
+  m_GameObject: {fileID: 4319895241549984817}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3624, y: 0.5945786, z: 1.3624}
+  m_LocalScale: {x: 1.3318875, y: 0.076518625, z: 1.331887}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7963278384575087755}
+  m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &7963278384204114245
+--- !u!33 &4319895241549984813
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384204114241}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &7963278384204114242
+  m_GameObject: {fileID: 4319895241549984817}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4319895241549984814
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384204114241}
+  m_GameObject: {fileID: 4319895241549984817}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -62,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b56a40ac6992974b8aac0882a4c7555, type: 2}
+  - {fileID: 2100000, guid: 831e4ea6beda02947bdca5aeb8543156, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -84,76 +87,60 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4130822563309893853
-BoxCollider:
+--- !u!64 &4319895241549984815
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384204114241}
+  m_GameObject: {fileID: 4319895241549984817}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &7963278384575087752
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7963278384575087755}
-  - component: {fileID: 8896015672238964073}
-  - component: {fileID: 5182883301323483916}
-  m_Layer: 0
-  m_Name: ObstacleSource
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7963278384575087755
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384575087752}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7963278384204114247}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8896015672238964073
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &3287181190828448056
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384575087752}
+  m_GameObject: {fileID: 4319895241549984817}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84543a20030ce7440aba4d8bbea9e85b, type: 3}
+  m_Script: {fileID: 11500000, guid: fc7c5300624012640a3a186d46e0e438, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trapSet: 0
---- !u!65 &5182883301323483916
-BoxCollider:
+  Available: 1
+--- !u!136 &1767080793317363818
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7963278384575087752}
+  m_GameObject: {fileID: 4319895241549984817}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
+  m_Radius: 0.58054936
+  m_Height: 22.96075
+  m_Direction: 1
+  m_Center: {x: 0.00000008950403, y: 0, z: -0.00000007878182}
+--- !u!54 &2685929090120803110
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319895241549984817}
   serializedVersion: 2
-  m_Size: {x: 0.24822631, y: 0.60663044, z: 0.2044525}
-  m_Center: {x: 0.004196763, y: -0.0041731, z: -0.0035231635}
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

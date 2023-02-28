@@ -24,6 +24,7 @@ public class WrathGameplayManager : MonoBehaviour
     public GameObject singlePlayerPlatform;
     public GameObject multiPlayerPlatform;
     public GameObject boxScoreTxt;
+    public bool noMoreBoxesNeeded = false;
 
     void Start()
     {
@@ -44,7 +45,7 @@ public class WrathGameplayManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && AmountOfBoxes > TrackBoxes)
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && AmountOfBoxes > TrackBoxes && !noMoreBoxesNeeded)
         {
             // Instantiation
             for (int i = 0; i < (AmountOfBoxes-TrackBoxes); i++)
@@ -57,7 +58,6 @@ public class WrathGameplayManager : MonoBehaviour
                 TrackBoxes++;
             }
         }
-
 
         lava.transform.Rotate(0, 6 * rotationsPerMinute * Time.deltaTime, 0);
 

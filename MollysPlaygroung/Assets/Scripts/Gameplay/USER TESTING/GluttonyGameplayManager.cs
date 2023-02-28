@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
 
 public class GluttonyGameplayManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GluttonyGameplayManager : MonoBehaviour
     public GameObject FoodParent;
 
     public int AmountOfFood;
+    public int AmountOfFoodSP;
 
     public Vector2 foodPosition;
     public bool foodReady = true;
@@ -20,57 +22,130 @@ public class GluttonyGameplayManager : MonoBehaviour
     public bool vomitedFoodReady = true;
 
     public float force;
+    public bool noMoreFoodNeeded = false;
+    public int foodInstantiationTracker;
 
     void Start()
     {
-        
     }
 
 
     void Update()
     {
-        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
             try
             {
-                LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muchies: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+                LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munchies: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies;
             }
             catch (NullReferenceException e)
             {
-                break;
+                // error
+            }
+
+            // Instantiation
+            if (AmountOfFoodSP >= FoodParent.transform.childCount && !noMoreFoodNeeded)
+            {
+                addFood(null);
+            }
+
+            if (FoodParent.transform.childCount == AmountOfFoodSP)
+            {
+                noMoreFoodNeeded = true;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            {
+                try
+                {
+                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muchies: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+                }
+                catch (NullReferenceException e)
+                {
+                    break;
+                    // error
+                }
+            }
+
+            try
+            {
+                // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
+                if (foodReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood != null && AmountOfFood != FoodParent.transform.childCount)
+                {
+                    addFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood);
+                    foodReady = false;
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                // error
+            }
+
+            try
+            {
+                if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood != null)
+                {
+                    //addVomitedFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood);
+                    //vomitedFoodReady = false;
+                }
+            }
+            catch (NullReferenceException e)
+            {
                 // error
             }
         }
+    }
 
-        try
-        {
-            // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
-            if (foodReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood != null && AmountOfFood != FoodParent.transform.childCount)
-            {
-                addFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood);
-                foodReady = false;
-            }
-        }
-        catch (NullReferenceException e)
-        {
-            // error
-        }
+    public void addFood(GameObject food)
+    {
+        Debug.Log("food instant");
 
-        try
+        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
-            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood != null)
-            {
-                addVomitedFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood);
-                //vomitedFoodReady = false;
-            }
+            foodInstantiationTracker++;
+            food.AddComponent<Rigidbody>();
+            FoodInstantiation();
         }
-        catch (NullReferenceException e)
+        else
         {
-            // error
+            StartCoroutine("FoodLifeTimeSP", 0);
         }
     }
 
+    // BEAR TRAPS
+    public void FoodInstantiation()
+    {
+        StartCoroutine("FoodLifeTime", 0);
+    }
+
+    IEnumerator FoodLifeTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood = null;
+        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateFoodOnce = false;
+        foodReady = true;
+    }
+
+    IEnumerator FoodLifeTimeSP(float time)
+    {
+        float xPos = UnityEngine.Random.Range(FoodSpawnPoints[0].position.x, FoodSpawnPoints[2].position.x);
+        float zPos = UnityEngine.Random.Range(FoodSpawnPoints[0].position.z, FoodSpawnPoints[1].position.z);
+        Vector3 posy = new Vector3(xPos, 12, zPos);
+
+        GameObject food = Instantiate(FoodPrefab, posy, Quaternion.identity, FoodParent.transform);
+
+        yield return new WaitForSeconds(time);
+
+        food.AddComponent<Rigidbody>();
+    }
+
+
+    /*
     public void addFood(GameObject food)
     {
         food.AddComponent<Rigidbody>();
@@ -101,6 +176,7 @@ public class GluttonyGameplayManager : MonoBehaviour
     {
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood = null;
     }
+    */
 
     /*
     public void VomittedFood(Vector3 playerPos)

@@ -2829,54 +2829,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.73735905, y: 1.2803237, z: 1.1196727}
   m_Center: {x: -0.0038237195, y: 0.14016058, z: -0.05983632}
---- !u!1 &1081329457
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1081329459}
-  - component: {fileID: 1081329458}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1081329458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081329457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a983bc733c42024eb246e33f9c3dfc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resultSlots: {fileID: 747468719}
-  timeRemaining: 20
-  timerIsRunning: 0
-  timeText: {fileID: 2045461652}
---- !u!4 &1081329459
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081329457}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.02, y: 3.8, z: 0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1093973757
 GameObject:
   m_ObjectHideFlags: 0
@@ -6323,6 +6275,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2009319861}
   - component: {fileID: 2009319860}
+  - component: {fileID: 2009319862}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6369,6 +6322,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2009319862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009319859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a983bc733c42024eb246e33f9c3dfc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resultSlots: {fileID: 747468719}
+  timeRemaining: 0
+  timerIsRunning: 0
+  timeText: {fileID: 2045461652}
 --- !u!1 &2045461651
 GameObject:
   m_ObjectHideFlags: 0

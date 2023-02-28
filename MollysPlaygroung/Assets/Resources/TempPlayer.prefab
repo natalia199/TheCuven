@@ -203,12 +203,17 @@ MonoBehaviour:
   speed: 5
   speedModifier: 1
   jumpForce: 8
-  throwForce: 400
+  chipAccess: 0
+  throwForce: 200
+  collectionTracker: 0
+  totalChipCollection: 0
+  diceRollValue: 0
   interactedChip: {fileID: 0}
   chipPosition: {x: 0, y: 0, z: 0}
   chipRotation: {x: 0, y: 0, z: 0, w: 0}
   theChip: {fileID: 0}
   instantiateChipOnce: 0
+  oneChipAtATimeCarry: 0
   carriedChip: {fileID: 0}
   throwChipAcces: 0
   horseName: 
@@ -221,7 +226,11 @@ MonoBehaviour:
   instantiateFoodOnce: 0
   interactedFood: {fileID: 0}
   gotPunched: 0
-  lifeSource: 100
+  foodInstanitationTracker: 0
+  withinTheLight: 0
+  lifeFullyDone: 0
+  lifeMax: 100
+  lifeSource: 0
   interactedBearTrap: {fileID: 0}
   trapHeight: 0
   lifeDropSpeed: 1
@@ -244,6 +253,7 @@ MonoBehaviour:
   plateMoving: 0
   boxThrowForce: 200
   boxScore: 0
+  playerNumber: -1
 --- !u!65 &4520304863189634621
 BoxCollider:
   m_ObjectHideFlags: 0
