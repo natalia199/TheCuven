@@ -75,7 +75,9 @@ public class SceneManage : MonoBehaviour
 
             if (sceneTracker == levelNames.Length)
             {
+
                 PhotonNetwork.LoadLevel("Game Ending");
+
             }
             else
             {
@@ -90,7 +92,6 @@ public class SceneManage : MonoBehaviour
 
             StartCoroutine("LevelTransition", 3);
         }
-
     }
 
     IEnumerator BeginGame(int value)

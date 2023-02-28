@@ -52,7 +52,23 @@ public class TempLevelTimer : MonoBehaviour
 
                     if (SceneManager.GetActiveScene().name == "Envy")
                     {
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+                        int index = -1;
+
+                        for (int j = 0; j < GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count; j++)
+                        {
+                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults[j].name)
+                            {
+                                index = j + 1;
+                                break;
+                            }
+                        }
+
+                        if(index == -1)
+                        {
+                            index = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count;
+                        }
+
+                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
                     }
                     else if (SceneManager.GetActiveScene().name == "Gluttony")
                     {

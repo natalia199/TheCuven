@@ -471,6 +471,48 @@ public class PlayerUserTest : MonoBehaviour
                             view.RPC("stopHorsey", RpcTarget.AllBufferedViaServer, horseName);
                             view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
                         }
+
+                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                        {
+                            if ((GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
+                            {
+                                GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (squirtGun != null)
+                        {
+                            // Move Horse
+                            if (Input.GetKey(KeyCode.P))
+                            {
+                                if (squirtAccess && squirtGun != null)
+                                {
+                                    SquirtTheGun(squirtGun);
+
+                                    if (squirtGun.transform.GetChild(0).GetChild(0).GetComponent<EnvyBullseye>().Bullseye)
+                                    {
+                                        moveHorseySP(squirtGun);
+                                    }
+                                }
+                                else
+                                {
+                                    stopHorseySP(squirtGun);
+                                    DesquirtTheGun(squirtGun);
+                                }
+                            }
+                            else
+                            {
+                                stopHorseySP(squirtGun);
+                                DesquirtTheGun(squirtGun);
+                            }
+                        }
+
+                        if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
+                        {
+                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                        }
                     }
                 }
                 else if (SceneManager.GetActiveScene().name == "Wrath")
@@ -1152,6 +1194,16 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
+    void moveHorseySP(GameObject gun)
+    {
+        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().MoveHorseForwardSP(gun);
+    }
+    void stopHorseySP(GameObject gun)
+    {
+        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().StopHorseForwardSP(gun);
+    }
+
     [PunRPC]
     void increaseSquirt(string pName)
     {
@@ -1164,6 +1216,12 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
+    void SquirtTheGun(GameObject gun)
+    {
+        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().squirtWateSP(gun);
+    }
+
     [PunRPC]
     void decreaseSquirt(string pName)
     {
@@ -1176,7 +1234,13 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
-    
+
+    void DesquirtTheGun(GameObject gun)
+    {
+        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().desquirtWaterSP(gun);
+    }
+
+
     // LUST
     [PunRPC]
     void setPianoKey(int x)

@@ -7,6 +7,8 @@ public class EnvySquirter : MonoBehaviour
     public bool squirterActivated = false;
     public float squirtTime;
 
+    public string correlatingHorse;
+
     void Start()
     {
         
