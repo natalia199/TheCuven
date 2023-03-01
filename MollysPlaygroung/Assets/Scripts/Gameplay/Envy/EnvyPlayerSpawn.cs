@@ -6,6 +6,8 @@ using Photon.Pun;
 public class EnvyPlayerSpawn : MonoBehaviour
 {
     public GameObject playerPrefab;
+    public GameObject singlePlayerSpawn;
+    public GameObject singlePlayerSpawnPost;
 
     void Awake()
     {
@@ -19,6 +21,15 @@ public class EnvyPlayerSpawn : MonoBehaviour
         }
         */
 
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), Quaternion.identity);
+        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), Quaternion.identity);
+        }
+        else
+        {
+            GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, singlePlayerSpawn.transform.position, Quaternion.identity);
+            player.GetComponent<PhotonTransformViewClassic>().m_PositionModel.SynchronizeEnabled = false;
+            player.GetComponent<PhotonTransformViewClassic>().m_RotationModel.SynchronizeEnabled = false;
+        }
     }
 }

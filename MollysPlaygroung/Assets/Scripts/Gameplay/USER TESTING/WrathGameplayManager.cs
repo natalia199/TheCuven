@@ -26,6 +26,8 @@ public class WrathGameplayManager : MonoBehaviour
     public GameObject boxScoreTxt;
     public bool noMoreBoxesNeeded = false;
 
+    public List<GameObject> wrathResults = new List<GameObject>();
+
     void Start()
     {
         plateState = wrathPlate.GetComponent<PlatformShakeWrath>().newTilt;
@@ -45,17 +47,19 @@ public class WrathGameplayManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && AmountOfBoxes > TrackBoxes && !noMoreBoxesNeeded)
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
-            // Instantiation
-            for (int i = 0; i < (AmountOfBoxes-TrackBoxes); i++)
-            {
-                float xPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.x, BoxpawnPoints[2].position.x);
-                float zPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.z, BoxpawnPoints[1].position.z);
-                Vector3 posy = new Vector3(xPos, 5, zPos);
+            if (AmountOfBoxes > TrackBoxes && !noMoreBoxesNeeded) {
+                // Instantiation
+                for (int i = 0; i < (AmountOfBoxes - TrackBoxes); i++)
+                {
+                    float xPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.x, BoxpawnPoints[2].position.x);
+                    float zPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.z, BoxpawnPoints[1].position.z);
+                    Vector3 posy = new Vector3(xPos, 5, zPos);
 
-                Instantiate(boxPrefab, posy, Quaternion.identity, boxParent.transform);
-                TrackBoxes++;
+                    Instantiate(boxPrefab, posy, Quaternion.identity, boxParent.transform);
+                    TrackBoxes++;
+                }
             }
         }
 
@@ -70,5 +74,10 @@ public class WrathGameplayManager : MonoBehaviour
         plateState = false;
         wrathPlate.GetComponent<PlatformShakeWrath>().setVars(dir);
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().plateMoving = false;
+    }
+
+    public void RecordWrathResults(GameObject player)
+    {
+        wrathResults.Add(player);
     }
 }

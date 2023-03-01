@@ -88,7 +88,23 @@ public class TempLevelTimer : MonoBehaviour
                     }
                     else if (SceneManager.GetActiveScene().name == "Wrath")
                     {
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Boxes: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().boxScore;
+                        int index = -1;
+
+                        for (int j = 0; j < GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count; j++)
+                        {
+                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults[j].name)
+                            {
+                                index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count + j;
+                                break;
+                            }
+                        }
+
+                        if (index == -1)
+                        {
+                            index = 1;
+                        }
+
+                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
                     }
                 }
                 catch (NullReferenceException e)

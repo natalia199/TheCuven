@@ -22,13 +22,11 @@ public class GreedGameplayManager : MonoBehaviour
     public bool chipReady = true;
 
     public int chipTracker;
+    public int startingAmountOfChips;
 
     void Start()
     {
-        chipZones[0].SetActive(false);
-        chipZones[1].SetActive(false);
-        chipZones[2].SetActive(false);
-        chipZones[3].SetActive(false);
+        startingAmountOfChips = ChipParent.transform.childCount;
 
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
@@ -37,13 +35,7 @@ public class GreedGameplayManager : MonoBehaviour
             chipZones[2].SetActive(false);
             chipZones[3].SetActive(false);
         }
-        else
-        {
-            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-            {
-                chipZones[i].SetActive(true);
-            }
-        }
+        
     }
 
     void Update()
@@ -86,18 +78,7 @@ public class GreedGameplayManager : MonoBehaviour
                     }
                 }
 
-                /*
-                try
-                {
-                    // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
-                    if (chipReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip != null && AmountOfChips != ChipParent.transform.childCount)
-                    {
-                        addChip(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip);
-                        chipReady = false;
-                    }
-                }
-                catch (NullReferenceException e) { }
-                */
+                chipTracker = chipZones[0].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[1].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[2].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[3].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone;
             }
         }
     } 

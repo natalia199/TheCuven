@@ -102,6 +102,8 @@ public class SceneManage : MonoBehaviour
 
         yield return new WaitForSeconds(value);
 
+        GameplayDone = false;
+
         PhotonNetwork.LoadLevel(levelNames[0]);
     }
 
@@ -110,6 +112,8 @@ public class SceneManage : MonoBehaviour
         PhotonNetwork.LoadLevel("Game Level Transition");
 
         yield return new WaitForSeconds(value);
+
+        GameplayDone = false;
 
         PhotonNetwork.LoadLevel(levelNames[sceneTracker]);
     }

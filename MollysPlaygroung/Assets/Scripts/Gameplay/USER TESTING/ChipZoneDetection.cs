@@ -12,6 +12,8 @@ public class ChipZoneDetection : MonoBehaviour
 
     public TextMeshProUGUI scoreZoneTxt;
 
+    public int chipsInZone;
+
     void Start()
     {
         m_Started = true;
@@ -19,6 +21,8 @@ public class ChipZoneDetection : MonoBehaviour
 
     void Update()
     {
+        chipsInZone = zoneCollider.Length / 2;
+
         scoreZoneTxt.text = "" + zoneCollider.Length/2;
     }
 

@@ -43,8 +43,11 @@ public class PlayerUserTest : MonoBehaviour
     public GameObject carriedChip = null;
     public bool throwChipAcces = false;
 
+    public string bucketName;
+    public string bucketNameInteracted;
+
     // ENVY
-    bool squirtAccess = false;
+    public bool squirtAccess = false;
     public string horseName;
     public string squirtGunName;
     public GameObject squirtGun;
@@ -111,6 +114,9 @@ public class PlayerUserTest : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         view = GetComponent<PhotonView>();
 
+        resetAllValues();
+
+
         for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
             if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
@@ -119,7 +125,6 @@ public class PlayerUserTest : MonoBehaviour
             }
         }
 
-
         if (SceneManager.GetActiveScene().name == "Greed")
         {
             CameraOptions.Add(GameObject.Find("Dice_MainCamera"));
@@ -127,6 +132,18 @@ public class PlayerUserTest : MonoBehaviour
 
             theChip = null;
             interactedChip = null;
+
+
+            if (view.IsMine)
+            {
+                for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        bucketName = "Bucket" + i;
+                    }
+                }
+            }
         }
         else if (SceneManager.GetActiveScene().name == "Envy")
         {
@@ -152,6 +169,15 @@ public class PlayerUserTest : MonoBehaviour
         {
             transform.GetChild(1).gameObject.SetActive(true);
         }
+
+        if (view.IsMine)
+        {
+
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+            {
+                transform.position = GameObject.Find("PlayerSpawn").GetComponent<EnvyPlayerSpawn>().singlePlayerSpawnPost.transform.position;
+            }
+        }
     }
 
     void FixedUpdate()
@@ -172,34 +198,6 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     // Single player: quickly collect as many chips as possible before the time runs out
                     // Multi player: collect the most chips before the time runs out
-
-                    /*
-                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-                    {
-                        if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform.childCount)
-                        {
-                            noMoreChipsNeeded = true;
-                        }
-
-                        // Instantiation
-                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                        {
-                            if (!noMoreChipsNeeded && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipReady && theChip == null && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips != GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform.childCount)
-                            {
-                                if (!instantiateChipOnce)
-                                {
-                                    float xPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipSpawnPoints[0].position.x, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipSpawnPoints[2].position.x);
-                                    float zPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipSpawnPoints[0].position.z, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipSpawnPoints[1].position.z);
-                                    chipPosition = new Vector3(xPos, 12, zPos);
-                                    chipRotation = new Quaternion(UnityEngine.Random.Range(15, -15), 0, UnityEngine.Random.Range(15, -15), GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipPrefab.transform.rotation.w);
-                                    instantiateChipOnce = true;
-                                }
-
-                                view.RPC("setChipPosition", RpcTarget.AllBufferedViaServer, view.Owner.NickName, chipPosition, chipRotation);
-                            }
-                        }
-                    }
-                    */
 
                     // Dice Roll baby
                     if (!cameraSwitch)
@@ -260,16 +258,24 @@ public class PlayerUserTest : MonoBehaviour
                             // Disposing chip
                             else if (Input.GetKeyDown(KeyCode.O))
                             {
-                                if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces)
+                                if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
                                 {
-                                    throwChipAcces = true;
-                                    view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber);
+                                    if (bucketName == bucketNameInteracted)
+                                    {
+                                        throwChipAcces = true;
+                                        view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber);
+                                    }
                                 }
                             }
                             else
                             {
                                 oneChipAtATimeCarry = false;
                                 throwChipAcces = false;
+                            }
+
+                            if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
+                            {
+                                GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
                             }
                         }
                         else
@@ -469,7 +475,7 @@ public class PlayerUserTest : MonoBehaviour
                             collectedFoodies++;
                         }
 
-                        if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0)
+                        if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0 && GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().noMoreFoodNeeded)
                         {
                             GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
                         }
@@ -519,13 +525,13 @@ public class PlayerUserTest : MonoBehaviour
                             view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
                         }
 
-                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                        {
-                            if ((GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
+                        //if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                        //{
+                            if ((GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
                             {
                                 GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
                             }
-                        }
+                        //}
                     }
                     else
                     {
@@ -534,7 +540,7 @@ public class PlayerUserTest : MonoBehaviour
                             // Move Horse
                             if (Input.GetKey(KeyCode.P))
                             {
-                                if (squirtAccess && squirtGun != null)
+                                if (squirtAccess)
                                 {
                                     SquirtTheGun(squirtGun);
 
@@ -586,7 +592,7 @@ public class PlayerUserTest : MonoBehaviour
                         }
 
                         // Game over
-                        if (boxScore == 10)
+                        if (GameObject.Find("GameManager").GetComponent <WrathGameplayManager>().boxParent.transform.childCount == 0 && boxScore > 1)
                         {
                             GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
                         }
@@ -617,7 +623,12 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (fellOffPlatform)
                         {
-                            GameObject.Find("EndingResult").GetComponent<TempLevelTimer>().CallGameEnd();
+                            view.RPC("fellOffWrathPlatform", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                        }
+
+                        if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
+                        {
+                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
                         }
                     }
                 }
@@ -716,7 +727,6 @@ public class PlayerUserTest : MonoBehaviour
                         }
                     }
                 }
-
             }
 
             if (!freezePlayer)
@@ -821,6 +831,19 @@ public class PlayerUserTest : MonoBehaviour
         try
         {
             GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().shakePlateVariables(dir);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void fellOffWrathPlatform(string pName)
+    {
+        try
+        {
+            GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(pName).gameObject);
         }
         catch (NullReferenceException e)
         {
@@ -1369,6 +1392,12 @@ public class PlayerUserTest : MonoBehaviour
             interactedChip = other.gameObject;
         }
 
+        // ENVY
+        if (other.tag == "Squirter")
+        {
+            squirtAccess = true;
+            squirtGun = other.gameObject;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -1378,14 +1407,10 @@ public class PlayerUserTest : MonoBehaviour
         if (other.tag == "ChipZone")
         {
             throwAccess = true;
+            bucketNameInteracted = other.transform.parent.name;
         }
 
-        // ENVY
-        if (other.tag == "Squirter")
-        {
-            squirtGun = other.gameObject;
-            squirtAccess = true;
-        }
+        
 
         // GLUTTONY
         if (other.tag == "Food")
@@ -1453,6 +1478,7 @@ public class PlayerUserTest : MonoBehaviour
         if (other.tag == "ChipZone")
         {
             throwAccess = false;
+            bucketNameInteracted = null;
         }
 
         // ENVY
@@ -1475,5 +1501,82 @@ public class PlayerUserTest : MonoBehaviour
             interactedBearTrap = null;
         }
         */
+    }
+
+    void resetAllValues()
+    {
+        // GREED
+        cameraSwitch = false;
+        chipAccess = false;
+        throwAccess = false;
+        collectionTracker = 0;
+        thrownTracker = 0;
+        totalChipCollection = 0;
+        diceRollValue = 0;
+        interactedChip = null;
+        collectedChipies = new List<GameObject>();
+        CameraOptions = new List<GameObject>();
+
+        theChip = null;
+        instantiateChipOnce = false;
+
+        noMoreChipsNeeded = false;
+        oneChipAtATimeThorw = false;
+        oneChipAtATimeCarry = false;
+
+        carriedChip = null;
+        throwChipAcces = false;
+
+        bucketNameInteracted = null;
+
+        // ENVY
+        squirtAccess = false;
+        squirtGunName = null;
+        squirtGun = null;
+
+        // GLUTTONY
+        eatFood = false;
+        vomit = false;
+        collectedFoodies = 0;
+        theFood = null;
+        theVomittedFood = null;
+        instantiateFoodOnce = false;
+        interactedFood = null;
+        gotPunched = false;
+        foodInstanitationTracker = 0;
+
+        // SLOTH
+        withinTheLight = false;
+        pauseForDecrease = false;
+        gotBearTrapped = false;
+        lifeFullyDone = false;
+        interactedBearTrap = null;
+        freezePlayer = false;
+
+        theLight = null;
+        instantiateLightOnce = false;
+
+        theTrap = null;
+        instantiateTrapOnce = false;
+
+        // LUST
+        hitKeys = 0;
+        selectedKey = 0;
+        resetPosition = true;
+        readyForNewKey = true;
+        hitKeyScore = false;
+        landedOnFloor = false;
+
+        // WRATH
+        directionIndex = 0;
+        directionChosen = false;
+        pickUpBox = false;
+        interactedBox = null;
+        carriedBox = null;
+        plateMoving = false;
+        boxScore = 0;
+        fellOffPlatform = false;
+
+        playerNumber = -1;
     }
 }
