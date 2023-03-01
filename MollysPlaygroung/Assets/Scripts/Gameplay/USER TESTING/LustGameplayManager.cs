@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using Photon.Pun;
 
 public class LustGameplayManager : MonoBehaviour
 {
@@ -12,22 +13,43 @@ public class LustGameplayManager : MonoBehaviour
     public bool newKey = true;
     public int chosenKey;
 
+    bool breakLoop = false;
+    bool readyForNewKey = false;
+
+    public int maxKeys;
+    public int keyAmountTracker;
+
     void Start()
     {
     }
 
     void Update()
     {
-        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+        {
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            {
+                try
+                {
+                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys;
+                }
+                catch (NullReferenceException e)
+                {
+                    break;
+                    // error
+                }
+            }
+        }
+        else
         {
             try
             {
-                LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys;
+                LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().hitKeys;
             }
             catch (NullReferenceException e)
             {
-                break;
                 // error
             }
         }
@@ -43,8 +65,10 @@ public class LustGameplayManager : MonoBehaviour
     IEnumerator NewKeyPick(float time)
     {
         pianoKeys[chosenKey].GetComponent<LustPianoKey>().selectedKey();
-        
+
         yield return new WaitForSeconds(time);
+
+        keyAmountTracker++;
 
         pianoKeys[chosenKey].GetComponent<LustPianoKey>().deselectedKey();
 

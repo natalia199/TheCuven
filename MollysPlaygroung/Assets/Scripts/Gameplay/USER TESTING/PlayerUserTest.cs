@@ -148,6 +148,10 @@ public class PlayerUserTest : MonoBehaviour
             withinTheLight = false;
             pauseForDecrease = false;
         }
+        else if (SceneManager.GetActiveScene().name == "Wrath")
+        {
+            transform.GetChild(1).gameObject.SetActive(true);
+        }
     }
 
     void FixedUpdate()
@@ -306,7 +310,47 @@ public class PlayerUserTest : MonoBehaviour
                     // Single player: get as many correct keys as possible
                     // Multi player: get the most correct keys
 
-                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+                    {
+                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                        {
+                            if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
+                            {
+                                if (readyForNewKey)
+                                {
+                                    int i = UnityEngine.Random.Range(0, 4);
+
+                                    // if index was already chosen or the key is being pressed on already don't do anything
+                                    if (i == selectedKey || GameObject.Find("GameManager").GetComponent<LustGameplayManager>().pianoKeys[i].GetComponent<LustPianoKey>().keyPressed)
+                                    {
+                                        readyForNewKey = true;
+                                    }
+                                    else
+                                    {
+                                        readyForNewKey = false;
+                                        selectedKey = i;
+                                    }
+                                }
+                                else
+                                {
+                                    view.RPC("setPianoKey", RpcTarget.AllBufferedViaServer, selectedKey);
+                                }
+                            }
+                        }
+
+                        if (hitKeyScore)
+                        {
+                            hitKeys++;
+                            hitKeyScore = false;
+                            view.RPC("keyScoreDisplay", RpcTarget.AllBufferedViaServer, view.Owner.NickName, hitKeys);
+                        }
+
+                        if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
+                        {
+                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                        }
+                    }
+                    else
                     {
                         if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
                         {
@@ -327,18 +371,21 @@ public class PlayerUserTest : MonoBehaviour
                             }
                             else
                             {
-                                view.RPC("setPianoKey", RpcTarget.AllBufferedViaServer, selectedKey);
+                                setPianoKeySP(selectedKey);
                             }
                         }
-                    }
 
-                    if (hitKeyScore)
-                    {
-                        hitKeys++;
-                        hitKeyScore = false;
-                        view.RPC("keyScoreDisplay", RpcTarget.AllBufferedViaServer, view.Owner.NickName, hitKeys);
-                    }
+                        if (hitKeyScore)
+                        {
+                            hitKeys++;
+                            hitKeyScore = false;
+                        }
 
+                        if (hitKeys == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
+                        {
+                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                        }
+                    }
                 }
                 else if (SceneManager.GetActiveScene().name == "Gluttony")
                 {
@@ -1257,6 +1304,22 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
+    void setPianoKeySP(int x)
+    {
+        try
+        {
+            if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
+            {
+                GameObject.Find("GameManager").GetComponent<LustGameplayManager>().NewKey(x);
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
     [PunRPC]
     void resettingPianoPos(string pName, bool x)
     {
@@ -1281,7 +1344,6 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
-
 
     public void OnToTheNextLevel()
     {
