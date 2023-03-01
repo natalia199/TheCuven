@@ -42,7 +42,7 @@ public class SceneManage : MonoBehaviour
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
-
+        SingleOrMultiPlayer = false;
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine("BeginGame", 3);
@@ -71,6 +71,7 @@ public class SceneManage : MonoBehaviour
         if (SingleOrMultiPlayer)
         {
             SingleOrMultiPlayer = !SingleOrMultiPlayer;
+
             sceneTracker++;
 
             if (sceneTracker == levelNames.Length)
@@ -81,16 +82,29 @@ public class SceneManage : MonoBehaviour
             }
             else
             {
-                StartCoroutine("LevelTransition", 3);
+
+                PhotonNetwork.LoadLevel("Game Level Transition");
+                //StartCoroutine("LevelTransition", 3);
             }
         }
         // finish single player
         else
         {
             SingleOrMultiPlayer = !SingleOrMultiPlayer;
+
             CurrentLevelState = false;
 
-            StartCoroutine("LevelTransition", 3);
+            PhotonNetwork.LoadLevel("Game Level Transition");
+           //StartCoroutine("LevelTransition", 3);
+        }
+    }
+
+
+    public void NextSceneButton()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel(levelNames[sceneTracker]);
         }
     }
 
@@ -99,21 +113,15 @@ public class SceneManage : MonoBehaviour
         yield return new WaitForSeconds(value);
 
         PhotonNetwork.LoadLevel("Game Level Transition");
-
-        yield return new WaitForSeconds(value);
-
-        GameplayDone = false;
-
-        PhotonNetwork.LoadLevel(levelNames[0]);
     }
 
     IEnumerator LevelTransition(int value)
     {
         PhotonNetwork.LoadLevel("Game Level Transition");
 
-        yield return new WaitForSeconds(value);
-
         GameplayDone = false;
+
+        yield return new WaitForSeconds(value);
 
         PhotonNetwork.LoadLevel(levelNames[sceneTracker]);
     }

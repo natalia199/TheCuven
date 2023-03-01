@@ -14,7 +14,7 @@ public class GluttonyGameplayManager : MonoBehaviour
     public GameObject FoodParent;
 
     public int AmountOfFood;
-    public int AmountOfFoodSP;
+    //public int AmountOfFoodSP;
 
     public Vector2 foodPosition;
     public bool foodReady = true;
@@ -25,8 +25,12 @@ public class GluttonyGameplayManager : MonoBehaviour
     public bool noMoreFoodNeeded = false;
     public int foodInstantiationTracker;
 
+    public int singlePlayerFinishedState;
+
     void Start()
     {
+        foodInstantiationTracker = FoodParent.transform.childCount;
+        singlePlayerFinishedState = 0;
     }
 
 
@@ -37,13 +41,14 @@ public class GluttonyGameplayManager : MonoBehaviour
             try
             {
                 LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munchies: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies;
+                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munchies: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
             }
             catch (NullReferenceException e)
             {
                 // error
             }
 
+            /*
             // Instantiation
             if (AmountOfFoodSP >= FoodParent.transform.childCount && !noMoreFoodNeeded)
             {
@@ -54,6 +59,7 @@ public class GluttonyGameplayManager : MonoBehaviour
             {
                 noMoreFoodNeeded = true;
             }
+            */
         }
         else
         {
@@ -62,7 +68,7 @@ public class GluttonyGameplayManager : MonoBehaviour
                 try
                 {
                     LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muchies: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muchies: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
                 }
                 catch (NullReferenceException e)
                 {
@@ -71,6 +77,7 @@ public class GluttonyGameplayManager : MonoBehaviour
                 }
             }
 
+            /*
             try
             {
                 // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
@@ -97,6 +104,7 @@ public class GluttonyGameplayManager : MonoBehaviour
             {
                 // error
             }
+            */
         }
     }
 
@@ -142,6 +150,11 @@ public class GluttonyGameplayManager : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         food.AddComponent<Rigidbody>();
+    }
+
+    public void incSinglePlayerState()
+    {
+        singlePlayerFinishedState++;
     }
 
 

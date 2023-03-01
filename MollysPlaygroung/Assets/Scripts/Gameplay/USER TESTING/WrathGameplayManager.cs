@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Photon.Pun;
+using System;
 
 public class WrathGameplayManager : MonoBehaviour
 {
@@ -27,6 +29,7 @@ public class WrathGameplayManager : MonoBehaviour
     public bool noMoreBoxesNeeded = false;
 
     public List<GameObject> wrathResults = new List<GameObject>();
+    public List<GameObject> LifeSlots = new List<GameObject>();
 
     void Start()
     {
@@ -42,6 +45,46 @@ public class WrathGameplayManager : MonoBehaviour
             boxScoreTxt.SetActive(false);
             singlePlayerPlatform.SetActive(false);
             multiPlayerPlatform.SetActive(true);
+        }
+    }
+
+    void Update()
+    {
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
+        {
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+            {
+                try
+                {
+                    LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().boxScore + "/" + AmountOfBoxes;
+                }
+                catch (NullReferenceException e)
+                {
+                    // error
+                }
+            }
+        }
+
+        else
+        {
+            // Life display
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            {
+                try
+                {
+                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+
+                    if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().fellOffPlatform)
+                    {
+                        LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Finished";
+                    }
+                }
+                catch (NullReferenceException e)
+                {
+                    break;
+                }
+            }
         }
     }
 

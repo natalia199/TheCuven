@@ -14,6 +14,9 @@ public class TempLevelTimer : MonoBehaviour
     public bool timerIsRunning = false;
     public TextMeshProUGUI timeText;
 
+    public TextMeshProUGUI waitingMsg;
+
+
     void Start()
     {
         // Starts the timer automatically
@@ -26,14 +29,27 @@ public class TempLevelTimer : MonoBehaviour
         {
             timeText.text = "" + Mathf.FloorToInt(timeRemaining);
             timeRemaining += Time.deltaTime;
-        }        
+        }
+
+
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && !timerIsRunning)
+        {
+            if (GetComponent<GluttonyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+            {
+                waitingMsg.text = "Entering Multiplayer!";
+            }
+            else
+            {
+                waitingMsg.text = "Waiting for other player to finish...";
+            }
+        }
     }
 
     public void CallGameEnd()
     {
         timerIsRunning = false;
 
-        StartCoroutine("DisplayerFinalResults", 10);
+        StartCoroutine("DisplayerFinalResults", 5);
     }
 
     IEnumerator DisplayerFinalResults(float time)
@@ -63,7 +79,7 @@ public class TempLevelTimer : MonoBehaviour
                             }
                         }
 
-                        if(index == -1)
+                        if (index == -1)
                         {
                             index = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count;
                         }
@@ -106,6 +122,8 @@ public class TempLevelTimer : MonoBehaviour
 
                         resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
                     }
+
+                    waitingMsg.text = "On to the next level...";
                 }
                 catch (NullReferenceException e)
                 {
@@ -113,48 +131,76 @@ public class TempLevelTimer : MonoBehaviour
                     // error
                 }
             }
-        }
-        else
-        {
-            try {
-                resultSlots.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-
-                if (SceneManager.GetActiveScene().name == "Envy")
-                {
-                    resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
-                }
-                else if (SceneManager.GetActiveScene().name == "Gluttony")
-                {
-                    resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munchies: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies;
-                }
-                else if (SceneManager.GetActiveScene().name == "Greed")
-                {
-                    resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chipies : " + GameObject.Find("Bucket" + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2;
-                }
-                else if (SceneManager.GetActiveScene().name == "Sloth")
-                {
-                    resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().lifeSource;
-                }
-                else if (SceneManager.GetActiveScene().name == "Lust")
-                {
-                    resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().hitKeys;
-                }
-                else if (SceneManager.GetActiveScene().name == "Wrath")
-                {
-                    resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Boxes: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().boxScore;
-                }
-            }
-
-            catch (NullReferenceException e)
-            {
-                // error
-            }
-        }
-    
+        }          
 
         yield return new WaitForSeconds(time);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
+    }
+
+
+    public void singlePlayerDisplay()
+    {
+        timerIsRunning = false;
+        resultSlots.SetActive(true);
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
+
+        try
+        {
+            resultSlots.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+
+            if (SceneManager.GetActiveScene().name == "Envy")
+            {
+                removeSlots(GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().LifeSlots);
+
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
+            }
+            else if (SceneManager.GetActiveScene().name == "Gluttony")
+            {
+                removeSlots(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().LifeSlots);
+
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munchies: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies;
+            }
+            else if (SceneManager.GetActiveScene().name == "Greed")
+            {
+                removeSlots(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().LifeSlots);
+
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chipies : " + GameObject.Find("Bucket" + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2;
+            }
+            else if (SceneManager.GetActiveScene().name == "Sloth")
+            {
+                removeSlots(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LifeSlots);
+
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().lifeSource;
+            }
+            else if (SceneManager.GetActiveScene().name == "Lust")
+            {
+                removeSlots(GameObject.Find("GameManager").GetComponent<LustGameplayManager>().LifeSlots);
+
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Keys: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().hitKeys;
+            }
+            else if (SceneManager.GetActiveScene().name == "Wrath")
+            {
+                removeSlots(GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().LifeSlots);
+
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Boxes: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().boxScore;
+            }
+        }
+
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+
+    }
+
+    void removeSlots(List<GameObject> x)
+    {
+        for (int i = 0; i < x.Count; i++)
+        {
+            x[i].SetActive(false);
+        }
     }
 
     void DisplayTime(float timeToDisplay)

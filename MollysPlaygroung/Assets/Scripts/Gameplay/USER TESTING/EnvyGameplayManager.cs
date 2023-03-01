@@ -1,11 +1,16 @@
+using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EnvyGameplayManager : MonoBehaviour
 {
     public List<GameObject> racingHorseys = new List<GameObject>();
     public List<GameObject> horseResults = new List<GameObject>();
+
+    public List<GameObject> LifeSlots = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -16,14 +21,42 @@ public class EnvyGameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
         {
-            if (racingHorseys.Count == horseResults.Count)
-            { 
-                GetComponent<TempLevelTimer>().CallGameEnd();                
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+            {
+                try
+                {
+                    LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = horseResults.Count + "/" + racingHorseys.Count;
+                }
+                catch (NullReferenceException e)
+                {
+                    // error
+                }
             }
-        }*/
+        }
+
+        else
+        {
+            // Life display
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            {
+                try
+                {
+                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+
+                    if (GameObject.Find(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName).GetComponent<EnvyHorse>().finished)
+                    {
+                        LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Finished";
+                    }
+                }
+                catch (NullReferenceException e)
+                {
+                    break;
+                }
+            }
+        }
     }
 
     public void RecordHorseResult(GameObject horse)
