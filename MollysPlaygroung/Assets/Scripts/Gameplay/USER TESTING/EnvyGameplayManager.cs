@@ -12,31 +12,29 @@ public class EnvyGameplayManager : MonoBehaviour
 
     public List<GameObject> LifeSlots = new List<GameObject>();
 
+    public int singlePlayerFinishedState;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        singlePlayerFinishedState = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
-            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+            try
             {
-                try
-                {
-                    LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = horseResults.Count + "/" + racingHorseys.Count;
-                }
-                catch (NullReferenceException e)
-                {
-                    // error
-                }
+                LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = horseResults.Count + "/" + racingHorseys.Count;
+            }
+            catch (NullReferenceException e)
+            {
+                // error
             }
         }
-
         else
         {
             // Life display
@@ -112,5 +110,10 @@ public class EnvyGameplayManager : MonoBehaviour
     public void desquirtWaterSP(GameObject gun)
     {
         gun.transform.GetChild(0).GetComponent<EnvySquirter>().squirterActivated = false;
+    }
+
+    public void incSinglePlayerState()
+    {
+        singlePlayerFinishedState++;
     }
 }

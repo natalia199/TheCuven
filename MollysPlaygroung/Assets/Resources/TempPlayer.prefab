@@ -236,7 +236,7 @@ MonoBehaviour:
   lifeSource: 0
   interactedBearTrap: {fileID: 0}
   trapHeight: 0
-  lifeDropSpeed: 1
+  lifeDropSpeed: 0.2
   lightPosition: {x: 0, y: 0}
   theLight: {fileID: 0}
   instantiateLightOnce: 0
@@ -245,6 +245,7 @@ MonoBehaviour:
   instantiateTrapOnce: 0
   timeRemaining: 0
   timerIsRunning: 0
+  ranOutOfLife: 0
   hitKeys: 0
   selectedKey: 0
   resetPosition: 1

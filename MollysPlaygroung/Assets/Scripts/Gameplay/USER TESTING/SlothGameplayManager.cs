@@ -10,6 +10,8 @@ public class SlothGameplayManager : MonoBehaviour
     public List<Transform> TrapSpawnPoints = new List<Transform>();
     public List<GameObject> LifeSlots = new List<GameObject>();
 
+    public List<GameObject> slothResults = new List<GameObject>();
+
     public GameObject TrapPrefab;
     public GameObject TrapParent;
     public int AmountOfTraps;
@@ -25,6 +27,9 @@ public class SlothGameplayManager : MonoBehaviour
     public Vector2 lightPosition;
     public Vector2 trapPosition;
     public bool trapReady = true;
+
+    public int singlePlayerFinishedState;
+
 
     void Start()
     {
@@ -215,4 +220,15 @@ public class SlothGameplayManager : MonoBehaviour
         light.transform.parent = null;
         light.GetComponent<LightFlickerSloth>().LightsOut();
     }
+
+    public void RecordSlothResults(GameObject player)
+    {
+        slothResults.Add(player);
+    }
+
+    public void incSinglePlayerState()
+    {
+        singlePlayerFinishedState++;
+    }
+
 }

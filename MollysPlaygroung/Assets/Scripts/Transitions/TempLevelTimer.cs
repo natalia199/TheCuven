@@ -34,14 +34,89 @@ public class TempLevelTimer : MonoBehaviour
 
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && !timerIsRunning)
         {
-            if (GetComponent<GluttonyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+            /*
+            if (SceneManager.GetActiveScene().name == "Greed")
             {
-                waitingMsg.text = "Entering Multiplayer!";
-            }
-            else
+                if (GetComponent<GreedGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+            }*/
+            if (SceneManager.GetActiveScene().name == "Gluttony")
             {
-                waitingMsg.text = "Waiting for other player to finish...";
+                if (GetComponent<GluttonyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+                else
+                {
+                    waitingMsg.text = "Waiting for other player to finish...";
+                }
             }
+            else if (SceneManager.GetActiveScene().name == "Envy")
+            {
+                if (GetComponent<EnvyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+
+                else
+                {
+                    waitingMsg.text = "Waiting for other player to finish...";
+                }
+            }
+            else if (SceneManager.GetActiveScene().name == "Wrath")
+            {
+                if (GetComponent<WrathGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+
+                else
+                {
+                    waitingMsg.text = "Waiting for other player to finish...";
+                }
+            }
+            else if (SceneManager.GetActiveScene().name == "Lust")
+            {
+                if (GetComponent<LustGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+
+                else
+                {
+                    waitingMsg.text = "Waiting for other player to finish...";
+                }
+            }
+            else if (SceneManager.GetActiveScene().name == "Sloth")
+            {
+                if (GetComponent<SlothGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+
+                else
+                {
+                    waitingMsg.text = "Waiting for other player to finish...";
+                }
+            }
+
+            /*
+            else if (SceneManager.GetActiveScene().name == "Sloth")
+            {
+                if (GetComponent<SlothGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+            }
+            else if (SceneManager.GetActiveScene().name == "Wrath")
+            {
+                if (GetComponent<WrathGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+            }*/
         }
     }
 
@@ -81,7 +156,7 @@ public class TempLevelTimer : MonoBehaviour
 
                         if (index == -1)
                         {
-                            index = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count;
+                            index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count;
                         }
 
                         resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
@@ -96,6 +171,22 @@ public class TempLevelTimer : MonoBehaviour
                     }
                     else if (SceneManager.GetActiveScene().name == "Sloth")
                     {
+                        int index = -1;
+
+                        for (int j = 0; j < GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count; j++)
+                        {
+                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults[j].name)
+                            {
+                                index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count + j;
+                                break;
+                            }
+                        }
+
+                        if (index == -1)
+                        {
+                            index = 1;
+                        }
+
                         resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().lifeSource;
                     }
                     else if (SceneManager.GetActiveScene().name == "Lust")
@@ -172,7 +263,7 @@ public class TempLevelTimer : MonoBehaviour
             {
                 removeSlots(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LifeSlots);
 
-                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().lifeSource;
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
             }
             else if (SceneManager.GetActiveScene().name == "Lust")
             {
@@ -184,7 +275,7 @@ public class TempLevelTimer : MonoBehaviour
             {
                 removeSlots(GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().LifeSlots);
 
-                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Boxes: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().boxScore;
+                resultSlots.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Boxes: " + GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().trackedBoxScore;
             }
         }
 

@@ -19,8 +19,11 @@ public class LustGameplayManager : MonoBehaviour
     public int maxKeys;
     public int keyAmountTracker;
 
+    public int singlePlayerFinishedState;
+
     void Start()
     {
+        singlePlayerFinishedState = 0;
     }
 
     void Update()
@@ -74,5 +77,10 @@ public class LustGameplayManager : MonoBehaviour
 
         newKey = true;
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().readyForNewKey = true;
+    }
+
+    public void incSinglePlayerState()
+    {
+        singlePlayerFinishedState++;
     }
 }

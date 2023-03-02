@@ -7,6 +7,8 @@ public class WrathBox : MonoBehaviour
 {
     public GameObject playerInteracted;
 
+    bool offPlatform = false;
+
     void Start()
     {
 
@@ -28,13 +30,16 @@ public class WrathBox : MonoBehaviour
 
         if (other.tag == "OffLimitsWrath")
         {
-            if (playerInteracted != null)
+            if (playerInteracted != null && !offPlatform)
             {
-                playerInteracted.GetComponent<PlayerUserTest>().boxScore++;
-                GameObject.Find("Score").GetComponent<TextMeshProUGUI>().text = "Boxes: " + playerInteracted.GetComponent<PlayerUserTest>().boxScore;
+                //playerInteracted.GetComponent<PlayerUserTest>().boxScore++;
+                GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().trackedBoxScore++;
+                offPlatform = true;
             }
 
+            //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().maxAmountOfBoxes--;
             GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().TrackBoxes--;
+            GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated++;
 
             Destroy(this.gameObject);
         }

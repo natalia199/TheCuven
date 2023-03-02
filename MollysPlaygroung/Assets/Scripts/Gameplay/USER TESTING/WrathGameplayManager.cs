@@ -17,8 +17,17 @@ public class WrathGameplayManager : MonoBehaviour
 
     public bool plateState = false;
 
+    // player score
+    public int trackedBoxScore;
+    // max boxes in scene
     public int AmountOfBoxes;
+    // boxes on screen
     public int TrackBoxes;
+    // overall max boxes to collect
+    public int maxAmountOfBoxes;
+    // box counter
+    public int boxesInstantiated;
+
     public GameObject boxParent;
     public List<Transform> BoxpawnPoints = new List<Transform>();
     public GameObject boxPrefab;
@@ -30,6 +39,8 @@ public class WrathGameplayManager : MonoBehaviour
 
     public List<GameObject> wrathResults = new List<GameObject>();
     public List<GameObject> LifeSlots = new List<GameObject>();
+
+    public int singlePlayerFinishedState;
 
     void Start()
     {
@@ -46,6 +57,9 @@ public class WrathGameplayManager : MonoBehaviour
             singlePlayerPlatform.SetActive(false);
             multiPlayerPlatform.SetActive(true);
         }
+
+        singlePlayerFinishedState = 0;
+        trackedBoxScore = 0;
     }
 
     void Update()
@@ -57,7 +71,7 @@ public class WrathGameplayManager : MonoBehaviour
                 try
                 {
                     LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().boxScore + "/" + AmountOfBoxes;
+                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = trackedBoxScore + "/" + maxAmountOfBoxes;
                 }
                 catch (NullReferenceException e)
                 {
@@ -65,7 +79,6 @@ public class WrathGameplayManager : MonoBehaviour
                 }
             }
         }
-
         else
         {
             // Life display
@@ -123,4 +136,10 @@ public class WrathGameplayManager : MonoBehaviour
     {
         wrathResults.Add(player);
     }
+
+    public void incSinglePlayerState()
+    {
+        singlePlayerFinishedState++;
+    }
+
 }
