@@ -82,6 +82,7 @@ public class SceneManage : MonoBehaviour
             }
             else
             {
+                GameplayDone = false;
 
                 PhotonNetwork.LoadLevel("Game Level Transition");
                 //StartCoroutine("LevelTransition", 3);
@@ -93,6 +94,7 @@ public class SceneManage : MonoBehaviour
             SingleOrMultiPlayer = !SingleOrMultiPlayer;
 
             CurrentLevelState = false;
+            GameplayDone = false;
 
             PhotonNetwork.LoadLevel("Game Level Transition");
            //StartCoroutine("LevelTransition", 3);
@@ -102,6 +104,8 @@ public class SceneManage : MonoBehaviour
 
     public void NextSceneButton()
     {
+        GameplayDone = false;
+
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.LoadLevel(levelNames[sceneTracker]);

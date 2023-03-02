@@ -10,24 +10,12 @@ public class RecordUserData : MonoBehaviour
     // Google Forms URL for data
     string URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSdtfmwbiVuWPjWMEMY5GgRmbjZQhr5zlCvi3Zf1Bzyoemt8cg/formResponse";
 
-    float loopTimer = 0.0f;
-
-    void Awake()
-    {
-        newScene();                                                 // Reset variables for new trial order
-    }
-
-    public static void newScene()
-    {
-
-    }
 
     // Convert data into String vairables
-    public void Send(string username, string level, bool singleP, string competitor, int timeCompletion, int score_data, int errorRate_data)
+    public void Send(string username, string level, bool singleP, string competitor, double timeCompletion, string score, int errorRate_data)
     {
         string singlePlayer = "" + singleP;
         string time = "" + timeCompletion;
-        string score = "" + score_data;
         string errorRate = "" + errorRate_data;
 
         StartCoroutine(Post(username, level, singlePlayer, competitor, time, score, errorRate));
@@ -53,9 +41,9 @@ public class RecordUserData : MonoBehaviour
         Debug.Log("submitted");
     }
 
-    public void SendInTheNeededData(string username, string level, bool singleP, string competitor, int timeCompletion, int score, int errorRate)
+    public void SendInTheNeededData(string username, string level, bool singleP, string competitor, double timeCompletion, string score, int errorRate)
     {
-        //Send(userID.ID, GameObject.Find("DontDestroy").GetComponent<setUp_N>().order + 1, currentHorFOV, currentVerFOV, targetSpeed, view, trialID, setUp_N.chosenCondition[trials_N.trialTracker - 1].conditionID, setNumTargets, numTargets, time, errorRate, inFOVCount, timeInFOV, ObjectController.targetEnterCount, timeonTarget, targetDistance);
+        Debug.Log("Results: " + username + ", " + level + ", " + singleP + ", " + competitor + ", " + timeCompletion + ", " + score + ", " + errorRate);
         Send(username, level, singleP, competitor, timeCompletion, score, errorRate);
     }
 }

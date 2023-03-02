@@ -14,6 +14,8 @@ public class EnvyGameplayManager : MonoBehaviour
 
     public int singlePlayerFinishedState;
 
+    public GameObject scoreBoard;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +30,14 @@ public class EnvyGameplayManager : MonoBehaviour
             try
             {
                 LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = horseResults.Count + "/" + racingHorseys.Count;
+                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = horseResults.Count + "/" + racingHorseys.Count + " horses";
+                LifeSlots[0].transform.GetChild(2).gameObject.SetActive(false);
+
+                LifeSlots[1].SetActive(false);
+                LifeSlots[2].SetActive(false);
+                LifeSlots[3].SetActive(false);
+
+                scoreBoard.SetActive(false);
             }
             catch (NullReferenceException e)
             {
@@ -37,11 +46,15 @@ public class EnvyGameplayManager : MonoBehaviour
         }
         else
         {
+            scoreBoard.SetActive(true);
+
             // Life display
             for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
             {
                 try
                 {
+                    LifeSlots[i].SetActive(true);
+
                     LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
 
                     if (GameObject.Find(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName).GetComponent<EnvyHorse>().finished)

@@ -13,9 +13,13 @@ public class EnvyHorse : MonoBehaviour
     public float speed;
     public float RotAngleY;
 
+    public int id;
+
     void Start()
     {
         finished = false;
+
+        GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
     }
 
     void FixedUpdate()
@@ -57,6 +61,7 @@ public class EnvyHorse : MonoBehaviour
         if (other.tag == "FinishLine")
         {
             finished = true;
+            GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
             GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().RecordHorseResult(this.gameObject);
         }
     }

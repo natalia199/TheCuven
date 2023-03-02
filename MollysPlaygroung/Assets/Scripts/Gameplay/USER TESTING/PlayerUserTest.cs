@@ -94,7 +94,7 @@ public class PlayerUserTest : MonoBehaviour
     public int hitKeys = 0;
     public int selectedKey;
     public bool resetPosition = true;
-    public bool readyForNewKey = true;
+    //public bool readyForNewKey = true;
     public bool hitKeyScore = false;
     public bool landedOnFloor = false;
 
@@ -362,18 +362,18 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
                             {
-                                if (readyForNewKey)
+                                if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().readyForNewKey)
                                 {
-                                    int i = UnityEngine.Random.Range(0, 4);
+                                    int i = UnityEngine.Random.Range(0, GameObject.Find("GameManager").GetComponent<LustGameplayManager>().pianoKeys.Count);
 
                                     // if index was already chosen or the key is being pressed on already don't do anything
                                     if (i == selectedKey || GameObject.Find("GameManager").GetComponent<LustGameplayManager>().pianoKeys[i].GetComponent<LustPianoKey>().keyPressed)
                                     {
-                                        readyForNewKey = true;
+                                        GameObject.Find("GameManager").GetComponent<LustGameplayManager>().readyForNewKey = true;
                                     }
                                     else
                                     {
-                                        readyForNewKey = false;
+                                        GameObject.Find("GameManager").GetComponent<LustGameplayManager>().readyForNewKey = false;
                                         selectedKey = i;
                                     }
                                 }
@@ -403,18 +403,20 @@ public class PlayerUserTest : MonoBehaviour
                     {
                         if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
                         {
-                            if (readyForNewKey)
+                            if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().readyForNewKey)
                             {
-                                int i = UnityEngine.Random.Range(0, 4);
+                                Debug.Log("r u even in");
+                                int i = UnityEngine.Random.Range(0, GameObject.Find("GameManager").GetComponent<LustGameplayManager>().pianoKeys.Count);
 
                                 // if index was already chosen or the key is being pressed on already don't do anything
                                 if (i == selectedKey || GameObject.Find("GameManager").GetComponent<LustGameplayManager>().pianoKeys[i].GetComponent<LustPianoKey>().keyPressed)
                                 {
-                                    readyForNewKey = true;
+                                    GameObject.Find("GameManager").GetComponent<LustGameplayManager>().readyForNewKey = true;
                                 }
                                 else
                                 {
-                                    readyForNewKey = false;
+                                    Debug.Log("new key  baby");
+                                    GameObject.Find("GameManager").GetComponent<LustGameplayManager>().readyForNewKey = false;
                                     selectedKey = i;
                                 }
                             }
@@ -480,16 +482,22 @@ public class PlayerUserTest : MonoBehaviour
                         }
                         */
 
+                        if (interactedFood != null)
+                        {
+                            view.RPC("foodInteractionActive", RpcTarget.AllBufferedViaServer, view.Owner.NickName, interactedFood.name);
+                        }
+                        else
+                        {
+                            view.RPC("foodInteractionDeactive", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                        }
+
+
                         // Eating
                         if (eatFood)
                         {
-                            //view.RPC("setInteractedFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-
-                            view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName, interactedFood.name);
-                            eatFood = false;
+                            view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
-
 
 
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -543,7 +551,7 @@ public class PlayerUserTest : MonoBehaviour
                         if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0 && !finishedSinglePlayer)
                         {
                             GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
-                            view.RPC("setSinglePlayerStateLust", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            view.RPC("setSinglePlayerStateGluttony", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
                     }
                 }
@@ -696,6 +704,13 @@ public class PlayerUserTest : MonoBehaviour
                     }
                     else
                     {
+                        if (fellOffPlatform)
+                        {
+                            transform.position = GameObject.Find("PlayerSpawn").GetComponent<EnvyPlayerSpawn>().singlePlayerSpawnPost.transform.position;
+                            fellOffPlatform = false;
+                        }
+
+
                         if (Input.GetKeyDown(KeyCode.P))
                         {
                             if (interactedBox != null && carriedBox == null)
@@ -898,7 +913,7 @@ public class PlayerUserTest : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-                    GetComponent<Rigidbody>().velocity = vel;
+                    view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
                 }
             }
         }
@@ -983,6 +998,13 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
+    [PunRPC]
+    void jumpBoyJump(string pName, Vector3 vel)
+    {
+        GameObject.Find(pName).GetComponent<Rigidbody>().velocity = vel;
+    }
+
 
     // Levels
 
@@ -1078,6 +1100,23 @@ public class PlayerUserTest : MonoBehaviour
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer = true;
                 GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().incSinglePlayerState();
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void setSinglePlayerStateGluttony(string pName)
+    {
+        try
+        {
+            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer)
+            {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer = true;
+                GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().incSinglePlayerState();
             }
         }
         catch (NullReferenceException e)
@@ -1294,6 +1333,32 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     // GLUTTONY
+
+    [PunRPC]
+    void foodInteractionActive(string pName, string food)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = GameObject.Find(food).gameObject;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void foodInteractionDeactive(string pName)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = null;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
     [PunRPC]
     void muchiesScore(string pName)
     {
@@ -1342,16 +1407,17 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
     [PunRPC]
-    void eatUpFood(string pName, string food)
+    void eatUpFood(string pName)
     {
         try
         {
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = GameObject.Find(food).gameObject;
+            //GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = GameObject.Find(food).gameObject;
 
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood != null) 
             {
                 Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood.gameObject);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = null;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().eatFood = false;
             }
         }
         catch (NullReferenceException e)
@@ -1385,6 +1451,7 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
 
     [PunRPC]
     void resetChipTracker(string pName)
@@ -1651,7 +1718,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
             {
-                GameObject.Find("GameManager").GetComponent<LustGameplayManager>().NewKey(x);
+                GameObject.Find("GameManager").GetComponent<LustGameplayManager>().NewKeySP(x);
             }
         }
         catch (NullReferenceException e)
@@ -1715,6 +1782,14 @@ public class PlayerUserTest : MonoBehaviour
             squirtAccess = true;
             squirtGun = other.gameObject;
         }
+        
+        // GLUTTONY
+        if (other.tag == "Food")
+        {
+            eatFood = true;
+            interactedFood = other.gameObject;
+            //Destroy(other.gameObject);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -1725,16 +1800,6 @@ public class PlayerUserTest : MonoBehaviour
         {
             throwAccess = true;
             bucketNameInteracted = other.transform.parent.name;
-        }
-
-        
-
-        // GLUTTONY
-        if (other.tag == "Food")
-        {
-            eatFood = true;
-            interactedFood = other.gameObject;
-            //Destroy(other.gameObject);
         }
 
         // SLOTH
@@ -1882,7 +1947,7 @@ public class PlayerUserTest : MonoBehaviour
         hitKeys = 0;
         selectedKey = 0;
         resetPosition = true;
-        readyForNewKey = true;
+        //readyForNewKey = true;
         hitKeyScore = false;
         landedOnFloor = false;
 

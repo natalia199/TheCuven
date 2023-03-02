@@ -14,15 +14,18 @@ public class LustGameplayManager : MonoBehaviour
     public int chosenKey;
 
     bool breakLoop = false;
-    bool readyForNewKey = false;
 
     public int maxKeys;
     public int keyAmountTracker;
 
     public int singlePlayerFinishedState;
 
+    public bool readyForNewKey = true;
+
     void Start()
     {
+        newKey = true;
+        readyForNewKey = true;
         singlePlayerFinishedState = 0;
     }
 
@@ -76,7 +79,28 @@ public class LustGameplayManager : MonoBehaviour
         pianoKeys[chosenKey].GetComponent<LustPianoKey>().deselectedKey();
 
         newKey = true;
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().readyForNewKey = true;
+        readyForNewKey = true;
+    }
+
+    public void NewKeySP(int x)
+    {
+        newKey = false;
+        chosenKey = x;
+        StartCoroutine("NewKeyPickSP", 10);
+    }
+
+    IEnumerator NewKeyPickSP(float time)
+    {
+        pianoKeys[chosenKey].GetComponent<LustPianoKey>().selectedKey();
+
+        yield return new WaitForSeconds(time);
+
+        keyAmountTracker++;
+
+        pianoKeys[chosenKey].GetComponent<LustPianoKey>().deselectedKey();
+
+        newKey = true;
+        readyForNewKey = true;
     }
 
     public void incSinglePlayerState()

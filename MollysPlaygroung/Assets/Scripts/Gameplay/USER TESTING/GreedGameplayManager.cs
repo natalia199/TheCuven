@@ -24,7 +24,6 @@ public class GreedGameplayManager : MonoBehaviour
     public int chipTracker;
     public int startingAmountOfChips;
 
-
     public int singlePlayerFinishedState;
 
     void Start()
@@ -33,20 +32,33 @@ public class GreedGameplayManager : MonoBehaviour
 
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
-            chipZones[0].SetActive(true);
-            chipZones[1].SetActive(false);
-            chipZones[2].SetActive(false);
-            chipZones[3].SetActive(false);
+            LifeSlots[0].SetActive(true);
+
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            {
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName) 
+                {
+                    chipZones[i].SetActive(true);
+                }
+                else
+                {
+                    chipZones[i].SetActive(false);
+                }
+            }
         }
         else
         {
             for(int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
             {
                 chipZones[i].SetActive(true);
+                LifeSlots[i].SetActive(true);
             }
         }
 
+        goodToGo = false;
+        chipReady = true;
         singlePlayerFinishedState = 0;
+        chipTracker = 0;
     }
 
     void Update()
@@ -59,27 +71,15 @@ public class GreedGameplayManager : MonoBehaviour
                 {
                     LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
                     LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
-                }
-                catch (NullReferenceException e)
-                {
-                    // error
-                }
 
-                /*
-                // Instantiation
-                if (AmountOfChips > ChipParent.transform.childCount)
-                {
-                    addChip(null);
+                    LifeSlots[0].transform.GetChild(2).gameObject.SetActive(false);
+
+                    LifeSlots[1].SetActive(false);
+                    LifeSlots[2].SetActive(false);
+                    LifeSlots[3].SetActive(false);
+
                 }
-                
-
-
-                if ((GameObject.Find("Bucket" + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == 8)
-                {
-                    GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().cameraSwitch = true;
-                    GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().CameraOptions[0].SetActive(false);
-                    GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().CameraOptions[1].SetActive(false);
-                }*/
+                catch (NullReferenceException e){}
             }
             else
             {

@@ -33,6 +33,7 @@ public class SlothGameplayManager : MonoBehaviour
 
     void Start()
     {
+        singlePlayerFinishedState = 0;
         newLight = true;
     }
 
