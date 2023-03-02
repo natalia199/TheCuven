@@ -101,6 +101,18 @@ public class TempLevelTimer : MonoBehaviour
                     waitingMsg.text = "Waiting for other player to finish...";
                 }
             }
+            else if (SceneManager.GetActiveScene().name == "Greed")
+            {
+                if (GetComponent<GreedGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                {
+                    waitingMsg.text = "Entering Multiplayer!";
+                }
+
+                else
+                {
+                    waitingMsg.text = "Waiting for other player to finish...";
+                }
+            }
 
             /*
             else if (SceneManager.GetActiveScene().name == "Sloth")

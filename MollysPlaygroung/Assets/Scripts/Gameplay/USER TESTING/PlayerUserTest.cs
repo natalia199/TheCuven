@@ -19,7 +19,7 @@ public class PlayerUserTest : MonoBehaviour
     [SerializeField] float jumpForce = 8f;
 
     // GREED
-    bool cameraSwitch = false;
+    public bool cameraSwitch = false;
     public bool chipAccess = false;
     bool throwAccess = false;
     public float throwForce;
@@ -29,7 +29,7 @@ public class PlayerUserTest : MonoBehaviour
     public int diceRollValue = 0;
     public GameObject interactedChip = null;
     List<GameObject> collectedChipies = new List<GameObject>();
-    List<GameObject> CameraOptions = new List<GameObject>();
+    public List<GameObject> CameraOptions = new List<GameObject>();
 
     public Vector3 chipPosition;
     public Quaternion chipRotation;
@@ -202,116 +202,151 @@ public class PlayerUserTest : MonoBehaviour
                 // Single player: quickly collect as many chips as possible before the time runs out
                 // Multi player: collect the most chips before the time runs out
 
-                // Dice Roll baby
-                if (!cameraSwitch)
+                if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                 {
-                    CameraOptions[0].SetActive(true);
-                    CameraOptions[1].SetActive(false);
-
-                    // Roll Dice
-                    if (Input.GetKeyDown(KeyCode.P))
+                    // Dice Roll baby
+                    if (!cameraSwitch)
                     {
-                        GameObject.Find("Dice").GetComponent<Dice>().RollDice();
-                    }
+                        CameraOptions[0].SetActive(true);
+                        CameraOptions[1].SetActive(false);
 
-                    // next step
-                    if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo)
-                    {
-                        collectionTracker = 0;
-                        thrownTracker = 0;
-                        cameraSwitch = true;
-                        view.RPC("setDiceValue", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue);
-                        GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = false;
-                    }
-                }
-                // Chip extravaganza
-                else if (cameraSwitch)
-                {
-                    CameraOptions[0].SetActive(false);
-                    CameraOptions[1].SetActive(true);
-
-                    // next step
-                    if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
-                    {
-                        cameraSwitch = false;
-                    }
-
-                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-                    {
-                        if (chipAccess && interactedChip != null)
+                        // Roll Dice
+                        if (Input.GetKeyDown(KeyCode.P))
                         {
-                            view.RPC("chipInteractionActive", RpcTarget.AllBufferedViaServer, view.Owner.NickName, interactedChip.name);
+                            GameObject.Find("Dice").GetComponent<Dice>().RollDice();
+                        }
+
+                        // next step
+                        if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo)
+                        {
+                            collectionTracker = 0;
+                            view.RPC("resetChipTracker", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+
+                            thrownTracker = 0;
+                            cameraSwitch = true;
+                            view.RPC("setDiceValue", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue);
+                            GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = false;
+                        }
+
+                        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+                        {
+                            if (GameObject.Find("Bucket0").transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
+                            {
+                                GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
+                                view.RPC("setSinglePlayerStateGreed", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            }
                         }
                         else
                         {
-                            view.RPC("chipInteractionDeactive", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                        }
-
-                        // Collecting chip
-                        if (Input.GetKeyDown(KeyCode.P))
-                        {
-                            if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                            if (PhotonNetwork.LocalPlayer.IsMasterClient)
                             {
-                                oneChipAtATimeCarry = true;
-                                Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
-                                Quaternion carriedChipRot = Quaternion.identity;
-                                view.RPC("carryChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, carriedChipPos, carriedChipRot);
+                                if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
+                                {
+                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                }
                             }
                         }
-                        // Disposing chip
-                        else if (Input.GetKeyDown(KeyCode.O))
+                    }
+                    // Chip extravaganza
+                    else if (cameraSwitch)
+                    {
+                        CameraOptions[0].SetActive(false);
+                        CameraOptions[1].SetActive(true);
+
+                        // next step
+                        if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue && !die && !finishedSinglePlayer)
                         {
-                            if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
+                            cameraSwitch = false;
+                        }
+                        
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+                        {
+                            if (chipAccess && interactedChip != null)
                             {
-                                if (bucketName == bucketNameInteracted)
+                                view.RPC("chipInteractionActive", RpcTarget.AllBufferedViaServer, view.Owner.NickName, interactedChip.name);
+                            }
+                            else
+                            {
+                                view.RPC("chipInteractionDeactive", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            }
+
+                            // Collecting chip
+                            if (Input.GetKeyDown(KeyCode.P))
+                            {
+                                if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
                                 {
-                                    throwChipAcces = true;
-                                    view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber);
+                                    oneChipAtATimeCarry = true;
+                                    Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
+                                    Quaternion carriedChipRot = Quaternion.identity;
+                                    view.RPC("carryChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, carriedChipPos, carriedChipRot);
+                                }
+                            }
+                            // Disposing chip
+                            else if (Input.GetKeyDown(KeyCode.O))
+                            {
+                                if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
+                                {
+                                    //if (bucketName == bucketNameInteracted)
+                                    //{
+                                        throwChipAcces = true;
+                                        view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber, bucketNameInteracted);
+                                    //}
+                                }
+                            }
+                            else
+                            {
+                                oneChipAtATimeCarry = false;
+                                throwChipAcces = false;
+                            }
+
+
+                            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                            {
+                                if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
+                                {
+                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
                             }
                         }
                         else
                         {
-                            oneChipAtATimeCarry = false;
-                            throwChipAcces = false;
-                        }
-
-                        if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
-                        {
-                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
-                        }
-                    }
-                    else
-                    {
-                        // Collecting chip
-                        if (Input.GetKeyDown(KeyCode.P))
-                        {
-                            if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                            // Collecting chip
+                            if (Input.GetKeyDown(KeyCode.P))
                             {
-                                Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
+                                if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                                {
+                                    Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
 
-                                pickUpTheChip(carriedChipPos, Quaternion.identity);
+                                    pickUpTheChip(carriedChipPos, Quaternion.identity);
+                                }
+
+                            }
+                            // Disposing chip
+                            else if (Input.GetKeyDown(KeyCode.O) && collectedChipies.Count != 0 && throwAccess)
+                            {
+                                throwTheChip(throwForce, playerNumber);
+                            }
+                            else
+                            {
+                                oneChipAtATimeCarry = false;
+                                throwChipAcces = false;
                             }
 
-                        }
-                        // Disposing chip
-                        else if (Input.GetKeyDown(KeyCode.O) && collectedChipies.Count != 0 && throwAccess)
-                        {
-                            throwTheChip(throwForce, playerNumber);
-                        }
-                        else
-                        {
-                            oneChipAtATimeCarry = false;
-                            throwChipAcces = false;
-                        }
 
-                        // Game over
-                        if ((GameObject.Find("Bucket" + playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == 8)
-                        {
-                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                            if ((GameObject.Find("Bucket0").transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
+                            {
+                                GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
+                                view.RPC("setSinglePlayerStateGreed", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            }
                         }
                     }
-
+                }
+                else if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                    {
+                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                    }
                 }
             }
             else if (SceneManager.GetActiveScene().name == "Lust")
@@ -356,9 +391,12 @@ public class PlayerUserTest : MonoBehaviour
                             view.RPC("keyScoreDisplay", RpcTarget.AllBufferedViaServer, view.Owner.NickName, hitKeys);
                         }
 
-                        if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
+                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
-                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                            if (!die && GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
+                            {
+                                view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            }
                         }
                     }
                     else
@@ -392,12 +430,22 @@ public class PlayerUserTest : MonoBehaviour
                             hitKeyScore = false;
                         }
 
-                        if (hitKeys == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
+
+                        if (hitKeys == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys && !finishedSinglePlayer)
                         {
-                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
+                            view.RPC("setSinglePlayerStateLust", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
                     }
                 }
+                else if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                {
+                    if (!die && GameObject.Find("GameManager").GetComponent<LustGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
+                    {
+                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                    }
+                }
+
             }
             else if (SceneManager.GetActiveScene().name == "Gluttony")
             {
@@ -495,7 +543,7 @@ public class PlayerUserTest : MonoBehaviour
                         if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0 && !finishedSinglePlayer)
                         {
                             GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
-                            view.RPC("setSinglePlayerState", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            view.RPC("setSinglePlayerStateLust", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
                     }
                 }
@@ -555,7 +603,7 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
-                            if ((GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
+                            if (!die && (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
                             {
                                 view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
@@ -591,7 +639,7 @@ public class PlayerUserTest : MonoBehaviour
                         }
 
 
-                        if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
+                        if (!finishedSinglePlayer && GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().racingHorseys.Count == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
                         {
                             GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
                             view.RPC("setSinglePlayerStateEnvy", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -640,7 +688,7 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
-                            if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
+                            if (!die && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
                             {
                                 view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
@@ -664,7 +712,7 @@ public class PlayerUserTest : MonoBehaviour
                         }
 
 
-                        if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated == GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().maxAmountOfBoxes && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated > 1)
+                        if (!finishedSinglePlayer && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated == GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().maxAmountOfBoxes && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated > 1)
                         {
                             GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
                             view.RPC("setSinglePlayerStateWrath", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -762,7 +810,7 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
-                            if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
+                            if (!die && GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
                             {
                                 view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
@@ -788,7 +836,7 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (!withinTheLight)
                         {
-                            if ((int)lifeSource < 0)
+                            if ((int)lifeSource < 0 && !finishedSinglePlayer)
                             {
                                 lifeSource = 0f;
 
@@ -996,6 +1044,40 @@ public class PlayerUserTest : MonoBehaviour
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer = true;
                 GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().incSinglePlayerState();
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    
+    [PunRPC]
+    void setSinglePlayerStateLust(string pName)
+    {
+        try
+        {
+            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer)
+            {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer = true;
+                GameObject.Find("GameManager").GetComponent<LustGameplayManager>().incSinglePlayerState();
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void setSinglePlayerStateGreed(string pName)
+    {
+        try
+        {
+            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer)
+            {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().finishedSinglePlayer = true;
+                GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().incSinglePlayerState();
             }
         }
         catch (NullReferenceException e)
@@ -1304,6 +1386,19 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void resetChipTracker(string pName)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().collectionTracker = 0;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
     void pickUpTheChip(Vector3 pos, Quaternion rot)
     {
         if (interactedChip != null)
@@ -1352,7 +1447,7 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     [PunRPC]
-    void throwChip(string pName, float f, int pActor)
+    void throwChip(string pName, float f, int pActor, string bucketName)
     {
         try
         {
@@ -1360,7 +1455,8 @@ public class PlayerUserTest : MonoBehaviour
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + pActor).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + pActor).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find(bucketName).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().Available = true;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.RemoveAt(0);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().thrownTracker++;
@@ -1385,7 +1481,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
             collectedChipies[0].AddComponent<Rigidbody>();
-            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + pActor).transform.GetChild(0).position, transform.position, f);
+            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket0").transform.GetChild(0).position, transform.position, f);
             collectedChipies[0].GetComponent<ChipScript>().Available = true;
             collectedChipies.RemoveAt(0);
             thrownTracker++;

@@ -24,6 +24,9 @@ public class GreedGameplayManager : MonoBehaviour
     public int chipTracker;
     public int startingAmountOfChips;
 
+
+    public int singlePlayerFinishedState;
+
     void Start()
     {
         startingAmountOfChips = ChipParent.transform.childCount;
@@ -35,7 +38,15 @@ public class GreedGameplayManager : MonoBehaviour
             chipZones[2].SetActive(false);
             chipZones[3].SetActive(false);
         }
-        
+        else
+        {
+            for(int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            {
+                chipZones[i].SetActive(true);
+            }
+        }
+
+        singlePlayerFinishedState = 0;
     }
 
     void Update()
@@ -47,7 +58,7 @@ public class GreedGameplayManager : MonoBehaviour
                 try
                 {
                     LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent <PlayerUserTest>().collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
+                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
                 }
                 catch (NullReferenceException e)
                 {
@@ -60,7 +71,15 @@ public class GreedGameplayManager : MonoBehaviour
                 {
                     addChip(null);
                 }
-                */
+                
+
+
+                if ((GameObject.Find("Bucket" + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == 8)
+                {
+                    GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().cameraSwitch = true;
+                    GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().CameraOptions[0].SetActive(false);
+                    GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().CameraOptions[1].SetActive(false);
+                }*/
             }
             else
             {
@@ -87,101 +106,107 @@ public class GreedGameplayManager : MonoBehaviour
     {
         chipTracker++;
     }
-/*
-    public void addChip(GameObject chip)
-    {
-        Debug.Log("chip instant");
 
-        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+    public void incSinglePlayerState()
+    {
+        singlePlayerFinishedState++;
+    }
+
+    /*
+        public void addChip(GameObject chip)
+        {
+            Debug.Log("chip instant");
+
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+            {
+                chip.AddComponent<Rigidbody>();
+                ChipInstantiation();
+            }
+            else
+            {
+                StartCoroutine("ChipLifeTimeSP", UnityEngine.Random.Range(0.3f, 4));
+            }
+        }
+
+        public void ChipInstantiation()
+        {
+            StartCoroutine("ChipLifeTime", 0.3f);
+        }
+
+        IEnumerator ChipLifeTime(float time)
+        {
+            yield return new WaitForSeconds(time);
+
+            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip = null;
+            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateChipOnce = false;
+            chipReady = true;
+        }
+
+        IEnumerator ChipLifeTimeSP(float time)
+        {
+            float xPos = UnityEngine.Random.Range(ChipSpawnPoints[0].position.x, ChipSpawnPoints[2].position.x);
+            float zPos = UnityEngine.Random.Range(ChipSpawnPoints[0].position.z, ChipSpawnPoints[1].position.z);
+            Vector3 posy = new Vector3(xPos, 12, zPos);
+
+            GameObject chip = Instantiate(ChipPrefab, posy, Quaternion.identity, ChipParent.transform);
+
+            yield return new WaitForSeconds(time);
+
+            chip.AddComponent<Rigidbody>();
+        }
+
+
+
+        // OLD
+
+        public void addChip(GameObject chip)
         {
             chip.AddComponent<Rigidbody>();
             ChipInstantiation();
         }
-        else
+
+        public void ChipInstantiation()
         {
-            StartCoroutine("ChipLifeTimeSP", UnityEngine.Random.Range(0.3f, 4));
+            StartCoroutine("HoldIt", 0.3f);
         }
-    }
 
-    public void ChipInstantiation()
-    {
-        StartCoroutine("ChipLifeTime", 0.3f);
-    }
-
-    IEnumerator ChipLifeTime(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip = null;
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateChipOnce = false;
-        chipReady = true;
-    }
-
-    IEnumerator ChipLifeTimeSP(float time)
-    {
-        float xPos = UnityEngine.Random.Range(ChipSpawnPoints[0].position.x, ChipSpawnPoints[2].position.x);
-        float zPos = UnityEngine.Random.Range(ChipSpawnPoints[0].position.z, ChipSpawnPoints[1].position.z);
-        Vector3 posy = new Vector3(xPos, 12, zPos);
-
-        GameObject chip = Instantiate(ChipPrefab, posy, Quaternion.identity, ChipParent.transform);
-
-        yield return new WaitForSeconds(time);
-
-        chip.AddComponent<Rigidbody>();
-    }
-
-   
-
-    // OLD
-
-    public void addChip(GameObject chip)
-    {
-        chip.AddComponent<Rigidbody>();
-        ChipInstantiation();
-    }
-
-    public void ChipInstantiation()
-    {
-        StartCoroutine("HoldIt", 0.3f);
-    }
-
-    IEnumerator HoldIt(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip = null;
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateChipOnce = false;
-        chipReady = true;
-    }
-
-    
-    public void ChipInstantiation()
-    {
-        StartCoroutine("HoldIt", Random.Range(0, 3));
-    }
-
-    void UpdateChipAmount()
-    {
-        int x = AmountOfChips - ChipParent.transform.childCount;
-        for (int i = 0; i < x; i++)
+        IEnumerator HoldIt(float time)
         {
-            ChipInstantiation();
+            yield return new WaitForSeconds(time);
+
+            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theChip = null;
+            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateChipOnce = false;
+            chipReady = true;
         }
-    }
 
 
-    IEnumerator HoldIt(float time)
-    {
-        float xPos = Random.Range(ChipSpawnPoints[0].position.x, ChipSpawnPoints[2].position.x);
-        float zPos = Random.Range(ChipSpawnPoints[0].position.z, ChipSpawnPoints[1].position.z);
+        public void ChipInstantiation()
+        {
+            StartCoroutine("HoldIt", Random.Range(0, 3));
+        }
 
-        GameObject chip = Instantiate(ChipPrefab, new Vector3(xPos, 12f, zPos), Quaternion.identity, ChipParent.transform);
+        void UpdateChipAmount()
+        {
+            int x = AmountOfChips - ChipParent.transform.childCount;
+            for (int i = 0; i < x; i++)
+            {
+                ChipInstantiation();
+            }
+        }
 
-        chip.transform.rotation = new Quaternion(Random.Range(15, -15), 0, Random.Range(15, -15), chip.transform.rotation.w);
 
-        yield return new WaitForSeconds(time);
+        IEnumerator HoldIt(float time)
+        {
+            float xPos = Random.Range(ChipSpawnPoints[0].position.x, ChipSpawnPoints[2].position.x);
+            float zPos = Random.Range(ChipSpawnPoints[0].position.z, ChipSpawnPoints[1].position.z);
 
-        chip.AddComponent<Rigidbody>();
-    }
-    */
+            GameObject chip = Instantiate(ChipPrefab, new Vector3(xPos, 12f, zPos), Quaternion.identity, ChipParent.transform);
+
+            chip.transform.rotation = new Quaternion(Random.Range(15, -15), 0, Random.Range(15, -15), chip.transform.rotation.w);
+
+            yield return new WaitForSeconds(time);
+
+            chip.AddComponent<Rigidbody>();
+        }
+        */
 }
