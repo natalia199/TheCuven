@@ -34,4 +34,9 @@ public class LevelTransitions : MonoBehaviour
     {
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextSceneButton();
     }
+
+    void Update()
+    {
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = false;
+    }
 }

@@ -29,6 +29,8 @@ public class GluttonyGameplayManager : MonoBehaviour
 
     void Start()
     {
+        foodReady = true;
+        noMoreFoodNeeded = false;
         foodInstantiationTracker = FoodParent.transform.childCount;
         singlePlayerFinishedState = 0;
     }
@@ -41,7 +43,7 @@ public class GluttonyGameplayManager : MonoBehaviour
             try
             {
                 LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munchies: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
+                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munched: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
             }
             catch (NullReferenceException e)
             {
@@ -68,11 +70,10 @@ public class GluttonyGameplayManager : MonoBehaviour
                 try
                 {
                     LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muchies: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
+                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muched: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
                 }
                 catch (NullReferenceException e)
                 {
-                    break;
                     // error
                 }
             }

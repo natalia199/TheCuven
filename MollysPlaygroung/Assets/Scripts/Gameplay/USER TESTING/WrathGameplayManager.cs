@@ -95,7 +95,6 @@ public class WrathGameplayManager : MonoBehaviour
                 }
                 catch (NullReferenceException e)
                 {
-                    break;
                 }
             }
         }

@@ -30,35 +30,17 @@ public class GreedGameplayManager : MonoBehaviour
     {
         startingAmountOfChips = ChipParent.transform.childCount;
 
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            LifeSlots[0].SetActive(true);
 
-            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-            {
-                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName) 
-                {
-                    chipZones[i].SetActive(true);
-                }
-                else
-                {
-                    chipZones[i].SetActive(false);
-                }
-            }
-        }
-        else
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
-            for(int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-            {
-                chipZones[i].SetActive(true);
-                LifeSlots[i].SetActive(true);
-            }
+            chipZones[i].SetActive(true);
+            //LifeSlots[i].transform.GetChild(2).gameObject.SetActive(true);
         }
 
-        goodToGo = false;
-        chipReady = true;
+        //goodToGo = false;
+        //chipReady = true;
         singlePlayerFinishedState = 0;
-        chipTracker = 0;
+        //chipTracker = 0;
     }
 
     void Update()
@@ -71,12 +53,6 @@ public class GreedGameplayManager : MonoBehaviour
                 {
                     LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
                     LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectionTracker + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
-
-                    LifeSlots[0].transform.GetChild(2).gameObject.SetActive(false);
-
-                    LifeSlots[1].SetActive(false);
-                    LifeSlots[2].SetActive(false);
-                    LifeSlots[3].SetActive(false);
 
                 }
                 catch (NullReferenceException e){}
@@ -93,7 +69,6 @@ public class GreedGameplayManager : MonoBehaviour
                     }
                     catch (NullReferenceException e)
                     {
-                        break;
                     }
                 }
 

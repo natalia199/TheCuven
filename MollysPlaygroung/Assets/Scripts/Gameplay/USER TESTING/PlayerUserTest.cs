@@ -119,8 +119,10 @@ public class PlayerUserTest : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         view = GetComponent<PhotonView>();
 
-        resetAllValues();
-
+        if (view.IsMine)
+        {
+            resetAllValues();
+        }
 
         for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
@@ -230,7 +232,7 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
                         {
-                            if (GameObject.Find("Bucket0").transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
+                            if (GameObject.Find("Bucket" + playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
                             {
                                 GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
                                 view.RPC("setSinglePlayerStateGreed", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -333,7 +335,7 @@ public class PlayerUserTest : MonoBehaviour
                             }
 
 
-                            if ((GameObject.Find("Bucket0").transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
+                            if ((GameObject.Find("Bucket" + playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
                             {
                                 GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
                                 view.RPC("setSinglePlayerStateGreed", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -496,7 +498,7 @@ public class PlayerUserTest : MonoBehaviour
                         if (eatFood)
                         {
                             view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                            view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            //view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
 
 
@@ -1418,6 +1420,7 @@ public class PlayerUserTest : MonoBehaviour
                 Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood.gameObject);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = null;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().eatFood = false;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies++;
             }
         }
         catch (NullReferenceException e)
@@ -1548,7 +1551,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
             collectedChipies[0].AddComponent<Rigidbody>();
-            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket0").transform.GetChild(0).position, transform.position, f);
+            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + playerNumber).transform.GetChild(0).position, transform.position, f);
             collectedChipies[0].GetComponent<ChipScript>().Available = true;
             collectedChipies.RemoveAt(0);
             thrownTracker++;
