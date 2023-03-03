@@ -37,7 +37,7 @@ public class TempLevelTimer : MonoBehaviour
 
     void Update()
     {
-        if (timerIsRunning && !GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+        if (timerIsRunning)
         {
             timeText.text = "" + Mathf.FloorToInt(timeRemaining);
             timeRemaining += Time.deltaTime;
@@ -47,12 +47,9 @@ public class TempLevelTimer : MonoBehaviour
             timeText.text = "";
         }
 
-        /*
+        
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && !timerIsRunning)
         {
-            bgImg.SetActive(true);
-            timeText.text = "";
-
             if (SceneManager.GetActiveScene().name == "Gluttony")
             {
                 if (GetComponent<GluttonyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
@@ -125,7 +122,6 @@ public class TempLevelTimer : MonoBehaviour
                 }
             }
         }
-        */
     }
 
     public void CallGameEnd()
@@ -139,7 +135,7 @@ public class TempLevelTimer : MonoBehaviour
     {
         bgImg.SetActive(true);
 
-        resultSlots.SetActive(true);
+        //resultSlots.SetActive(true);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
 
@@ -149,7 +145,7 @@ public class TempLevelTimer : MonoBehaviour
             {
                 try
                 {
-                    resultSlots.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+                    //resultSlots.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
 
                     /*
                     if (SceneManager.GetActiveScene().name == "Envy")
@@ -314,7 +310,7 @@ public class TempLevelTimer : MonoBehaviour
 
         setVariables();
 
-        //GameObject.Find("GameManager").GetComponent<RecordUserData>().SendInTheNeededData(MyUsername, CurrentLevel, GameplayState, MyCompetitorsUsername, MyCompletionTime, MyCurrentScore, MyCurrentErrorRate);
+        GameObject.Find("GameManager").GetComponent<RecordUserData>().SendInTheNeededData(MyUsername, CurrentLevel, GameplayState, MyCompetitorsUsername, MyCompletionTime, MyCurrentScore, MyCurrentErrorRate);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
     }
@@ -325,13 +321,13 @@ public class TempLevelTimer : MonoBehaviour
         bgImg.SetActive(true);
 
         timerIsRunning = false;
-        resultSlots.SetActive(true);
+        //resultSlots.SetActive(true);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
 
         try
         {
-            resultSlots.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
+            //resultSlots.transform.GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
 
             /*
             if (SceneManager.GetActiveScene().name == "Envy")
@@ -427,9 +423,6 @@ public class TempLevelTimer : MonoBehaviour
     }
 
 
-
-
-
     void setVariables()
     {
         MyUsername = PhotonNetwork.LocalPlayer.NickName;
@@ -440,11 +433,12 @@ public class TempLevelTimer : MonoBehaviour
 
         MyCompletionTime = (Mathf.Round(timeRemaining * 100)) / 100.0;
 
-        MyCompetitorsUsername = "nATIS tEST";
+        //MyCompetitorsUsername = "nATIS tEST";
 
-        MyCurrentScore = "test";
+        MyCurrentScore = "";
         MyCurrentErrorRate = 0;
-        /*
+
+        
         if (GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().playerNumber == 0)
         {
             MyCompetitorsUsername = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[1];
@@ -453,7 +447,7 @@ public class TempLevelTimer : MonoBehaviour
         {
             MyCompetitorsUsername = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[0];
         }
-        */
+        
     }
 
     void removeSlots(List<GameObject> x)

@@ -64,6 +64,7 @@ public class WrathGameplayManager : MonoBehaviour
 
     void Update()
     {
+        /*
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
         {
             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
@@ -98,6 +99,7 @@ public class WrathGameplayManager : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     void FixedUpdate()

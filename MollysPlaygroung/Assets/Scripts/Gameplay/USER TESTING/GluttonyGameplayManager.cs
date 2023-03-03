@@ -40,6 +40,7 @@ public class GluttonyGameplayManager : MonoBehaviour
     {
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
         {
+            /*
             try
             {
                 LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
@@ -50,7 +51,6 @@ public class GluttonyGameplayManager : MonoBehaviour
                 // error
             }
 
-            /*
             // Instantiation
             if (AmountOfFoodSP >= FoodParent.transform.childCount && !noMoreFoodNeeded)
             {
@@ -62,7 +62,7 @@ public class GluttonyGameplayManager : MonoBehaviour
                 noMoreFoodNeeded = true;
             }
             */
-        }
+       /* }
         else
         {
             for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
@@ -78,7 +78,7 @@ public class GluttonyGameplayManager : MonoBehaviour
                 }
             }
 
-            /*
+            
             try
             {
                 // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
