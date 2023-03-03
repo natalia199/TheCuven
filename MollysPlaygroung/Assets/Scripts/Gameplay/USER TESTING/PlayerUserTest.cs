@@ -119,6 +119,8 @@ public class PlayerUserTest : MonoBehaviour
 
     public GameObject competitor = null;
 
+    public bool oopsyGotHit = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -306,14 +308,14 @@ public class PlayerUserTest : MonoBehaviour
                                 throwChipAcces = false;
                             }
 
-                            /*
+                            
                             if (PhotonNetwork.LocalPlayer.IsMasterClient)
                             {
                                 if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
                                 {
                                     view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
-                            }*/
+                            }
                         }
                         else
                         {
@@ -616,14 +618,14 @@ public class PlayerUserTest : MonoBehaviour
                             view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
                         }
 
-                        /*
+                        
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
                             if (!die && (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
                             {
                                 view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
-                        }*/
+                        }
                     }
                     else
                     {
@@ -831,7 +833,7 @@ public class PlayerUserTest : MonoBehaviour
                             }
                         }
 
-                        /*
+                        
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
                             if (!die && GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
@@ -839,7 +841,7 @@ public class PlayerUserTest : MonoBehaviour
                                 view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
                         }
-                        */
+                        
                     }
                     // SINGLE PLAYER
                     else
@@ -1019,16 +1021,16 @@ public class PlayerUserTest : MonoBehaviour
     [PunRPC]
     void YouPushedThem(string name, string victim, Vector3 force)
     {
-        GameObject.Find(victim).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("PushedTrigger", true);
         GameObject.Find(victim).GetComponent<Rigidbody>().AddForce(force);
-
+        //GameObject.Find(victim).GetComponent<PlayerUserTest>().oopsyGotHit
+        GameObject.Find(victim).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("PushedTrigger", true);
     }
 
     [PunRPC]
     void youHitThem(string name, string victim)
     {
-        GameObject.Find(victim).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("HitTrigger", true);
         GameObject.Find(victim).GetComponent<PlayerUserTest>().stunnah();
+        GameObject.Find(victim).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("HitTrigger", true);
     }
 
     // Username

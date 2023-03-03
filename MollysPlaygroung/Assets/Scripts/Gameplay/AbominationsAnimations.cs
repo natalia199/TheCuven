@@ -25,6 +25,15 @@ public class AbominationsAnimations : MonoBehaviour
             bool directionPressed = inputHorizontal != 0 || inputVertical != 0;
 
 
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+            }
+            else
+            {
+                view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+            }
+
             if (Input.GetKeyDown(KeyCode.I))
             {
                 view.RPC("pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
@@ -181,6 +190,19 @@ public class AbominationsAnimations : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    void jumpies(string pName, bool x)
+    {
+        try
+        {
+            GameObject.Find(pName).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("JumpTrigger", x);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    
     [PunRPC]
     void pushies(string pName, bool x)
     {

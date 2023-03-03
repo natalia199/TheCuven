@@ -99,11 +99,11 @@ public class AbominationsController : MonoBehaviour
         if (Input.GetKeyDown("o"))
         {
             animator.SetTrigger("ChipThrowTrigger");
-        }*/
+        }
         if (Input.GetKeyDown("g"))
         {
             animator.SetTrigger("PoisonTrigger");
-        }
+        }*/
         /*
         if (Input.GetKeyDown("h"))
         {

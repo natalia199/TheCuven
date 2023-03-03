@@ -80,7 +80,9 @@ public class SceneManage : MonoBehaviour
             GameplayDone = false;
 
             //PhotonNetwork.LoadLevel("Survey Reminder");
-            StartCoroutine("LevelTransition", 3);
+            //StartCoroutine("LevelTransition", 3);
+            PhotonNetwork.LoadLevel("Game Level Transition");
+
         }
     }
 
