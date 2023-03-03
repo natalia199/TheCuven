@@ -6,6 +6,8 @@ public class SlothObstacle : MonoBehaviour
 {
     public bool trapSet;
 
+    public GameObject caughtPlayer;
+
     void Start()
     {
         trapSet = false;
@@ -13,6 +15,15 @@ public class SlothObstacle : MonoBehaviour
 
     void Update()
     {
-        
+
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        // GREED
+
+        if (other.tag == "Player" && !trapSet)
+        {
+            caughtPlayer = other.gameObject;
+        }
     }
 }
