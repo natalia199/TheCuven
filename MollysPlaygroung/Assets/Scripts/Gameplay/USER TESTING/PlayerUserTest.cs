@@ -18,6 +18,8 @@ public class PlayerUserTest : MonoBehaviour
     [SerializeField] float speedModifier = 1f;
     [SerializeField] float jumpForce = 8f;
 
+    public GameObject interactedOpponent = null;
+
     // GREED
     public bool cameraSwitch = false;
     public bool chipAccess = false;
@@ -28,7 +30,7 @@ public class PlayerUserTest : MonoBehaviour
     public int totalChipCollection = 0;
     public int diceRollValue = 0;
     public GameObject interactedChip = null;
-    List<GameObject> collectedChipies = new List<GameObject>();
+    public List<GameObject> collectedChipies = new List<GameObject>();
     public List<GameObject> CameraOptions = new List<GameObject>();
 
     public Vector3 chipPosition;
@@ -68,13 +70,14 @@ public class PlayerUserTest : MonoBehaviour
     // SLOTH
     public bool withinTheLight = false;
     bool pauseForDecrease = false;
-    bool gotBearTrapped = false;
+    public bool gotBearTrapped = false;
     public bool lifeFullyDone = false;
     public float lifeMax = 100;
     public float lifeSource = 100;
     public GameObject interactedBearTrap = null;
+    public GameObject alreadySetBearTrap = null;
     public int trapHeight;
-    bool freezePlayer = false;
+    public bool freezePlayer = false;
     public float lifeDropSpeed;
 
     public Vector2 lightPosition;
@@ -114,13 +117,19 @@ public class PlayerUserTest : MonoBehaviour
     public bool finishedSinglePlayer = false;
     public bool die = false;
 
+    public GameObject competitor = null;
+
+    public bool oopsyGotHit = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         view = GetComponent<PhotonView>();
 
-        resetAllValues();
-
+        if (view.IsMine)
+        {
+            resetAllValues();
+        }
 
         for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
@@ -211,7 +220,7 @@ public class PlayerUserTest : MonoBehaviour
                         CameraOptions[1].SetActive(false);
 
                         // Roll Dice
-                        if (Input.GetKeyDown(KeyCode.P))
+                        if (Input.GetKeyDown(KeyCode.E))
                         {
                             GameObject.Find("Dice").GetComponent<Dice>().RollDice();
                         }
@@ -230,7 +239,7 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
                         {
-                            if (GameObject.Find("Bucket0").transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
+                            if (GameObject.Find("Bucket" + playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
                             {
                                 GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
                                 view.RPC("setSinglePlayerStateGreed", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -271,18 +280,18 @@ public class PlayerUserTest : MonoBehaviour
                             }
 
                             // Collecting chip
-                            if (Input.GetKeyDown(KeyCode.P))
+                            if (Input.GetKeyDown(KeyCode.E))
                             {
                                 if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
                                 {
                                     oneChipAtATimeCarry = true;
-                                    Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 1f + (collectedChipies.Count * 0.5f), transform.position.z);
+                                    Vector3 carriedChipPos = new Vector3(transform.position.x, transform.position.y + 2f + (collectedChipies.Count * 0.5f), transform.position.z);
                                     Quaternion carriedChipRot = Quaternion.identity;
                                     view.RPC("carryChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, carriedChipPos, carriedChipRot);
                                 }
                             }
                             // Disposing chip
-                            else if (Input.GetKeyDown(KeyCode.O))
+                            else if (Input.GetKeyDown(KeyCode.R))
                             {
                                 if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
                                 {
@@ -299,7 +308,7 @@ public class PlayerUserTest : MonoBehaviour
                                 throwChipAcces = false;
                             }
 
-
+                            
                             if (PhotonNetwork.LocalPlayer.IsMasterClient)
                             {
                                 if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
@@ -333,7 +342,7 @@ public class PlayerUserTest : MonoBehaviour
                             }
 
 
-                            if ((GameObject.Find("Bucket0").transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
+                            if ((GameObject.Find("Bucket" + playerNumber).transform.GetChild(1).GetComponent<ChipZoneDetection>().zoneCollider.Length / 2) == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips && !finishedSinglePlayer)
                             {
                                 GameObject.Find("GameManager").GetComponent<TempLevelTimer>().singlePlayerDisplay();
                                 view.RPC("setSinglePlayerStateGreed", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -496,7 +505,7 @@ public class PlayerUserTest : MonoBehaviour
                         if (eatFood)
                         {
                             view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                            view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            //view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
 
 
@@ -583,7 +592,7 @@ public class PlayerUserTest : MonoBehaviour
                         }
 
                         // Move Horse
-                        if (Input.GetKey(KeyCode.P))
+                        if (Input.GetKey(KeyCode.E))
                         {
                             if (squirtAccess && squirtGun != null)
                             {
@@ -609,6 +618,7 @@ public class PlayerUserTest : MonoBehaviour
                             view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
                         }
 
+                        
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
                             if (!die && (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count)
@@ -794,9 +804,9 @@ public class PlayerUserTest : MonoBehaviour
                             view.RPC("caughtByBearTrap", RpcTarget.AllBufferedViaServer, view.Owner.NickName, pos);
                         }
 
-                        if (Input.GetKeyDown(KeyCode.P))
+                        if (!gotBearTrapped && alreadySetBearTrap != null)
                         {
-                            if (gotBearTrapped && interactedBearTrap != null)
+                            if (Input.GetKeyDown(KeyCode.E))
                             {
                                 view.RPC("unhookedBearTrap", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
@@ -823,6 +833,7 @@ public class PlayerUserTest : MonoBehaviour
                             }
                         }
 
+                        
                         if (PhotonNetwork.LocalPlayer.IsMasterClient)
                         {
                             if (!die && GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
@@ -830,6 +841,7 @@ public class PlayerUserTest : MonoBehaviour
                                 view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
                         }
+                        
                     }
                     // SINGLE PLAYER
                     else
@@ -908,6 +920,21 @@ public class PlayerUserTest : MonoBehaviour
 
             if (!freezePlayer)
             {
+                if (competitor != null)
+                {
+                    if (Input.GetKeyDown(KeyCode.I))
+                    {
+                        Vector3 dir = transform.GetChild(1).position - transform.position;
+                        dir = dir.normalized;
+                        view.RPC("YouPushedThem", RpcTarget.AllBufferedViaServer, view.Owner.NickName, competitor.name, dir);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.P))
+                    {
+                        view.RPC("youHitThem", RpcTarget.AllBufferedViaServer, view.Owner.NickName, competitor.name);
+                    }
+                }
+
                 MovePlayer();
 
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -917,6 +944,20 @@ public class PlayerUserTest : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void stunnah()
+    {
+        StartCoroutine("stunTheBitch", 3);
+    }
+
+    IEnumerator stunTheBitch(float time)
+    {
+        freezePlayer = true;
+
+        yield return new WaitForSeconds(time);
+
+        freezePlayer = false;
     }
 
     IEnumerator LifeDropSpeed(float time)
@@ -958,7 +999,7 @@ public class PlayerUserTest : MonoBehaviour
         }
 
         rb.MovePosition(playerPos + movement * speedModifier * speed * Time.fixedDeltaTime);
-        //rb.MoveRotation(targetRotation);
+        rb.MoveRotation(targetRotation);
 
     }
 
@@ -977,7 +1018,23 @@ public class PlayerUserTest : MonoBehaviour
 
     /// RPCs
 
+    [PunRPC]
+    void YouPushedThem(string name, string victim, Vector3 force)
+    {
+        GameObject.Find(victim).GetComponent<Rigidbody>().AddForce(force);
+        //GameObject.Find(victim).GetComponent<PlayerUserTest>().oopsyGotHit
+        GameObject.Find(victim).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("PushedTrigger", true);
+    }
+
+    [PunRPC]
+    void youHitThem(string name, string victim)
+    {
+        GameObject.Find(victim).GetComponent<PlayerUserTest>().stunnah();
+        GameObject.Find(victim).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("HitTrigger", true);
+    }
+
     // Username
+
     [PunRPC]
     void getPlayersNickName(string name)
     {
@@ -1300,10 +1357,11 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap.gameObject);
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedBearTrap = null;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().freezePlayer = false;
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().gotBearTrapped = false;
+            //GameObject.Find(GameObject.Find(GameObject.Find(pName).GetComponent<PlayerUserTest>().alreadySetBearTrap.name).GetComponent<SlothObstacle>().caughtPlayer.name).GetComponent<PlayerUserTest>().interactedBearTrap = null;
+            //GameObject.Find(GameObject.Find(GameObject.Find(pName).GetComponent<PlayerUserTest>().alreadySetBearTrap.name).GetComponent<SlothObstacle>().caughtPlayer.name).GetComponent<PlayerUserTest>().freezePlayer = false;
+            //GameObject.Find(GameObject.Find(GameObject.Find(pName).GetComponent<PlayerUserTest>().alreadySetBearTrap.name).GetComponent<SlothObstacle>().caughtPlayer.name).GetComponent<PlayerUserTest>().gotBearTrapped = false;
+            Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().alreadySetBearTrap.gameObject);
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().alreadySetBearTrap = null;
         }
         catch (NullReferenceException e)
         {
@@ -1418,6 +1476,7 @@ public class PlayerUserTest : MonoBehaviour
                 Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood.gameObject);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = null;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().eatFood = false;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies++;
             }
         }
         catch (NullReferenceException e)
@@ -1548,7 +1607,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
             collectedChipies[0].AddComponent<Rigidbody>();
-            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket0").transform.GetChild(0).position, transform.position, f);
+            collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + playerNumber).transform.GetChild(0).position, transform.position, f);
             collectedChipies[0].GetComponent<ChipScript>().Available = true;
             collectedChipies.RemoveAt(0);
             thrownTracker++;
@@ -1762,6 +1821,16 @@ public class PlayerUserTest : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        if (other.tag == "Player")
+        {
+            if (interactedOpponent == null)
+            {
+                interactedOpponent = other.gameObject;
+            }
+
+            competitor = other.gameObject;
+        }
+
         // WRATH
         if (other.tag == "WrathBox")
         {
@@ -1812,6 +1881,11 @@ public class PlayerUserTest : MonoBehaviour
             gotBearTrapped = true;
             interactedBearTrap = other.gameObject;
         }
+        
+        if (other.tag == "BearTrap" && other.GetComponent<SlothObstacle>().trapSet)
+        {
+            alreadySetBearTrap = other.gameObject;
+        }
 
         // LUST
         if (other.tag == "PianoKey")
@@ -1843,6 +1917,12 @@ public class PlayerUserTest : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
+        if (other.tag == "Player")
+        {
+            interactedOpponent = null;
+            competitor = null;
+        }
+
         // WRATH
         if (other.tag == "WrathBox")
         {
@@ -1876,13 +1956,11 @@ public class PlayerUserTest : MonoBehaviour
             withinTheLight = false;
         }
 
-        /*
-        if (other.tag == "BearTrap")
+        if(other.tag == "BearTrap")
         {
-            gotBearTrapped = false;
-            interactedBearTrap = null;
+            alreadySetBearTrap = null;
         }
-        */
+
     }
 
     void resetAllValues()

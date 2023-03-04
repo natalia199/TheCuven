@@ -46,7 +46,7 @@ public class SlothGameplayManager : MonoBehaviour
                 try
                 {
                     LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + (int)GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().lifeSource;
+                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = (int)GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().lifeSource + "%";
                 }
                 catch (NullReferenceException e)
                 {
@@ -68,6 +68,7 @@ public class SlothGameplayManager : MonoBehaviour
                 // Results
                 int x = 0;
 
+                /*
                 for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
                 {
                     try
@@ -90,7 +91,7 @@ public class SlothGameplayManager : MonoBehaviour
                     {
                         break;
                     }
-                }
+                }*/
 
                 // Life display
                 for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)

@@ -20,7 +20,7 @@ public class SceneManage : MonoBehaviour
     public string MasterPlayer;
 
     // USER DEMO VARIABLES
-    public bool SingleOrMultiPlayer = false;                                        // False = single player, True = multi player
+    public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
     void Awake()
     {
@@ -30,7 +30,7 @@ public class SceneManage : MonoBehaviour
 
         CurrentLevelState = false;
 
-        SingleOrMultiPlayer = false;
+        SingleOrMultiPlayer = true;
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
@@ -42,7 +42,7 @@ public class SceneManage : MonoBehaviour
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
-        SingleOrMultiPlayer = false;
+        SingleOrMultiPlayer = true;
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine("BeginGame", 3);
@@ -67,37 +67,22 @@ public class SceneManage : MonoBehaviour
         GameplayDone = false;
         CurrentLevelState = false;
 
-        // go to next level, single and multiplayer completed
-        if (SingleOrMultiPlayer)
+        sceneTracker++;
+
+        if (sceneTracker == levelNames.Length)
         {
-            SingleOrMultiPlayer = !SingleOrMultiPlayer;
 
-            sceneTracker++;
+            PhotonNetwork.LoadLevel("Game Ending");
 
-            if (sceneTracker == levelNames.Length)
-            {
-
-                PhotonNetwork.LoadLevel("Game Ending");
-
-            }
-            else
-            {
-                GameplayDone = false;
-
-                PhotonNetwork.LoadLevel("Game Level Transition");
-                //StartCoroutine("LevelTransition", 3);
-            }
         }
-        // finish single player
         else
         {
-            SingleOrMultiPlayer = !SingleOrMultiPlayer;
-
-            CurrentLevelState = false;
             GameplayDone = false;
 
+            //PhotonNetwork.LoadLevel("Survey Reminder");
+            //StartCoroutine("LevelTransition", 3);
             PhotonNetwork.LoadLevel("Game Level Transition");
-           //StartCoroutine("LevelTransition", 3);
+
         }
     }
 
