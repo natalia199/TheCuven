@@ -38,91 +38,16 @@ public class GluttonyGameplayManager : MonoBehaviour
 
     void Update()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            /*
-            try
-            {
-                LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munched: " + GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
-            }
-            catch (NullReferenceException e)
-            {
-                // error
-            }
-
-            // Instantiation
-            if (AmountOfFoodSP >= FoodParent.transform.childCount && !noMoreFoodNeeded)
-            {
-                addFood(null);
-            }
-
-            if (FoodParent.transform.childCount == AmountOfFoodSP)
-            {
-                noMoreFoodNeeded = true;
-            }
-            */
-       /* }
-        else
-        {
-            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-            {
-                try
-                {
-                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Muched: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies + "/" + AmountOfFood;
-                }
-                catch (NullReferenceException e)
-                {
-                    // error
-                }
-            }
-
-            
-            try
-            {
-                // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
-                if (foodReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood != null && AmountOfFood != FoodParent.transform.childCount)
-                {
-                    addFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood);
-                    foodReady = false;
-                }
-            }
-            catch (NullReferenceException e)
-            {
-                // error
-            }
-
-            try
-            {
-                if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood != null)
-                {
-                    //addVomitedFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood);
-                    //vomitedFoodReady = false;
-                }
-            }
-            catch (NullReferenceException e)
-            {
-                // error
-            }
-            */
-        }
+        
     }
 
     public void addFood(GameObject food)
     {
         Debug.Log("food instant");
 
-        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            foodInstantiationTracker++;
-            food.AddComponent<Rigidbody>();
-            FoodInstantiation();
-        }
-        else
-        {
-            StartCoroutine("FoodLifeTimeSP", 0);
-        }
+        foodInstantiationTracker++;
+        food.AddComponent<Rigidbody>();
+        FoodInstantiation();
     }
 
     // BEAR TRAPS
@@ -151,11 +76,6 @@ public class GluttonyGameplayManager : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         food.AddComponent<Rigidbody>();
-    }
-
-    public void incSinglePlayerState()
-    {
-        singlePlayerFinishedState++;
     }
 
 

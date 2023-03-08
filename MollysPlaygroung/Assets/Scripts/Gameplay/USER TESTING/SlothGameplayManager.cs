@@ -41,94 +41,68 @@ public class SlothGameplayManager : MonoBehaviour
     {
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
         {
-            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+            
+            /*
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
             {
                 try
                 {
-                    LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                    LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = (int)GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().lifeSource + "%";
+                    if (!GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().lifeFullyDone) 
+                    {
+                        x++;
+                    }
+
+                    if (x > 1)
+                    {
+                        break;
+                    }
+                    else if (i == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) && x < 1)
+                    {
+                        GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
+                    }
                 }
                 catch (NullReferenceException e)
                 {
-                    // error
+                    break;
                 }
+            }*/
 
-                // Instantiation
-                if (AmountOfTraps > TrapParent.transform.childCount)
-                {
-                    addTrap(null);
-                }
-                if (LightParent.transform.childCount == 0)
-                {
-                    addLight(null);
-                }
-            }
-            else
+            // Life display
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
             {
-                // Results
-                int x = 0;
-
-                /*
-                for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-                {
-                    try
-                    {
-                        if (!GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().lifeFullyDone) 
-                        {
-                            x++;
-                        }
-
-                        if (x > 1)
-                        {
-                            break;
-                        }
-                        else if (i == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1) && x < 1)
-                        {
-                            GameObject.Find("GameManager").GetComponent<TempLevelTimer>().CallGameEnd();
-                        }
-                    }
-                    catch (NullReferenceException e)
-                    {
-                        break;
-                    }
-                }*/
-
-                // Life display
-                for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-                {
-                    try
-                    {
-                        LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                        LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + (int)GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().lifeSource;
-                    }
-                    catch (NullReferenceException e)
-                    {
-                        break;
-                    }
-                }
-
-                // INSTANTIATIONS
                 try
                 {
-                    if (lightReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theLight != null)
-                    {
-                        addLight(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theLight);
-                        lightReady = false;
-                    }
+                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Life: " + (int)GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().lifeSource;
                 }
-                catch (NullReferenceException e) { }
-
-                try
+                catch (NullReferenceException e)
                 {
-                    // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
-                    if (trapReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theTrap != null && AmountOfTraps != TrapParent.transform.childCount)
-                    {
-                        addTrap(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theTrap);
-                        trapReady = false;
-                    }
+                    break;
                 }
-                catch (NullReferenceException e) { }
             }
+
+            // INSTANTIATIONS
+            try
+            {
+                if (lightReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theLight != null)
+                {
+                    addLight(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theLight);
+                    lightReady = false;
+                }
+            }
+            catch (NullReferenceException e) { }
+
+            try
+            {
+                // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
+                if (trapReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theTrap != null && AmountOfTraps != TrapParent.transform.childCount)
+                {
+                    addTrap(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theTrap);
+                    trapReady = false;
+                }
+            }
+            catch (NullReferenceException e) { }
+        
         }
     }
 
@@ -136,30 +110,16 @@ public class SlothGameplayManager : MonoBehaviour
     {
         Debug.Log("light instant");
 
-        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            currentLight = light;
-            LightInstantiation();
-        }
-        else
-        {
-            StartCoroutine("LightLifeTimeSP", UnityEngine.Random.Range(5, 10));
-        }
+        currentLight = light;
+        LightInstantiation();
     }
-    
+
     public void addTrap(GameObject trap)
     {
         Debug.Log("trap instant");
 
-        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            trap.AddComponent<Rigidbody>();
-            TrapInstantiation();
-        }
-        else
-        {
-            StartCoroutine("TrapLifeTimeSP", UnityEngine.Random.Range(1, 5));
-        }
+        trap.AddComponent<Rigidbody>();
+        TrapInstantiation();
     }
 
     // BEAR TRAPS
