@@ -46,17 +46,10 @@ public class WrathGameplayManager : MonoBehaviour
     {
         plateState = wrathPlate.GetComponent<PlatformShakeWrath>().newTilt;
 
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            singlePlayerPlatform.SetActive(true);
-            multiPlayerPlatform.SetActive(false);
-        }
-        else
-        {
-            boxScoreTxt.SetActive(false);
-            singlePlayerPlatform.SetActive(false);
-            multiPlayerPlatform.SetActive(true);
-        }
+        boxScoreTxt.SetActive(false);
+        singlePlayerPlatform.SetActive(false);
+        multiPlayerPlatform.SetActive(true);
+
 
         singlePlayerFinishedState = 0;
         trackedBoxScore = 0;
@@ -104,22 +97,6 @@ public class WrathGameplayManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            if (AmountOfBoxes > TrackBoxes && !noMoreBoxesNeeded) {
-                // Instantiation
-                for (int i = 0; i < (AmountOfBoxes - TrackBoxes); i++)
-                {
-                    float xPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.x, BoxpawnPoints[2].position.x);
-                    float zPos = UnityEngine.Random.Range(BoxpawnPoints[0].position.z, BoxpawnPoints[1].position.z);
-                    Vector3 posy = new Vector3(xPos, 5, zPos);
-
-                    Instantiate(boxPrefab, posy, Quaternion.identity, boxParent.transform);
-                    TrackBoxes++;
-                }
-            }
-        }
-
         lava.transform.Rotate(0, 6 * rotationsPerMinute * Time.deltaTime, 0);
 
         plateState = wrathPlate.GetComponent<PlatformShakeWrath>().newTilt;
@@ -136,11 +113,6 @@ public class WrathGameplayManager : MonoBehaviour
     public void RecordWrathResults(GameObject player)
     {
         wrathResults.Add(player);
-    }
-
-    public void incSinglePlayerState()
-    {
-        singlePlayerFinishedState++;
     }
 
 }

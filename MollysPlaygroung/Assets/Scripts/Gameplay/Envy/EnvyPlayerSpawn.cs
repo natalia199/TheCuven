@@ -6,8 +6,6 @@ using Photon.Pun;
 public class EnvyPlayerSpawn : MonoBehaviour
 {
     public GameObject playerPrefab;
-    public GameObject singlePlayerSpawn;
-    public GameObject singlePlayerSpawnPost;
 
     void Awake()
     {

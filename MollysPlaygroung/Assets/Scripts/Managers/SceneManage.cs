@@ -20,7 +20,7 @@ public class SceneManage : MonoBehaviour
     public string MasterPlayer;
 
     // USER DEMO VARIABLES
-    public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
+    //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
     void Awake()
     {
@@ -30,7 +30,7 @@ public class SceneManage : MonoBehaviour
 
         CurrentLevelState = false;
 
-        SingleOrMultiPlayer = true;
+        //SingleOrMultiPlayer = true;
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
@@ -42,7 +42,7 @@ public class SceneManage : MonoBehaviour
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
-        SingleOrMultiPlayer = true;
+        //SingleOrMultiPlayer = true;
         if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine("BeginGame", 3);

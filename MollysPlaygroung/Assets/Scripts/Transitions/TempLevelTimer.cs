@@ -45,83 +45,8 @@ public class TempLevelTimer : MonoBehaviour
         else
         {
             timeText.text = "";
-        }
-
+        }        
         
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer && !timerIsRunning)
-        {
-            if (SceneManager.GetActiveScene().name == "Gluttony")
-            {
-                if (GetComponent<GluttonyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
-                {
-                    waitingMsg.text = "Entering Multiplayer!";
-                }
-                else
-                {
-                    waitingMsg.text = "Waiting for other player to finish...";
-                }
-            }
-            else if (SceneManager.GetActiveScene().name == "Envy")
-            {
-                if (GetComponent<EnvyGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
-                {
-                    waitingMsg.text = "Entering Multiplayer!";
-                }
-
-                else
-                {
-                    waitingMsg.text = "Waiting for other player to finish...";
-                }
-            }
-            else if (SceneManager.GetActiveScene().name == "Wrath")
-            {
-                if (GetComponent<WrathGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
-                {
-                    waitingMsg.text = "Entering Multiplayer!";
-                }
-
-                else
-                {
-                    waitingMsg.text = "Waiting for other player to finish...";
-                }
-            }
-            else if (SceneManager.GetActiveScene().name == "Lust")
-            {
-                if (GetComponent<LustGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
-                {
-                    waitingMsg.text = "Entering Multiplayer!";
-                }
-
-                else
-                {
-                    waitingMsg.text = "Waiting for other player to finish...";
-                }
-            }
-            else if (SceneManager.GetActiveScene().name == "Sloth")
-            {
-                if (GetComponent<SlothGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
-                {
-                    waitingMsg.text = "Entering Multiplayer!";
-                }
-
-                else
-                {
-                    waitingMsg.text = "Waiting for other player to finish...";
-                }
-            }
-            else if (SceneManager.GetActiveScene().name == "Greed")
-            {
-                if (GetComponent<GreedGameplayManager>().singlePlayerFinishedState == GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count)
-                {
-                    waitingMsg.text = "Entering Multiplayer!";
-                }
-
-                else
-                {
-                    waitingMsg.text = "Waiting for other player to finish...";
-                }
-            }
-        }
     }
 
     public void CallGameEnd()
@@ -138,173 +63,170 @@ public class TempLevelTimer : MonoBehaviour
         //resultSlots.SetActive(true);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
-
-        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
-            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+            try
             {
-                try
+                //resultSlots.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+
+                /*
+                if (SceneManager.GetActiveScene().name == "Envy")
                 {
-                    //resultSlots.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+                    int index = -1;
 
-                    /*
-                    if (SceneManager.GetActiveScene().name == "Envy")
+                    for (int j = 0; j < GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count; j++)
                     {
-                        int index = -1;
-
-                        for (int j = 0; j < GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults.Count; j++)
+                        if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults[j].name)
                         {
-                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().horseResults[j].name)
-                            {
-                                index = j + 1;
-                            }
+                            index = j + 1;
                         }
+                    }
 
-                        if (index == -1)
-                        {
-                            index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count;
-
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                            {
-                                MyCurrentErrorRate = 1;
-                            }
-                        }
-                        else
-                        {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                            {
-                                MyCurrentErrorRate = 0;
-                            }
-                        }
+                    if (index == -1)
+                    {
+                        index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count;
 
                         if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
                         {
-                            MyCurrentScore = "# " + index;
+                            MyCurrentErrorRate = 1;
                         }
-
-                        //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Place";
-
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
                     }
-                    else if (SceneManager.GetActiveScene().name == "Gluttony")
+                    else
                     {
                         if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
                         {
-                            MyCurrentScore = "" + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
-                            MyCurrentErrorRate = GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().AmountOfFood - GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+                            MyCurrentErrorRate = 0;
                         }
-
-                        //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Munchies";
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munched " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
                     }
-                    else if (SceneManager.GetActiveScene().name == "Greed")
+
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
                     {
-                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                        {
-                            MyCurrentScore = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[i].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + "";
-                            MyCurrentErrorRate = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips - GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[i].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone;
-                        }
-
-                        //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Chipies";
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[i].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone +" Chips";
+                        MyCurrentScore = "# " + index;
                     }
-                    else if (SceneManager.GetActiveScene().name == "Sloth")
-                    {
-                        int index = -1;
 
-                        for (int j = 0; j < GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count; j++)
-                        {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults[j].name)
-                            {
-                                index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - j;
-                                break;
-                            }
-                        }
+                    //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Place";
 
-                        if (index == -1)
-                        {
-                            index = 1;
-                            
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                            {
-                                MyCurrentErrorRate = 0;
-                            }
-                        }
-                        else
-                        {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                            {
-                                MyCurrentErrorRate = 1;
-                            }
-                        }
-
-                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                        {
-                            MyCurrentScore = "# " + index;
-                        }
-
-                        //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Place";
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "# " + index;
-                    }
-                    else if (SceneManager.GetActiveScene().name == "Lust")
-                    {
-                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                        {
-                            MyCurrentScore = "" + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys;
-                            MyCurrentErrorRate = GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys - GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys;
-                        }
-
-                        //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Keys";
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text =GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys + " Keys";
-                    }
-                    else if (SceneManager.GetActiveScene().name == "Wrath")
-                    {
-                        int index = -1;
-
-                        for (int j = 0; j < GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count; j++)
-                        {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults[j].name)
-                            {
-                                index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - j;
-                                break;
-                            }
-                        }
-
-                        if (index == -1)
-                        {
-                            index = 1;
-
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                            {
-                                MyCurrentErrorRate = 0;
-                            }
-                        }
-                        else
-                        {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                            {
-                                MyCurrentErrorRate = 1;
-                            }
-                        }
-
-                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
-                        {
-                            MyCurrentScore = "# " + index;
-                        }
-
-                        //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Place";
-                        resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
-                    }
-                    */
-
-                    waitingMsg.text = "On to the next level...";
+                    resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
                 }
-                catch (NullReferenceException e)
+                else if (SceneManager.GetActiveScene().name == "Gluttony")
                 {
-                    // error
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        MyCurrentScore = "" + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+                        MyCurrentErrorRate = GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().AmountOfFood - GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
+                    }
+
+                    //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Munchies";
+                    resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "Munched " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectedFoodies;
                 }
+                else if (SceneManager.GetActiveScene().name == "Greed")
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        MyCurrentScore = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[i].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + "";
+                        MyCurrentErrorRate = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips - GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[i].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone;
+                    }
+
+                    //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Chipies";
+                    resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[i].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone +" Chips";
+                }
+                else if (SceneManager.GetActiveScene().name == "Sloth")
+                {
+                    int index = -1;
+
+                    for (int j = 0; j < GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count; j++)
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults[j].name)
+                        {
+                            index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - j;
+                            break;
+                        }
+                    }
+
+                    if (index == -1)
+                    {
+                        index = 1;
+
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                        {
+                            MyCurrentErrorRate = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                        {
+                            MyCurrentErrorRate = 1;
+                        }
+                    }
+
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        MyCurrentScore = "# " + index;
+                    }
+
+                    //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Place";
+                    resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "# " + index;
+                }
+                else if (SceneManager.GetActiveScene().name == "Lust")
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        MyCurrentScore = "" + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys;
+                        MyCurrentErrorRate = GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys - GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys;
+                    }
+
+                    //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Keys";
+                    resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text =GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().hitKeys + " Keys";
+                }
+                else if (SceneManager.GetActiveScene().name == "Wrath")
+                {
+                    int index = -1;
+
+                    for (int j = 0; j < GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count; j++)
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults[j].name)
+                        {
+                            index = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - j;
+                            break;
+                        }
+                    }
+
+                    if (index == -1)
+                    {
+                        index = 1;
+
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                        {
+                            MyCurrentErrorRate = 0;
+                        }
+                    }
+                    else
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                        {
+                            MyCurrentErrorRate = 1;
+                        }
+                    }
+
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        MyCurrentScore = "# " + index;
+                    }
+
+                    //resultSlots.transform.GetChild(resultSlots.transform.childCount - 1).GetComponent<TextMeshProUGUI>().text = "Place";
+                    resultSlots.transform.GetChild(i).GetChild(1).GetComponent<TextMeshProUGUI>().text = "#" + index;
+                }
+                */
+
+                waitingMsg.text = "On to the next level...";
+            }
+            catch (NullReferenceException e)
+            {
+                // error
             }
         }
+        
 
         yield return new WaitForSeconds(time);
 
@@ -429,7 +351,7 @@ public class TempLevelTimer : MonoBehaviour
 
         CurrentLevel = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
 
-        GameplayState = GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer;
+        //GameplayState = GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer;
 
         MyCompletionTime = (Mathf.Round(timeRemaining * 100)) / 100.0;
 

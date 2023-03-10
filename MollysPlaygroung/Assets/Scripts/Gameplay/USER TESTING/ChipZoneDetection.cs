@@ -23,14 +23,7 @@ public class ChipZoneDetection : MonoBehaviour
     {
         chipsInZone = zoneCollider.Length / 2;
 
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
-        {
-            scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().AmountOfChips;
-        }
-        else
-        {
-            scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips;
-        }
+        scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips;
     }
 
     void FixedUpdate()

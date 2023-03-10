@@ -25,39 +25,26 @@ public class EnvyGameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer)
+
+        // Life display
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
             try
             {
-                LifeSlots[0].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = PhotonNetwork.LocalPlayer.NickName;
-                LifeSlots[0].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = horseResults.Count + "/" + racingHorseys.Count + " horses";
+                //LifeSlots[i].transform.GetChild(2).gameObject.SetActive(true);
+
+                LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
+
+                if (GameObject.Find(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName).GetComponent<EnvyHorse>().finished)
+                {
+                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Finished";
+                }
             }
             catch (NullReferenceException e)
             {
-                // error
             }
         }
-        else
-        {
-            // Life display
-            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-            {
-                try
-                {
-                    //LifeSlots[i].transform.GetChild(2).gameObject.SetActive(true);
 
-                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-
-                    if (GameObject.Find(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().horseName).GetComponent<EnvyHorse>().finished)
-                    {
-                        LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Finished";
-                    }
-                }
-                catch (NullReferenceException e)
-                {
-                }
-            }
-        }
     }
 
     public void RecordHorseResult(GameObject horse)
@@ -113,10 +100,5 @@ public class EnvyGameplayManager : MonoBehaviour
     public void desquirtWaterSP(GameObject gun)
     {
         gun.transform.GetChild(0).GetComponent<EnvySquirter>().squirterActivated = false;
-    }
-
-    public void incSinglePlayerState()
-    {
-        singlePlayerFinishedState++;
     }
 }

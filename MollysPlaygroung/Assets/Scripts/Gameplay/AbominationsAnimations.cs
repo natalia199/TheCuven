@@ -14,6 +14,58 @@ public class AbominationsAnimations : MonoBehaviour
         view = GetComponent<PhotonView>();
     }
 
+    void Update()
+    {
+        if (view.IsMine)
+        {
+            
+            if (GetComponent<PlayerUserTest>().freezePlayer)
+            {
+                view.RPC("ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GetComponent<PlayerUserTest>().oopsyGotHit);
+                
+                view.RPC("aghhh", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GetComponent<PlayerUserTest>().oopsyGotDragged);                
+            }
+            else
+            {
+                view.RPC("ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+                view.RPC("aghhh", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                }
+
+                if (!GetComponent<PlayerUserTest>().actionPause)
+                {
+                    if (Input.GetKeyDown(KeyCode.O))
+                    {
+                        view.RPC("pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.I))
+                {
+                    view.RPC("hitties", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                }
+
+                if (GetComponent<PlayerUserTest>().oopsyGotPushed)
+                {
+                    GetComponent<PlayerUserTest>().oopsyGotPushed = false;
+                    view.RPC("oof", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                }
+
+                if (Input.GetKey(KeyCode.P))
+                {
+                    view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                }
+                else
+                {
+                    view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+                }
+            }
+        }
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -23,44 +75,6 @@ public class AbominationsAnimations : MonoBehaviour
             float inputHorizontal = Input.GetAxisRaw("Horizontal");
             float inputVertical = Input.GetAxisRaw("Vertical");
             bool directionPressed = inputHorizontal != 0 || inputVertical != 0;
-
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
-            }
-            else
-            {
-                view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                view.RPC("pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
-            }
-            else
-            {
-                view.RPC("pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-            }
-
-            if (Input.GetKeyDown(KeyCode.P))
-            {
-                view.RPC("hitties", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
-            }
-            else
-            {
-                view.RPC("hitties", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-            }            
-            
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
-            }
-            else
-            {
-                view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-            }
-
 
             if (!GetComponent<PlayerUserTest>().freezePlayer)
             {
@@ -202,7 +216,62 @@ public class AbominationsAnimations : MonoBehaviour
             // error
         }
     }
+
+    [PunRPC]
+    void ouchies(string pName, bool x)
+    {
+        try
+        {
+            if (x) 
+            {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().oopsyGotHit = false;
+                GameObject.Find(pName).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("HitTrigger", true);
+            }
+            else
+            {
+                GameObject.Find(pName).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("HitTrigger", false);
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
     
+    [PunRPC]
+    void oof(string pName)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().oopsyGotPushed = false;
+            GameObject.Find(pName).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("PushedTrigger", true);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    
+    [PunRPC]
+    void aghhh(string pName, bool x)
+    {
+        try
+        {
+            if (x)
+            {
+                GameObject.Find(pName).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("isBeingDragged", true);
+            }
+            else
+            {
+                GameObject.Find(pName).transform.GetChild(2).GetChild(0).GetComponent<Animator>().SetBool("isBeingDragged", false);
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
     [PunRPC]
     void pushies(string pName, bool x)
     {
