@@ -79,11 +79,11 @@ public class GenericAnimationController : MonoBehaviour
             animator.SetTrigger("PushedTrigger");
         }
         
-        if (Input.GetKey("space") && Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown("space") && Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetTrigger("PianoJumpTrigger");
             
-        } else if (Input.GetKey("space"))
+        } else if (Input.GetKeyDown("space"))
         {
             animator.SetTrigger("JumpTrigger");
             
