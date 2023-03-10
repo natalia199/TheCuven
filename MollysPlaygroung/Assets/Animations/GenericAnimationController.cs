@@ -112,6 +112,13 @@ public class GenericAnimationController : MonoBehaviour
         {
             animator.SetBool(isTrappedHash, false);
         }
+        if (Input.GetKeyDown("l")) {
+            animator.SetTrigger("sitTrigger");
+        }
+        if (Input.GetKeyDown("v"))
+        {
+            animator.SetTrigger("standTrigger");
+        }
 
     }
 }
