@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UsernameMenu : MonoBehaviourPunCallbacks
 {
@@ -14,17 +15,42 @@ public class UsernameMenu : MonoBehaviourPunCallbacks
     private void Awake()
     {
         usernameInputText.GetComponentInParent<TMP_InputField>().characterLimit = 10;
+
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.NickName.Length > 1)
+            {
+            }
+            else
+            {
+                player.NickName = "oogabooga";
+            }
+        }
     }
 
     public void OnClick_EnterUsername()
     {
         if (usernameInputText.text.Length > 1)
         {
-            PhotonNetwork.NickName = usernameInputText.text;
+            for(int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                if(PhotonNetwork.PlayerList[i].NickName == usernameInputText.text)
+                {
+                    StartCoroutine("DisplayInvalidWarning", 3f);
+                    break;
+                }
 
-            Debug.Log("My nickname is " + PhotonNetwork.LocalPlayer.NickName);
+                if (i == PhotonNetwork.PlayerList.Length - 1)
+                {
+                    PhotonNetwork.NickName = usernameInputText.text;
 
-            PhotonNetwork.JoinLobby();
+                    Debug.Log("My nickname is " + PhotonNetwork.LocalPlayer.NickName);
+
+                    //GameObject.Find("Scene Manager").GetComponent<SceneManage>().createPlayerStruct(PhotonNetwork.LocalPlayer.NickName);
+
+                    SceneManager.LoadScene("Player Selection");
+                }
+            }
         }
         else
         {
@@ -32,6 +58,7 @@ public class UsernameMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    /*
     public override void OnJoinedLobby()
     {
         Debug.Log("Joined lobby");
@@ -42,10 +69,20 @@ public class UsernameMenu : MonoBehaviourPunCallbacks
     {
         Debug.Log("Failed to conntect to Photon " + cause.ToString(), this);
     }
+    */
 
     IEnumerator DisplayErrorWarning(int value)
     {
         warning.text = "Invalid username! Please try again.";
+
+        yield return new WaitForSeconds(value);
+
+        warning.text = "";
+    }
+
+    IEnumerator DisplayInvalidWarning(int value)
+    {
+        warning.text = "Username already taken! Please try another name.";
 
         yield return new WaitForSeconds(value);
 

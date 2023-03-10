@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
 
-public class StartPageManager : MonoBehaviour
+public class StartPageManager : MonoBehaviourPunCallbacks
 {
     public float minimum = 0.0f;
     public float maximum = 1f;
@@ -37,6 +37,17 @@ public class StartPageManager : MonoBehaviour
     }
     public void ToUsername()
     {
-        PhotonNetwork.LoadLevel("Username");
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        Debug.Log("Joined lobby");
+        PhotonNetwork.LoadLevel("Lobby");
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("Failed to conntect to Photon " + cause.ToString(), this);
     }
 }

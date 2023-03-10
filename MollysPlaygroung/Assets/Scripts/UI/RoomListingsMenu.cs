@@ -19,7 +19,8 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
         _content.DestroyChildren();                                                             // Destroying all rooms in the list (no longer needed)
         _listings.Clear();                                                                      // Clearing list
 
-        PhotonNetwork.LoadLevel("Room");                                                        // Sending user to the room
+        //PhotonNetwork.LoadLevel("Room");                                                        // Sending user to the room
+        PhotonNetwork.LoadLevel("Username");                                                        // Sending user to the room
     }
 
 

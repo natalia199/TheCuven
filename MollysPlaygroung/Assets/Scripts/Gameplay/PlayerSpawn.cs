@@ -9,6 +9,6 @@ public class PlayerSpawn : MonoBehaviour
 
     void Start()
     {
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(this.transform.position.x, this.transform.position.y, 1f), Quaternion.identity);
+        PhotonNetwork.Instantiate(playerPrefab.name, this.transform.position, Quaternion.identity);
     }
 }
