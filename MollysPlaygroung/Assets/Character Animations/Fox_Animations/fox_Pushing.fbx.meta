@@ -6,6 +6,9 @@ ModelImporter:
   - first:
       74: 1827226128182048838
     second: Take 001
+  - first:
+      74: 7809726816386619915
+    second: Fox Pushing
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -22,19 +25,90 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_neckBase'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_L_shoulder'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_L_elbow'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_L_wrist'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_R_shoulder'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_R_elbow'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_R_wrist'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_L_knee'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_L_ankle'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_R_knee'
+      has translation animation that will be discarded.\n\t'Mocap_Skeleton3:pasted__pasted__jnt_R_ankle'
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 1500
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Fox Pushing
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 69
+      lastFrame: 129
+      wrapMode: 0
+      orientationOffsetY: -24.1
+      level: -0.15
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -82,8 +156,766 @@ ModelImporter:
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
-    human: []
-    skeleton: []
+    human:
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_root
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_hip
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_hip
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_knee
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_knee
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_ankle
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_ankle
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_spine1
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_spine2
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_neckBase
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_chinBase
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_shoulder
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_shoulder
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_elbow
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_elbow
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_toe
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_toe
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_chinTip
+      humanName: Jaw
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_thumbBase
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_thumb1
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_thumb2
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_indexBase
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_index1
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_index2
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_middleBase
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_middle1
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_middle2
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_ringBase
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_ring1
+      humanName: Left Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_ring2
+      humanName: Left Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_pinkyBase
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_pinky1
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_L_pinky2
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_thumbBase
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_thumb1
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_thumb2
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_indexBase
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_index1
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_index2
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_middleBase
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_middle1
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_middle2
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_ringBase
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_ring1
+      humanName: Right Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_ring2
+      humanName: Right Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_pinkyBase
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_pinky1
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_R_pinky2
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: Mocap_Skeleton3:pasted__pasted__jnt_spine3
+      humanName: UpperChest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: fox_Pushing(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mesh_Fox
+      parentName: fox_Pushing(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:Target_Character
+      parentName: fox_Pushing(Clone)
+      position: {x: -0, y: -0.035299256, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.007794824, y: 0.007794824, z: 0.007794824}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_root
+      parentName: Mocap_Skeleton3:Target_Character
+      position: {x: -0.0000012508023, y: 9.392025, z: -0.40990445}
+      rotation: {x: 0.44762158, y: -0.54738975, z: -0.44761968, w: 0.5473902}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_spine1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_root
+      position: {x: -0.55038255, y: -0.0051874253, z: 0.000000078177436}
+      rotation: {x: -0.00000040347908, y: -0.00000072447267, z: -0.008728987, w: 0.9999619}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_spine2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_spine1
+      position: {x: -0.5830466, y: 3.5527135e-16, z: 3.8788415e-16}
+      rotation: {x: 0, y: -0, z: -0.056812335, w: 0.9983849}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_spine3
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_spine2
+      position: {x: -0.7136545, y: 0.015270518, z: 4.0273338e-16}
+      rotation: {x: 0.9861112, y: -0.16608654, z: -1.0169868e-17, w: 6.03819e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_neckBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_spine3
+      position: {x: -0.97223043, y: 0.09177801, z: -0.00000024345002}
+      rotation: {x: -0.0000020648067, y: 0.0000002881331, z: -0.006348901, w: 0.99997985}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_head
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_neckBase
+      position: {x: -0.49070263, y: -0.0000012317598, z: 2.4036328e-16}
+      rotation: {x: 0, y: -0, z: -0.14340514, w: 0.9896641}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_headTop
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_head
+      position: {x: -0.9294159, y: 1.4210854e-16, z: -4.5519143e-16}
+      rotation: {x: 0.119276956, y: 0.99286103, z: -1.1822736e-15, w: 1.99366e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_chinBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_headTop
+      position: {x: -0.78758115, y: 2.842171e-16, z: -2.2051804e-16}
+      rotation: {x: 0.93911994, y: 0.34358948, z: 9.797985e-17, w: 2.9354605e-17}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_chinTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_chinBase
+      position: {x: -0.35045624, y: 5.1159075e-15, z: 1.6570078e-16}
+      rotation: {x: 0, y: -0, z: -0.011007478, w: 0.99993944}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_shoulder
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_spine3
+      position: {x: -0.19974351, y: -0.2355424, z: -0.80342466}
+      rotation: {x: 0.6846892, y: -0.26068524, z: 0.6488534, w: 0.205507}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_elbow
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_shoulder
+      position: {x: -1.4649397, y: 0.052633036, z: 0.077615984}
+      rotation: {x: 0.22021635, y: 0.06022232, z: -0.03288822, w: 0.9730347}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_forearm
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_elbow
+      position: {x: -0.8431519, y: -0.0019156216, z: -0.05010014}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_forearm
+      position: {x: -0.26357132, y: 0.00071067165, z: -0.015912235}
+      rotation: {x: -0.5630815, y: -0.060023468, z: -0.021644706, w: 0.8239345}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_thumbBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      position: {x: -0.20398839, y: 0.067820184, z: 0.14503662}
+      rotation: {x: 0.91247815, y: 0.020799363, z: -0.3488918, w: 0.2126631}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_thumb1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_thumbBase
+      position: {x: -0.15614718, y: -6.252776e-15, z: 4.263256e-15}
+      rotation: {x: -0.015834728, y: -0.02882884, z: 0.019469324, w: 0.99926925}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_thumb2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_thumb1
+      position: {x: -0.13717547, y: 3.9790393e-15, z: 5.684342e-16}
+      rotation: {x: -0.038072184, y: -0.031851072, z: -0.01422313, w: 0.998666}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_thumbTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_thumb2
+      position: {x: -0.17376785, y: 2.8421708e-15, z: -1.7053025e-15}
+      rotation: {x: 0.071834445, y: -0.21931198, z: 0.036275774, w: 0.9723303}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_indexBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      position: {x: -0.6748402, y: 0.056244534, z: 0.2147223}
+      rotation: {x: 0.6199329, y: 0.027317325, z: -0.026311941, w: 0.78373766}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_index1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_indexBase
+      position: {x: -0.21969925, y: -2.1316282e-16, z: -3.694822e-15}
+      rotation: {x: 0.04393657, y: 0.019740237, z: 0.008642347, w: 0.9988019}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_index2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_index1
+      position: {x: -0.13078347, y: -2.4868995e-15, z: -3.9790393e-15}
+      rotation: {x: 0.062753424, y: 0.028080205, z: -0.007119823, w: 0.99760854}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_indexTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_index2
+      position: {x: -0.1105061, y: 2.2737367e-15, z: -2.2737367e-15}
+      rotation: {x: -0.019447405, y: -0.09019299, z: 0.035353657, w: 0.99510664}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_middleBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      position: {x: -0.64933807, y: -0.021302804, z: 0.027678577}
+      rotation: {x: 0.5576068, y: 0.011132997, z: -0.009849048, w: 0.8299721}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_middle1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_middleBase
+      position: {x: -0.19825122, y: -7.4606985e-16, z: 1.1368684e-15}
+      rotation: {x: -0.10800036, y: 0.03422567, z: 0.02192538, w: 0.99331963}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_middle2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_middle1
+      position: {x: -0.1537447, y: 7.105427e-16, z: 5.684342e-16}
+      rotation: {x: -0.052873418, y: 0.03580518, z: -0.0054799207, w: 0.99794406}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_middleTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_middle2
+      position: {x: -0.1221298, y: 5.684342e-16, z: -2.8421708e-15}
+      rotation: {x: 0.0031291815, y: -0.18157867, z: 0.0004156642, w: 0.9833714}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_ringBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      position: {x: -0.65483016, y: -0.09380844, z: -0.13308762}
+      rotation: {x: 0.65582466, y: 0.018798703, z: -0.011920907, w: 0.754585}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_ring1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_ringBase
+      position: {x: -0.17795682, y: 1.563194e-15, z: -1.9895197e-15}
+      rotation: {x: 0.013713949, y: 0.03392403, z: 0.02366629, w: 0.9990501}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_ring2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_ring1
+      position: {x: -0.12180043, y: -2.2737367e-15, z: -4.5474734e-15}
+      rotation: {x: -0.07219955, y: 0.02802833, z: -0.02579306, w: 0.9966626}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_ringTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_ring2
+      position: {x: -0.11785419, y: -1.4210854e-16, z: -6.82121e-15}
+      rotation: {x: -0.010711345, y: -0.08885174, z: -0.03272553, w: 0.9954495}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_pinkyBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_wrist
+      position: {x: -0.55968565, y: -0.14700931, z: -0.27641276}
+      rotation: {x: 0.54639405, y: 0.0047411392, z: -0.009728467, w: 0.8374583}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_pinky1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_pinkyBase
+      position: {x: -0.17593534, y: 1.563194e-15, z: -3.9790393e-15}
+      rotation: {x: 0.0009916789, y: 0.004268756, z: -0.009132114, w: 0.99994874}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_pinky2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_pinky1
+      position: {x: -0.100223996, y: -2.344791e-15, z: -1.4210854e-15}
+      rotation: {x: -0.022470715, y: 0.036801588, z: -0.0057594287, w: 0.99905336}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_pinkyTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_pinky2
+      position: {x: -0.10564783, y: 1.4210854e-15, z: 2.2737367e-15}
+      rotation: {x: 0.021868736, y: -0.056225173, z: -0.011782365, w: 0.99810904}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_shoulder
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_spine3
+      position: {x: -0.19974698, y: -0.23554136, z: 0.8034241}
+      rotation: {x: -0.26069623, y: -0.68467647, z: -0.20552784, w: 0.64885587}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_elbow
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_shoulder
+      position: {x: 1.4706466, y: -0.05295369, z: -0.07804201}
+      rotation: {x: 0.22020645, y: 0.060219813, z: -0.03289122, w: 0.97303694}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_forearm
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_elbow
+      position: {x: 0.83743215, y: 0.0018715761, z: 0.04975122}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_forearm
+      position: {x: 0.2635658, y: -0.00071045436, z: 0.015917776}
+      rotation: {x: -0.56308055, y: -0.06002306, z: -0.02164448, w: 0.82393515}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_thumbBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      position: {x: 0.20399973, y: -0.06782308, z: -0.14503501}
+      rotation: {x: 0.9124811, y: 0.02080871, z: -0.34888515, w: 0.21266006}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_thumb1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_thumbBase
+      position: {x: 0.15614574, y: -0.0000047887443, z: 0.0000014651149}
+      rotation: {x: -0.015832923, y: -0.028811341, z: 0.019436842, w: 0.9992705}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_thumb2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_thumb1
+      position: {x: 0.13717239, y: 0.0000049784803, z: 0.0000067384412}
+      rotation: {x: -0.038072895, y: -0.031898443, z: -0.01420421, w: 0.99866474}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_thumbTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_thumb2
+      position: {x: 0.17377058, y: -0.000003939884, z: -0.000009952466}
+      rotation: {x: 0.071834445, y: -0.21931198, z: 0.036275774, w: 0.9723303}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_indexBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      position: {x: 0.6748475, y: -0.056245722, z: -0.21472213}
+      rotation: {x: 0.6199329, y: 0.027317325, z: -0.026311941, w: 0.78373766}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_index1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_indexBase
+      position: {x: 0.21970174, y: 0.000001277121, z: 0.0000020891316}
+      rotation: {x: 0.04393657, y: 0.019740237, z: 0.008642347, w: 0.9988019}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_index2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_index1
+      position: {x: 0.13078235, y: -0.000000965925, z: -0.0000004844401}
+      rotation: {x: 0.062753424, y: 0.028080205, z: -0.007119823, w: 0.99760854}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_indexTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_index2
+      position: {x: 0.11050337, y: -0.00000092258404, z: -0.0000024615438}
+      rotation: {x: -0.019447405, y: -0.09019299, z: 0.035353657, w: 0.99510664}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_middleBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      position: {x: 0.64934194, y: 0.021301553, z: -0.027678117}
+      rotation: {x: 0.5576068, y: 0.011132997, z: -0.009849048, w: 0.8299721}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_middle1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_middleBase
+      position: {x: 0.19824629, y: -0.000000016659259, z: 0.0000010191161}
+      rotation: {x: -0.108000524, y: 0.034213677, z: 0.021919742, w: 0.9933201}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_middle2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_middle1
+      position: {x: 0.15374951, y: -0.000000117903326, z: -0.0000005933901}
+      rotation: {x: -0.052871678, y: 0.035777707, z: -0.0054857098, w: 0.99794513}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_middleTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_middle2
+      position: {x: 0.12213153, y: 0.000002707288, z: -0.000008312974}
+      rotation: {x: 0.0031291815, y: -0.18157867, z: 0.0004156642, w: 0.9833714}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_ringBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      position: {x: 0.6548308, y: 0.09381254, z: 0.13308527}
+      rotation: {x: 0.65582466, y: 0.018798703, z: -0.011920907, w: 0.754585}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_ring1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_ringBase
+      position: {x: 0.17796041, y: 0.0000014736735, z: 0.000004354061}
+      rotation: {x: 0.013714009, y: 0.033913318, z: 0.023660442, w: 0.99905056}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_ring2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_ring1
+      position: {x: 0.12180551, y: -0.0000008436647, z: -0.0000010263425}
+      rotation: {x: -0.072199576, y: 0.028039852, z: -0.025796728, w: 0.99666226}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_ringTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_ring2
+      position: {x: 0.11784526, y: 0.0000006204334, z: 0.0000023758569}
+      rotation: {x: -0.010711345, y: -0.08885174, z: -0.03272553, w: 0.9954495}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_pinkyBase
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_wrist
+      position: {x: 0.5596905, y: 0.14700541, z: 0.27641377}
+      rotation: {x: 0.54639405, y: 0.0047411392, z: -0.009728467, w: 0.8374583}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_pinky1
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_pinkyBase
+      position: {x: 0.17593762, y: 0.00000114261, z: -0.0000030325216}
+      rotation: {x: 0.0009916789, y: 0.004268756, z: -0.009132114, w: 0.99994874}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_pinky2
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_pinky1
+      position: {x: 0.100223675, y: -0.0000010373457, z: 0.0000007313848}
+      rotation: {x: -0.022470895, y: 0.036760837, z: -0.005763045, w: 0.9990548}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_pinkyTip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_pinky2
+      position: {x: 0.105646014, y: 0.00000019773246, z: -0.000007981239}
+      rotation: {x: 0.021868736, y: -0.056225173, z: -0.011782365, w: 0.99810904}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_hip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_root
+      position: {x: 0.5272187, y: -0.051720846, z: 0.35762054}
+      rotation: {x: -0.20171763, y: -0.6280128, z: 0.7506398, w: 0.03807682}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_knee
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_hip
+      position: {x: -1.7976736, y: 0.08641332, z: -0.33146602}
+      rotation: {x: -0.22214776, y: 0.007271865, z: 0.0021010346, w: 0.9749837}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_ankle
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_knee
+      position: {x: -1.6273898, y: 0.18368901, z: -0.065172106}
+      rotation: {x: -0.6323091, y: -0.2448146, z: -0.44845617, w: 0.5823557}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_ball
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_ankle
+      position: {x: -0.90377384, y: -0.2845738, z: 0.1009113}
+      rotation: {x: 0.0017292743, y: 0.0049094046, z: -0.25899452, w: 0.9658648}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_L_toe
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_L_ball
+      position: {x: -0.68985254, y: 0.015805308, z: 0.045189753}
+      rotation: {x: 0.0004656744, y: 0.012140006, z: -0.038327653, w: 0.9991914}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_hip
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_root
+      position: {x: 0.52721894, y: -0.051720925, z: -0.35762045}
+      rotation: {x: -0.630778, y: 0.18204634, z: -0.0666361, w: 0.7513573}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_knee
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_hip
+      position: {x: 1.7976794, y: -0.08639705, z: 0.3314619}
+      rotation: {x: -0.2244528, y: -0.0052084206, z: 0.0011336319, w: 0.9744704}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_ankle
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_knee
+      position: {x: 1.6273905, y: -0.18368846, z: 0.06517197}
+      rotation: {x: -0.6227828, y: -0.2702186, z: -0.43166274, w: 0.5939619}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_ball
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_ankle
+      position: {x: 0.9037744, y: 0.28457406, z: -0.10091138}
+      rotation: {x: 0.0017292743, y: 0.0049094046, z: -0.25899452, w: 0.9658648}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Mocap_Skeleton3:pasted__pasted__jnt_R_toe
+      parentName: Mocap_Skeleton3:pasted__pasted__jnt_R_ball
+      position: {x: 0.6898526, y: -0.015804289, z: -0.045190286}
+      rotation: {x: 0.0004656744, y: 0.012140006, z: -0.038327653, w: 0.9991914}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -94,13 +926,13 @@ ModelImporter:
     globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0

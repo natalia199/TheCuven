@@ -6,6 +6,9 @@ ModelImporter:
   - first:
       74: 1827226128182048838
     second: Take 001
+  - first:
+      74: 6317538519832095698
+    second: Fox Jumping
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -22,19 +25,89 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'JUMPING_T9:Spine3' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:Neck1'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:RightHandRing'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:RightHandPinky'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:RightHandIndex'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:RightHandThumb1'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:LeftHandRing'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:LeftHandPinky'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:LeftHandIndex'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'JUMPING_T9:LeftHandThumb1'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 700
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Fox Jumping
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 62
+      lastFrame: 92
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0.15
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -82,8 +155,779 @@ ModelImporter:
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
-    human: []
-    skeleton: []
+    human:
+    - boneName: JUMPING_T9:Hips
+      humanName: Hips
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftUpLeg
+      humanName: LeftUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightUpLeg
+      humanName: RightUpperLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftLeg
+      humanName: LeftLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightLeg
+      humanName: RightLowerLeg
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftFoot
+      humanName: LeftFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightFoot
+      humanName: RightFoot
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:Spine
+      humanName: Spine
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:Spine1
+      humanName: Chest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:Neck
+      humanName: Neck
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:Head
+      humanName: Head
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftShoulder
+      humanName: LeftShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightShoulder
+      humanName: RightShoulder
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftArm
+      humanName: LeftUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightArm
+      humanName: RightUpperArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftForeArm
+      humanName: LeftLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightForeArm
+      humanName: RightLowerArm
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHand
+      humanName: LeftHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHand
+      humanName: RightHand
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftToeBase
+      humanName: LeftToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightToeBase
+      humanName: RightToes
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandIndex1
+      humanName: Left Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandIndex2
+      humanName: Left Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandIndex3
+      humanName: Left Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandThumb2
+      humanName: Left Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandThumb3
+      humanName: Left Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandThumb4
+      humanName: Left Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandMiddle1
+      humanName: Left Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandMiddle2
+      humanName: Left Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandMiddle3
+      humanName: Left Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandPinky1
+      humanName: Left Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandPinky2
+      humanName: Left Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandPinky3
+      humanName: Left Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandRing1
+      humanName: Left Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandRing2
+      humanName: Left Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:LeftHandRing3
+      humanName: Left Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandIndex1
+      humanName: Right Thumb Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandIndex2
+      humanName: Right Thumb Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandIndex3
+      humanName: Right Thumb Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandThumb2
+      humanName: Right Index Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandThumb3
+      humanName: Right Index Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandThumb4
+      humanName: Right Index Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandMiddle1
+      humanName: Right Middle Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandMiddle2
+      humanName: Right Middle Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandMiddle3
+      humanName: Right Middle Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandPinky1
+      humanName: Right Ring Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandPinky2
+      humanName: Right Ring Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandPinky3
+      humanName: Right Ring Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandRing1
+      humanName: Right Little Proximal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandRing2
+      humanName: Right Little Intermediate
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:RightHandRing3
+      humanName: Right Little Distal
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    - boneName: JUMPING_T9:Spine2
+      humanName: UpperChest
+      limit:
+        min: {x: 0, y: 0, z: 0}
+        max: {x: 0, y: 0, z: 0}
+        value: {x: 0, y: 0, z: 0}
+        length: 0
+        modified: 0
+    skeleton:
+    - name: fox_Jumping(Clone)
+      parentName: 
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Hips
+      parentName: fox_Jumping(Clone)
+      position: {x: 0.0000000018626451, y: 0.79258984, z: -0.017573088}
+      rotation: {x: 0.004188468, y: 0.68865645, z: 0.72465926, w: -0.024570404}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Spine
+      parentName: JUMPING_T9:Hips
+      position: {x: -0, y: 0, z: 0.106965214}
+      rotation: {x: 0.10603751, y: 0.01429046, z: 0.0042812866, w: 0.99425024}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Spine1
+      parentName: JUMPING_T9:Spine
+      position: {x: -0, y: 0, z: 0.106965214}
+      rotation: {x: -0.024645412, y: 0.014727023, z: 0.0023793804, w: 0.999585}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Spine2
+      parentName: JUMPING_T9:Spine1
+      position: {x: -0, y: 0, z: 0.106965214}
+      rotation: {x: -0.04900657, y: -0.0071528116, z: 0.0033323932, w: 0.9987673}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Spine3
+      parentName: JUMPING_T9:Spine2
+      position: {x: -0, y: 0, z: 0.106965214}
+      rotation: {x: -0.0053942883, y: -0.0072913603, z: 0.0030172202, w: 0.99995434}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Neck
+      parentName: JUMPING_T9:Spine3
+      position: {x: -0, y: 0.01375267, z: 0.1375267}
+      rotation: {x: -0.11664638, y: 0.028619858, z: -0.0065859323, w: 0.99273926}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Neck1
+      parentName: JUMPING_T9:Neck
+      position: {x: -0, y: 0, z: 0.044930298}
+      rotation: {x: -0.067147486, y: 0.012745511, z: -0.005897734, w: 0.99764425}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:Head
+      parentName: JUMPING_T9:Neck1
+      position: {x: -0, y: 0, z: 0.044930298}
+      rotation: {x: 0.13169847, y: -0.0083925845, z: -0.006089613, w: 0.9912356}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightShoulder
+      parentName: JUMPING_T9:Spine3
+      position: {x: -0, y: 0, z: 0.09626869}
+      rotation: {x: -0.07271843, y: -0.614338, z: -0.0923558, w: 0.78023803}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightArm
+      parentName: JUMPING_T9:RightShoulder
+      position: {x: -0, y: 0, z: 0.17435329}
+      rotation: {x: 0.14066899, y: -0.14260098, z: -0.06711708, w: 0.97743154}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightForeArm
+      parentName: JUMPING_T9:RightArm
+      position: {x: -0, y: 0, z: 0.27273262}
+      rotation: {x: -0.07543499, y: 0.0046416963, z: 0.042364575, w: 0.9962396}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHand
+      parentName: JUMPING_T9:RightForeArm
+      position: {x: -0, y: 0, z: 0.21325193}
+      rotation: {x: 0.05224218, y: 0.0870319, z: -0.0044530653, w: 0.9948248}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandMiddle1
+      parentName: JUMPING_T9:RightHand
+      position: {x: -0, y: 0, z: 0.08885943}
+      rotation: {x: 0.029617224, y: -0.07453278, z: 0.0067850477, w: 0.9967556}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandMiddle2
+      parentName: JUMPING_T9:RightHandMiddle1
+      position: {x: -0, y: 0, z: 0.046662465}
+      rotation: {x: 0.0000011567022, y: -0.033335153, z: 0.00000013271342, w: 0.99944425}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandMiddle3
+      parentName: JUMPING_T9:RightHandMiddle2
+      position: {x: -0, y: 0, z: 0.030103523}
+      rotation: {x: 0.00000009042509, y: -0.038498145, z: -0.00000006692131, w: 0.9992587}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandMiddle4
+      parentName: JUMPING_T9:RightHandMiddle3
+      position: {x: -0, y: 0, z: 0.018275134}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandRing
+      parentName: JUMPING_T9:RightHand
+      position: {x: -0.0025, y: -0.008085182, z: 0.0025}
+      rotation: {x: 0.059018683, y: -0.006560994, z: -0.07001197, w: 0.99577713}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandRing1
+      parentName: JUMPING_T9:RightHandRing
+      position: {x: -0, y: 0, z: 0.07853383}
+      rotation: {x: -0.009883236, y: -0.06035192, z: 0.0006303296, w: 0.99812806}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandRing2
+      parentName: JUMPING_T9:RightHandRing1
+      position: {x: -0, y: 0, z: 0.043542422}
+      rotation: {x: 0.0000003064051, y: -0.031338107, z: -0.000000038358845, w: 0.9995089}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandRing3
+      parentName: JUMPING_T9:RightHandRing2
+      position: {x: -0, y: 0, z: 0.029510038}
+      rotation: {x: -0.0000001543356, y: -0.03954291, z: -0.00000004520701, w: 0.99921787}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandRing4
+      parentName: JUMPING_T9:RightHandRing3
+      position: {x: -0, y: 0, z: 0.018170105}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandPinky
+      parentName: JUMPING_T9:RightHandRing
+      position: {x: -0.0025, y: -0.008085182, z: 0.0025}
+      rotation: {x: 0.069256715, y: -0.016726261, z: -0.079671234, w: 0.9942717}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandPinky1
+      parentName: JUMPING_T9:RightHandPinky
+      position: {x: -0, y: 0, z: 0.06636509}
+      rotation: {x: -0.05610725, y: -0.015425043, z: 0.00044042288, w: 0.9983055}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandPinky2
+      parentName: JUMPING_T9:RightHandPinky1
+      position: {x: -0, y: 0, z: 0.03515906}
+      rotation: {x: -0.0000003725289, y: -0.033533543, z: 0.00000026612534, w: 0.9994377}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandPinky3
+      parentName: JUMPING_T9:RightHandPinky2
+      position: {x: -0, y: 0, z: 0.022476235}
+      rotation: {x: -0.0000010544786, y: -0.03460839, z: 0.00000018128678, w: 0.999401}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandPinky4
+      parentName: JUMPING_T9:RightHandPinky3
+      position: {x: -0, y: 0, z: 0.01676271}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandIndex
+      parentName: JUMPING_T9:RightHand
+      position: {x: -0.0025, y: 0.008085182, z: 0.0025}
+      rotation: {x: -0.0989387, y: -0.00774199, z: -0.045637213, w: 0.99401635}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandIndex1
+      parentName: JUMPING_T9:RightHandIndex
+      position: {x: -0, y: 0, z: 0.08631547}
+      rotation: {x: -0.21822403, y: -0.07628595, z: -0.020602928, w: 0.97269434}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandIndex2
+      parentName: JUMPING_T9:RightHandIndex1
+      position: {x: -0, y: 0, z: 0.04507326}
+      rotation: {x: -0.00000025331963, y: -0.03148873, z: -0.00000026263285, w: 0.9995041}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandIndex3
+      parentName: JUMPING_T9:RightHandIndex2
+      position: {x: -0, y: 0, z: 0.027075158}
+      rotation: {x: 0.0000001450732, y: -0.041209575, z: 0.000000008988481, w: 0.9991505}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandIndex4
+      parentName: JUMPING_T9:RightHandIndex3
+      position: {x: -0, y: 0, z: 0.016615668}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandThumb1
+      parentName: JUMPING_T9:RightHandIndex
+      position: {x: -0.0075, y: 0.008085182, z: 0.0025}
+      rotation: {x: -0.1780812, y: -0.119116135, z: 0.5400444, w: 0.8139106}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandThumb2
+      parentName: JUMPING_T9:RightHandThumb1
+      position: {x: -0, y: 0, z: 0.05744986}
+      rotation: {x: 0.20458966, y: -0.031199552, z: -0.01229845, w: 0.9782732}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandThumb3
+      parentName: JUMPING_T9:RightHandThumb2
+      position: {x: -0, y: 0, z: 0.03734714}
+      rotation: {x: -0.00000086426695, y: -0.040351097, z: 0.000000080093706, w: 0.9991856}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightHandThumb4
+      parentName: JUMPING_T9:RightHandThumb3
+      position: {x: -0, y: 0, z: 0.022759894}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftShoulder
+      parentName: JUMPING_T9:Spine3
+      position: {x: -0, y: 0, z: 0.09626869}
+      rotation: {x: -0.026172008, y: 0.62336737, z: 0.03278194, w: 0.7808032}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftArm
+      parentName: JUMPING_T9:LeftShoulder
+      position: {x: -0, y: 0, z: 0.17435329}
+      rotation: {x: 0.10216258, y: 0.09900396, z: 0.17488289, w: 0.97425723}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftForeArm
+      parentName: JUMPING_T9:LeftArm
+      position: {x: -0, y: 0, z: 0.27273262}
+      rotation: {x: -0.06190154, y: -0.01938191, z: -0.017299145, w: 0.9977441}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHand
+      parentName: JUMPING_T9:LeftForeArm
+      position: {x: -0, y: 0, z: 0.21325193}
+      rotation: {x: 0.082251355, y: -0.05266024, z: 0.004352224, w: 0.9952099}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandMiddle1
+      parentName: JUMPING_T9:LeftHand
+      position: {x: -0, y: 0, z: 0.090657726}
+      rotation: {x: 0.033989195, y: 0.072888486, z: -0.007096913, w: 0.9967355}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandMiddle2
+      parentName: JUMPING_T9:LeftHandMiddle1
+      position: {x: -0, y: 0, z: 0.047539223}
+      rotation: {x: 0.0000010915097, y: 0.03414836, z: -0.00000002910382, w: 0.9994168}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandMiddle3
+      parentName: JUMPING_T9:LeftHandMiddle2
+      position: {x: -0, y: 0, z: 0.030196521}
+      rotation: {x: -0.00000039793227, y: 0.037709147, z: -0.00000003593101, w: 0.9992888}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandMiddle4
+      parentName: JUMPING_T9:LeftHandMiddle3
+      position: {x: -0, y: 0, z: 0.01909846}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandRing
+      parentName: JUMPING_T9:LeftHand
+      position: {x: 0.0025, y: -0.004961294, z: 0.0025}
+      rotation: {x: 0.0694126, y: 0.002309915, z: 0.06202318, w: 0.9956554}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandRing1
+      parentName: JUMPING_T9:LeftHandRing
+      position: {x: -0, y: 0, z: 0.080522366}
+      rotation: {x: -0.017483188, y: 0.06318192, z: 0.0008005992, w: 0.99784863}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandRing2
+      parentName: JUMPING_T9:LeftHandRing1
+      position: {x: -0, y: 0, z: 0.04459054}
+      rotation: {x: -0.000004118306, y: 0.032119263, z: -0.000000560423, w: 0.99948406}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandRing3
+      parentName: JUMPING_T9:LeftHandRing2
+      position: {x: -0, y: 0, z: 0.029422766}
+      rotation: {x: 0.00000074632015, y: 0.039043926, z: 0.0000000055275944, w: 0.99923754}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandRing4
+      parentName: JUMPING_T9:LeftHandRing3
+      position: {x: -0, y: 0, z: 0.018988699}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandPinky
+      parentName: JUMPING_T9:LeftHandRing
+      position: {x: 0.0025, y: -0.004961294, z: 0.0025}
+      rotation: {x: 0.0941954, y: 0.010721453, z: 0.05207672, w: 0.99413294}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandPinky1
+      parentName: JUMPING_T9:LeftHandPinky
+      position: {x: -0, y: 0, z: 0.06853518}
+      rotation: {x: -0.085777394, y: 0.012320977, z: 0.0017891935, w: 0.99623656}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandPinky2
+      parentName: JUMPING_T9:LeftHandPinky1
+      position: {x: -0, y: 0, z: 0.035443872}
+      rotation: {x: 0.00000008940692, y: 0.032891553, z: 0.00000008381898, w: 0.99945897}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandPinky3
+      parentName: JUMPING_T9:LeftHandPinky2
+      position: {x: -0, y: 0, z: 0.023188522}
+      rotation: {x: -0.0000040936184, y: 0.0349931, z: -0.00000033068534, w: 0.9993876}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandPinky4
+      parentName: JUMPING_T9:LeftHandPinky3
+      position: {x: -0, y: 0, z: 0.017517898}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandIndex
+      parentName: JUMPING_T9:LeftHand
+      position: {x: 0.0025, y: 0.004961294, z: 0.0025}
+      rotation: {x: -0.10343405, y: 0.015106632, z: 0.04214793, w: 0.9936281}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandIndex1
+      parentName: JUMPING_T9:LeftHandIndex
+      position: {x: -0, y: 0, z: 0.08906946}
+      rotation: {x: -0.18080236, y: 0.14894964, z: 0.02707422, w: 0.9717981}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandIndex2
+      parentName: JUMPING_T9:LeftHandIndex1
+      position: {x: -0, y: 0, z: 0.045690335}
+      rotation: {x: -0.00000035762775, y: 0.030359898, z: 0.00000010430809, w: 0.9995391}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandIndex3
+      parentName: JUMPING_T9:LeftHandIndex2
+      position: {x: -0, y: 0, z: 0.027648186}
+      rotation: {x: -0.00000057846523, y: 0.03977391, z: 0.00000003028617, w: 0.99920875}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandIndex4
+      parentName: JUMPING_T9:LeftHandIndex3
+      position: {x: -0, y: 0, z: 0.017364234}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandThumb1
+      parentName: JUMPING_T9:LeftHandIndex
+      position: {x: 0.0075, y: 0.004961294, z: 0.0025}
+      rotation: {x: -0.1960295, y: 0.11918866, z: -0.5576083, w: 0.7977716}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandThumb2
+      parentName: JUMPING_T9:LeftHandThumb1
+      position: {x: -0, y: 0, z: 0.061277345}
+      rotation: {x: 0.21238288, y: 0.07232647, z: 0.002902292, w: 0.9745019}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandThumb3
+      parentName: JUMPING_T9:LeftHandThumb2
+      position: {x: -0, y: 0, z: 0.03750178}
+      rotation: {x: 0.0000016093248, y: 0.039439365, z: 0.000000014901156, w: 0.999222}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftHandThumb4
+      parentName: JUMPING_T9:LeftHandThumb3
+      position: {x: -0, y: 0, z: 0.023785267}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightUpLeg
+      parentName: JUMPING_T9:Hips
+      position: {x: -0.12384689, y: 0, z: 0}
+      rotation: {x: 0.020016756, y: 0.07627553, z: 0.13393675, w: 0.9878473}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightLeg
+      parentName: JUMPING_T9:RightUpLeg
+      position: {x: -0, y: 0, z: -0.34360048}
+      rotation: {x: -0.030506473, y: 0, z: -0, w: 0.99953455}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightFoot
+      parentName: JUMPING_T9:RightLeg
+      position: {x: -0, y: 0, z: -0.38481987}
+      rotation: {x: -0.065133974, y: -0.033215303, z: -0.045428332, w: 0.9962884}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:RightToeBase
+      parentName: JUMPING_T9:RightFoot
+      position: {x: -0, y: 0.12653144, z: 0}
+      rotation: {x: -0.029076742, y: 0, z: -0, w: 0.9995772}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftUpLeg
+      parentName: JUMPING_T9:Hips
+      position: {x: 0.12384689, y: 0, z: 0}
+      rotation: {x: 0.03360051, y: -0.03934285, z: -0.041060757, w: 0.9978162}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftLeg
+      parentName: JUMPING_T9:LeftUpLeg
+      position: {x: -0, y: 0, z: -0.34360048}
+      rotation: {x: -0.05921613, y: 0, z: -0, w: 0.9982452}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftFoot
+      parentName: JUMPING_T9:LeftLeg
+      position: {x: -0, y: 0, z: -0.38481987}
+      rotation: {x: -0.085846536, y: 0.00188166, z: 0.070559144, w: 0.99380493}
+      scale: {x: 1, y: 1, z: 1}
+    - name: JUMPING_T9:LeftToeBase
+      parentName: JUMPING_T9:LeftFoot
+      position: {x: -0, y: 0.12653144, z: 0}
+      rotation: {x: 0.0134929735, y: -0, z: -0, w: 0.999909}
+      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -98,9 +942,9 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
