@@ -42,13 +42,13 @@ public class UsernameMenu : MonoBehaviourPunCallbacks
 
                 if (i == PhotonNetwork.PlayerList.Length - 1)
                 {
-                    PhotonNetwork.NickName = usernameInputText.text;
+                    PhotonNetwork.LocalPlayer.NickName = usernameInputText.text;
 
                     Debug.Log("My nickname is " + PhotonNetwork.LocalPlayer.NickName);
 
-                    //GameObject.Find("Scene Manager").GetComponent<SceneManage>().createPlayerStruct(PhotonNetwork.LocalPlayer.NickName);
+                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().switchCamera(false);
 
-                    SceneManager.LoadScene("Player Selection");
+                    //PhotonNetwork.LoadLevel("PlayerRumble");
                 }
             }
         }

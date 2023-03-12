@@ -32,159 +32,168 @@ public class CharacterSelection : MonoBehaviour
     {
         if (view.IsMine)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit[] die = Physics.RaycastAll(ray);
-                foreach (RaycastHit hit in die)
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "characterSelection") {
+                if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("hit " + hit.transform.gameObject.name);
-                    if (hit.collider.gameObject.tag == "CharacterChoice")
+                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit[] die = Physics.RaycastAll(ray);
+                    foreach (RaycastHit hit in die)
                     {
-                        // OP 2
-                        /*
-                        if (previousTarg != null)
+                        Debug.Log("hit " + hit.transform.gameObject.name);
+                        if (hit.collider.gameObject.tag == "CharacterChoice")
                         {
+                            // OP 2
+                            /*
+                            if (previousTarg != null)
+                            {
+                                for (int i = 0; i < characters.Count; i++)
+                                {
+                                    if (characters[i].name == previousTarg.name)
+                                    {
+                                        previousTarg.transform.GetChild(0).gameObject.SetActive(false);
+
+                                        if (i < 4)
+                                        {
+                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, topRowSit, previousTarg.transform.position.z);
+                                            break;
+                                        }
+                                        else if (i >= 4)
+                                        {
+                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, bottomRowSit, previousTarg.transform.position.z);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+
+                            previousTarg = hit.collider.gameObject;
+
                             for (int i = 0; i < characters.Count; i++)
                             {
-                                if (characters[i].name == previousTarg.name)
-                                {
-                                    previousTarg.transform.GetChild(0).gameObject.SetActive(false);
+                                hit.collider.transform.GetChild(0).gameObject.SetActive(true);
 
+                                if (characters[i].name == hit.collider.gameObject.name)
+                                {
                                     if (i < 4)
                                     {
-                                        previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, topRowSit, previousTarg.transform.position.z);
+                                        hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, topRowStand, hit.collider.gameObject.transform.position.z);
                                         break;
                                     }
                                     else if (i >= 4)
                                     {
-                                        previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, bottomRowSit, previousTarg.transform.position.z);
+                                        hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, bottomRowStand, hit.collider.gameObject.transform.position.z);
                                         break;
                                     }
                                 }
                             }
-                        }
+                            */
 
-                        previousTarg = hit.collider.gameObject;
+                            // OP 3
 
-                        for (int i = 0; i < characters.Count; i++)
-                        {
-                            hit.collider.transform.GetChild(0).gameObject.SetActive(true);
-
-                            if (characters[i].name == hit.collider.gameObject.name)
+                            if (previousTarg != null)
                             {
-                                if (i < 4)
-                                {
-                                    hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, topRowStand, hit.collider.gameObject.transform.position.z);
-                                    break;
-                                }
-                                else if (i >= 4)
-                                {
-                                    hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, bottomRowStand, hit.collider.gameObject.transform.position.z);
-                                    break;
-                                }
+                                previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
                             }
+
+                            previousTarg = hit.collider.gameObject;
+
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(true);
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = hit.collider.gameObject.name;
+
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
+                            hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().babyLift, hit.collider.gameObject.transform.position.z);
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(true);
+
+                            break;
                         }
-                        */
-
-                        // OP 3
-
-                        if (previousTarg != null)
+                        else if (hit.collider.gameObject.tag == "Ignore")
                         {
-                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
+                            // OP 2
+                            /*
+                            if (previousTarg != null)
+                            {
+                                previousTarg.transform.GetChild(0).gameObject.SetActive(false);
+
+                                for (int i = 0; i < characters.Count; i++)
+                                {
+                                    if (characters[i].name == previousTarg.name)
+                                    {
+                                        if (i < 4)
+                                        {
+                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, topRowSit, previousTarg.transform.position.z);
+                                            break;
+                                        }
+                                        else if (i >= 4)
+                                        {
+                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, bottomRowSit, previousTarg.transform.position.z);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }                    
+
+                            previousTarg = null;
+                            */
+
+                            // OP 3
+
+                            if (previousTarg != null)
+                            {
+                                previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
+                            }
+                            previousTarg = null;
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(false);
+
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<SelectionGameManager>().clear;
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(false);
+
                         }
-
-                        previousTarg = hit.collider.gameObject;
-
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(true);
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = hit.collider.gameObject.name;
-
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
-                        hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().babyLift, hit.collider.gameObject.transform.position.z);
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(true);
-
-                        break;
                     }
-                    else if (hit.collider.gameObject.tag == "Ignore")
+                }
+
+                /*
+                if (Target != null)
+                {
+                    for (int i = 0; i < characters.Count; i++)
                     {
-                        // OP 2
-                        /*
-                        if (previousTarg != null)
+                        if (characters[i].name == Target.name)
                         {
-                            previousTarg.transform.GetChild(0).gameObject.SetActive(false);
-
-                            for (int i = 0; i < characters.Count; i++)
-                            {
-                                if (characters[i].name == previousTarg.name)
-                                {
-                                    if (i < 4)
-                                    {
-                                        previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, topRowSit, previousTarg.transform.position.z);
-                                        break;
-                                    }
-                                    else if (i >= 4)
-                                    {
-                                        previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, bottomRowSit, previousTarg.transform.position.z);
-                                        break;
-                                    }
-                                }
+                            if (i < 3) {
+                                spotLight.transform.position = new Vector3(characters[i].transform.position.x, 2, characters[i].transform.position.z);
+                                break;
                             }
-                        }                    
-
-                        previousTarg = null;
-                        */
-
-                        // OP 3
-
-                        if (previousTarg != null)
-                        {
-                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
+                            else if (i >= 3 && i <= 5)
+                            {
+                                spotLight.transform.position = new Vector3(characters[i].transform.position.x, 6, characters[i].transform.position.z);
+                                break;
+                            }
+                            else if(i > 5)
+                            {
+                                spotLight.transform.position = new Vector3(characters[i].transform.position.x, 10, characters[i].transform.position.z);
+                                break;
+                            }
                         }
-                        previousTarg = null;
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(false);
+                    }
+                }*/
 
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<SelectionGameManager>().clear;
-                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(false);
 
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    if (previousTarg != null)
+                    {
+                        Debug.Log("pressy press");
+
+                        readyToPost = true;
+
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().switchCamera(true);
                     }
                 }
             }
 
-            /*
-            if (Target != null)
+            if (readyToPost)
             {
-                for (int i = 0; i < characters.Count; i++)
-                {
-                    if (characters[i].name == Target.name)
-                    {
-                        if (i < 3) {
-                            spotLight.transform.position = new Vector3(characters[i].transform.position.x, 2, characters[i].transform.position.z);
-                            break;
-                        }
-                        else if (i >= 3 && i <= 5)
-                        {
-                            spotLight.transform.position = new Vector3(characters[i].transform.position.x, 6, characters[i].transform.position.z);
-                            break;
-                        }
-                        else if(i > 5)
-                        {
-                            spotLight.transform.position = new Vector3(characters[i].transform.position.x, 10, characters[i].transform.position.z);
-                            break;
-                        }
-                    }
-                }
-            }*/
-
-
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                if (previousTarg != null)
-                {
-                    Debug.Log("pressy press");
-
-                    view.RPC("settingSelectedCharacter", RpcTarget.AllBufferedViaServer, view.Owner.NickName, previousTarg.name);
-                }
+                view.RPC("settingSelectedCharacter", RpcTarget.AllBufferedViaServer, view.Owner.NickName, previousTarg.name);
             }
         }
     }
@@ -202,6 +211,19 @@ public class CharacterSelection : MonoBehaviour
                     break;
                 }
             }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    public void resettingCharactersPos(string pname, Vector3 pos)
+    {
+        try
+        {
+            GameObject.Find(pname).transform.position = pos;
         }
         catch (NullReferenceException e)
         {

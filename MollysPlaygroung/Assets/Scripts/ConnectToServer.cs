@@ -10,7 +10,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     void Start()
     {
         print("Connecting to server");
-        //PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
+        PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
         PhotonNetwork.GameVersion = MasterManager.GameSettings.GameVersion;         // Setting game version (not really needed)
         PhotonNetwork.ConnectUsingSettings();                                       // Connecting to the server!!!
     }

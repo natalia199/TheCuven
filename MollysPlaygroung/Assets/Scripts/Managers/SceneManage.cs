@@ -21,6 +21,15 @@ public class SceneManage : MonoBehaviour
 
     public string MasterPlayer;
 
+    public List<GameObject> characters = new List<GameObject>();
+    public List<GameObject> modelledCharacters = new List<GameObject>();
+
+    public GameObject usernameScene;
+    public GameObject rumbleScene;
+    public GameObject charSelScene;
+
+    public string currentState = "username";
+
     // USER DEMO VARIABLES
     //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
@@ -30,6 +39,7 @@ public class SceneManage : MonoBehaviour
         public string chosenCharacter;
         public int listID;
         public bool stillAlive;
+        //public Material mesh;
     };
 
     public void createPlayerStruct(string name)
@@ -38,7 +48,8 @@ public class SceneManage : MonoBehaviour
         boy.username = name;
         boy.chosenCharacter = "";
         boy.listID = -1;
-        boy.stillAlive = true;
+        boy.stillAlive = false;
+        //boy.mesh = null;
         playersInGame.Add(boy);
     }
 
@@ -46,18 +57,63 @@ public class SceneManage : MonoBehaviour
     {
         GamePlayer die = playersInGame[x];
         die.chosenCharacter = character;
+
+        foreach (GameObject c in characters)
+        {
+            if (c.name == character)
+            {
+                //die.mesh = c.GetComponent<MeshRenderer>().sharedMaterial;
+            }
+        }
+
+        GameObject.Find(pname).transform.GetChild(2).gameObject.SetActive(true);
+
+        for (int y = 0; y < GameObject.Find(pname).transform.GetChild(2).childCount; y++)
+        {
+            if (GameObject.Find(pname).transform.GetChild(2).GetChild(y).name == character)
+            {
+                GameObject.Find(pname).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+            }
+            else
+            {
+                Destroy(GameObject.Find(pname).transform.GetChild(2).GetChild(y).gameObject);                
+            }
+        }
+            
+        die.stillAlive = true;
         playersInGame[x] = die;
 
-        if(PhotonNetwork.LocalPlayer.NickName == pname)
-        {
-            SceneManager.LoadScene("PlayerRumble");
+        GameObject.Find(pname).layer = 6;
+        //GameObject.Find(pname).transform.GetChild(2).gameObject.SetActive(true);
+    }
 
+    public void switchCamera(bool state)
+    {
+        if (!state)
+        {
+            usernameScene.SetActive(false);
+            rumbleScene.SetActive(false);
+            charSelScene.SetActive(true);
+
+            currentState = "characterSelection";
+        }
+        else
+        {
+            usernameScene.SetActive(false);
+            rumbleScene.SetActive(true);
+            charSelScene.SetActive(false);
+
+            currentState = "rumble";
         }
     }
 
     void Awake()
     {
         DontDestroyOnLoad(this);
+
+        usernameScene.SetActive(true);
+        rumbleScene.SetActive(false);
+        charSelScene.SetActive(false);
 
         sceneTracker = 0;
 

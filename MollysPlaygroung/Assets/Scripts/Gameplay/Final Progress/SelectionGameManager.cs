@@ -38,6 +38,6 @@ public class SelectionGameManager : MonoBehaviour
 
     public void OnClick_PickCharacter()
     {
-        SceneManager.LoadScene("PlayerRumble");
+        //SceneManager.LoadScene("PlayerRumble");
     }
 }
