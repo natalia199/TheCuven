@@ -15,7 +15,9 @@ public class LeavingRoomMenu : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        PhotonNetwork.Disconnect();
+        /*PhotonNetwork.Disconnect();
         PhotonNetwork.LoadLevel("Loading");
+    */
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }

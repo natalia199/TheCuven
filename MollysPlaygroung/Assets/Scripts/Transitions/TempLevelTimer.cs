@@ -230,10 +230,6 @@ public class TempLevelTimer : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        setVariables();
-
-        GameObject.Find("GameManager").GetComponent<RecordUserData>().SendInTheNeededData(MyUsername, CurrentLevel, GameplayState, MyCompetitorsUsername, MyCompletionTime, MyCurrentScore, MyCurrentErrorRate);
-
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
     }
 
@@ -342,34 +338,6 @@ public class TempLevelTimer : MonoBehaviour
         }
 
 
-    }
-
-
-    void setVariables()
-    {
-        MyUsername = PhotonNetwork.LocalPlayer.NickName;
-
-        CurrentLevel = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
-
-        //GameplayState = GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer;
-
-        MyCompletionTime = (Mathf.Round(timeRemaining * 100)) / 100.0;
-
-        //MyCompetitorsUsername = "nATIS tEST";
-
-        MyCurrentScore = "";
-        MyCurrentErrorRate = 0;
-
-        
-        if (GameObject.Find(PhotonNetwork.LocalPlayer.NickName).GetComponent<PlayerUserTest>().playerNumber == 0)
-        {
-            MyCompetitorsUsername = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[1];
-        }
-        else
-        {
-            MyCompetitorsUsername = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[0];
-        }
-        
     }
 
     void removeSlots(List<GameObject> x)

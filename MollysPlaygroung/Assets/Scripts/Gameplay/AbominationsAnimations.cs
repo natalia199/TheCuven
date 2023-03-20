@@ -18,7 +18,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         if (view.IsMine)
         {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble")
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble" || GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "gameover")
             {
                 if (GetComponent<PlayerUserTest>().freezePlayer)
                 {

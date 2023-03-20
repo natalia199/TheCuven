@@ -92,6 +92,15 @@ public class CharacterSelection : MonoBehaviour
 
                             if (previousTarg != null)
                             {
+                                for (int x = 0; x < GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).childCount; x++)
+                                {
+                                    if (GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).GetChild(x).gameObject.activeInHierarchy)
+                                    {
+                                        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).GetChild(x).gameObject.SetActive(false);
+                                    }
+
+                                }
+
                                 previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
                             }
 
@@ -100,7 +109,15 @@ public class CharacterSelection : MonoBehaviour
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(true);
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = hit.collider.gameObject.name;
 
-                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
+                            for (int x = 0; x < GameObject.Find("GameManager").GetComponent<SelectionGameManager>().characters.Count; x++)
+                            {
+                                if (hit.collider.gameObject.name == GameObject.Find("GameManager").GetComponent<SelectionGameManager>().characters[x].name) {
+                                    //GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
+                                    GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).GetChild(x).gameObject.SetActive(true);
+                                }
+
+                            }
+
                             hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().babyLift, hit.collider.gameObject.transform.position.z);
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(true);
 
@@ -145,7 +162,16 @@ public class CharacterSelection : MonoBehaviour
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(false);
 
-                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<SelectionGameManager>().clear;
+                            for (int x = 0; x < GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).childCount; x++)
+                            {
+                                if (GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).GetChild(x).gameObject.activeInHierarchy)
+                                {
+                                    GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).GetChild(x).gameObject.SetActive(false);
+                                }
+
+                            }
+
+                            //GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<SelectionGameManager>().clear;
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(false);
 
                         }

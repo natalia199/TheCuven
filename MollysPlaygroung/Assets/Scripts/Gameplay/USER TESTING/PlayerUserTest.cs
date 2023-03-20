@@ -145,6 +145,7 @@ public class PlayerUserTest : MonoBehaviour
             }
         }
 
+        
         if (SceneManager.GetActiveScene().name == "Greed")
         {
             CameraOptions.Add(GameObject.Find("Dice_MainCamera"));
@@ -268,9 +269,6 @@ public class PlayerUserTest : MonoBehaviour
                                         Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
                                     }
                                 }
-
-                               // GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<MeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].mesh;
-
                             }
                             catch (NullReferenceException e) { }
                         }
@@ -278,6 +276,31 @@ public class PlayerUserTest : MonoBehaviour
                 }
                 else
                 {
+                    try
+                    {
+                        for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                        {
+                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                            {
+
+                                for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                                {
+                                    if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                                    {
+                                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                                    }
+                                    else
+                                    {
+                                        Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                    catch (NullReferenceException e) { }
+
+
                     if (SceneManager.GetActiveScene().name == "Greed")
                     {
                         // Single player: quickly collect as many chips as possible before the time runs out
@@ -708,6 +731,39 @@ public class PlayerUserTest : MonoBehaviour
                     }
                 }
             }
+            else if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "gameover")
+            {try
+                {
+                    for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                        {
+
+                            for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                            {
+                                if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                                {
+                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                                }
+                                else
+                                {
+                                    Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                                }
+                            }
+
+                        }
+                    }
+                }
+                catch (NullReferenceException e) { }
+
+                MovePlayer();
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+                    view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
+                }
+            }
         }
     }
 
@@ -784,7 +840,7 @@ public class PlayerUserTest : MonoBehaviour
         }
         else
         {
-            if (imDraggingMan)
+            if (imDraggingMan || Input.GetKey(KeyCode.P))
             {
                 targetRotation = Quaternion.LookRotation(-movement);
 
@@ -966,15 +1022,16 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     [PunRPC]
-    void changedPlayerMesh(string name, Material mat)
-    {
-        GameObject.Find(name).GetComponent<MeshRenderer>().material = mat;
-    }
-
-    [PunRPC]
     void jumpBoyJump(string pName, Vector3 vel)
     {
-        GameObject.Find(pName).GetComponent<Rigidbody>().velocity = vel;
+        try
+        {
+            GameObject.Find(pName).GetComponent<Rigidbody>().velocity = vel;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
     }
 
 

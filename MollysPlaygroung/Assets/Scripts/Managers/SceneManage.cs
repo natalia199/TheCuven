@@ -30,6 +30,8 @@ public class SceneManage : MonoBehaviour
 
     public string currentState = "username";
 
+    bool gameFlowBegin = false;
+
     // USER DEMO VARIABLES
     //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
@@ -57,14 +59,6 @@ public class SceneManage : MonoBehaviour
     {
         GamePlayer die = playersInGame[x];
         die.chosenCharacter = character;
-
-        foreach (GameObject c in characters)
-        {
-            if (c.name == character)
-            {
-                //die.mesh = c.GetComponent<MeshRenderer>().sharedMaterial;
-            }
-        }
 
         GameObject.Find(pname).transform.GetChild(2).gameObject.SetActive(true);
 
@@ -129,29 +123,21 @@ public class SceneManage : MonoBehaviour
                 player.NickName = "oogabooga";
             }
         }
-
-        //SingleOrMultiPlayer = true;
-
-        /*
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            allPlayersInGame.Add(player.NickName);
-        }
-        */
     }
 
     // Scene flow
     void Start()
     {
-        //PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
-        //SingleOrMultiPlayer = true;
-        
+        PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
+
         /*if (PhotonNetwork.IsMasterClient)
         {
             StartCoroutine("BeginGame", 3);
             //StartCoroutine("TestGame", 2);
         }
         */
+
+        Debug.Log("start 1");
     }
 
 
@@ -229,36 +215,13 @@ public class SceneManage : MonoBehaviour
             }
         }
 
-        if (SceneManager.GetActiveScene().name == "PlayerRumble")
+        else if (SceneManager.GetActiveScene().name == "Game Introduction" && !gameFlowBegin)
         {
-            foreach (GamePlayer player in playersInGame)
+            if (PhotonNetwork.IsMasterClient)
             {
-                Debug.Log("Player " + player.username + " picked " + player.chosenCharacter);
-
+                StartCoroutine("BeginGame", 3);
             }
-            /*if (CurrentLevelState)
-            {
-                NextGameaz();
-            }*/
-
-            /*if (SceneManager.GetActiveScene().name == "Username") 
-            {
-                boy.username = player.NickName;            
-            }
-
-
-            foreach (Player player in PhotonNetwork.PlayerList)
-            {
-                allPlayersInGame.Add(player.NickName);
-
-                GamePlayer boy;
-                boy.username = player.NickName;
-                boy.chosenCharacter = "";
-                boy.listID = -1;
-                boy.stillAlive = true;
-                playersInGame.Add(boy);
-            }
-            */
+            gameFlowBegin = true;
         }
 
         foreach (Player player in PhotonNetwork.PlayerList)

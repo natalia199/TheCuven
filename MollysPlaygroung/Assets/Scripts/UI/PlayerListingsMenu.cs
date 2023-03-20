@@ -6,22 +6,25 @@ using Photon.Realtime;
 
 public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 {
+    /*
     [SerializeField]
     private Transform _content;
     [SerializeField]
     private PlayerListing _playerListings;
+    */
 
     public GameObject startBtn;
 
     // List of room names
-    private List<PlayerListing> _listings = new List<PlayerListing>();
-
+    //private List<PlayerListing> _listings = new List<PlayerListing>();
+/*
     public override void OnEnable()
     {
         base.OnEnable();
         GetCurrentRoomPlayers();
     }
 
+    
     public override void OnDisable()
     {
         base.OnDisable();
@@ -33,6 +36,8 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
         _listings.Clear();
     }
 
+    */
+
     private void GetCurrentRoomPlayers()
     {
         if (!PhotonNetwork.IsConnected)
@@ -42,10 +47,11 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 
         foreach (KeyValuePair<int, Player> playerInfo in PhotonNetwork.CurrentRoom.Players)
         {
-            AddPlayerListing(playerInfo.Value);
+            //AddPlayerListing(playerInfo.Value);
         }
     }
 
+    /*
     private void AddPlayerListing(Player player)
     {
         int index = _listings.FindIndex(x => x.Player == player);
@@ -80,6 +86,7 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
             _listings.RemoveAt(index);
         }
     }
+    */
 
     public void OnClick_StartGame()
     {
@@ -87,7 +94,7 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.LoadLevel("Username");
+            PhotonNetwork.LoadLevel("Game Introduction");
         }
     }
 
