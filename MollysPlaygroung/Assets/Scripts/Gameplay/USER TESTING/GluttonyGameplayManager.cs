@@ -25,14 +25,11 @@ public class GluttonyGameplayManager : MonoBehaviour
     public bool noMoreFoodNeeded = false;
     public int foodInstantiationTracker;
 
-    public int singlePlayerFinishedState;
-
     void Start()
     {
         foodReady = true;
         noMoreFoodNeeded = false;
         foodInstantiationTracker = FoodParent.transform.childCount;
-        singlePlayerFinishedState = 0;
     }
 
 
