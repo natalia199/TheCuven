@@ -3966,19 +3966,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a983bc733c42024eb246e33f9c3dfc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resultSlots: {fileID: 995045220}
   bgImg: {fileID: 1945793352}
   timeRemaining: 0
   timerIsRunning: 0
   timeText: {fileID: 1032739715}
-  waitingMsg: {fileID: 571793631}
-  MyUsername: 
-  CurrentLevel: 
-  MyCompetitorsUsername: 
-  MyCompletionTime: 0
-  GameplayState: 0
-  MyCurrentScore: 
-  MyCurrentErrorRate: 0
+  finishedMsg: {fileID: 0}
+  oneTimeRun: 0
 --- !u!114 &1238818243
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6201,9 +6194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13a46a0e82317f4da2a50f77c55b48a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 59713313233630249, guid: c6772d36a5380164084f5dac39ab1935, type: 3}
-  singlePlayerSpawn: {fileID: 2064236865}
-  singlePlayerSpawnPost: {fileID: 1658487258}
+  playerPrefab: {fileID: 59713313233630249, guid: a8377ff7e414a1d48b3d7873cfbc1a8e, type: 3}
 --- !u!4 &2054724278
 Transform:
   m_ObjectHideFlags: 0

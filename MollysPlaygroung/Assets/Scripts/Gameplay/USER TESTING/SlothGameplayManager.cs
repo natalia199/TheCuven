@@ -137,20 +137,6 @@ public class SlothGameplayManager : MonoBehaviour
         trapReady = true;
     }
 
-    IEnumerator TrapLifeTimeSP(float time)
-    {
-        float xPos = UnityEngine.Random.Range(TrapSpawnPoints[0].position.x, TrapSpawnPoints[2].position.x);
-        float zPos = UnityEngine.Random.Range(TrapSpawnPoints[0].position.z, TrapSpawnPoints[1].position.z);
-        Vector3 posy = new Vector3(xPos, 12, zPos);
-
-        GameObject trap = Instantiate(TrapPrefab, posy, Quaternion.identity, TrapParent.transform);
-
-        yield return new WaitForSeconds(time);
-
-        trap.AddComponent<Rigidbody>();
-    }
-
-
     // LAMP LIGHT
     public void LightInstantiation()
     {
@@ -169,28 +155,9 @@ public class SlothGameplayManager : MonoBehaviour
         lightReady = true;
     }
 
-    IEnumerator LightLifeTimeSP(float time)
-    {
-        float xPos = UnityEngine.Random.Range(TrapSpawnPoints[0].position.x, TrapSpawnPoints[2].position.x);
-        float zPos = UnityEngine.Random.Range(TrapSpawnPoints[0].position.z, TrapSpawnPoints[1].position.z);
-        Vector3 posy = new Vector3(xPos, LightPrefab.transform.position.y, zPos);
-
-        GameObject light = Instantiate(LightPrefab, posy, Quaternion.identity, LightParent.transform);
-
-        yield return new WaitForSeconds(time);
-
-        light.transform.parent = null;
-        light.GetComponent<LightFlickerSloth>().LightsOut();
-    }
-
     public void RecordSlothResults(GameObject player)
     {
         slothResults.Add(player);
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(player.name);
     }
-
-    public void incSinglePlayerState()
-    {
-        singlePlayerFinishedState++;
-    }
-
 }

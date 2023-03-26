@@ -7,6 +7,7 @@ using System;
 
 public class WrathGameplayManager : MonoBehaviour
 {
+    // lava variables
     public int directionIndex;
     public bool returnHome;
 
@@ -17,42 +18,13 @@ public class WrathGameplayManager : MonoBehaviour
 
     public bool plateState = false;
 
-    // player score
-    public int trackedBoxScore;
-    // max boxes in scene
-    public int AmountOfBoxes;
-    // boxes on screen
-    public int TrackBoxes;
-    // overall max boxes to collect
-    public int maxAmountOfBoxes;
-    // box counter
-    public int boxesInstantiated;
-
-    public GameObject boxParent;
-    public List<Transform> BoxpawnPoints = new List<Transform>();
-    public GameObject boxPrefab;
-
-    public GameObject singlePlayerPlatform;
-    public GameObject multiPlayerPlatform;
-    public GameObject boxScoreTxt;
-    public bool noMoreBoxesNeeded = false;
-
+    // player variables
+    //public GameObject multiPlayerPlatform;
     public List<GameObject> wrathResults = new List<GameObject>();
-    public List<GameObject> LifeSlots = new List<GameObject>();
-
-    public int singlePlayerFinishedState;
 
     void Start()
     {
         plateState = wrathPlate.GetComponent<PlatformShakeWrath>().newTilt;
-
-        boxScoreTxt.SetActive(false);
-        singlePlayerPlatform.SetActive(false);
-        multiPlayerPlatform.SetActive(true);
-
-
-        singlePlayerFinishedState = 0;
-        trackedBoxScore = 0;
     }
 
     void Update()
@@ -110,9 +82,11 @@ public class WrathGameplayManager : MonoBehaviour
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().plateMoving = false;
     }
 
+    
     public void RecordWrathResults(GameObject player)
     {
         wrathResults.Add(player);
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(player.name);
     }
-
+    
 }

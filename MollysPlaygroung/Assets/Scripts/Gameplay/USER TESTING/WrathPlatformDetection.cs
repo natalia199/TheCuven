@@ -23,7 +23,7 @@ public class WrathPlatformDetection : MonoBehaviour
         {
             if (!oneTime)
             {
-                GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(other.gameObject);
+                //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(other.gameObject);
                 oneTime = true;
             }
         }

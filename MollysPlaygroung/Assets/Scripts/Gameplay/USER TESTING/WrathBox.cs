@@ -33,13 +33,13 @@ public class WrathBox : MonoBehaviour
             if (playerInteracted != null && !offPlatform)
             {
                 //playerInteracted.GetComponent<PlayerUserTest>().boxScore++;
-                GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().trackedBoxScore++;
+                //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().trackedBoxScore++;
                 offPlatform = true;
             }
 
             //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().maxAmountOfBoxes--;
-            GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().TrackBoxes--;
-            GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated++;
+            //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().TrackBoxes--;
+            //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().boxesInstantiated++;
 
             Destroy(this.gameObject);
         }

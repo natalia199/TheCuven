@@ -32,6 +32,10 @@ public class SceneManage : MonoBehaviour
 
     bool gameFlowBegin = false;
 
+    public List<string> levelsLoser = new List<string>();
+
+    public Material deadSkin;
+
     // USER DEMO VARIABLES
     //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
@@ -41,7 +45,7 @@ public class SceneManage : MonoBehaviour
         public string chosenCharacter;
         public int listID;
         public bool stillAlive;
-        //public Material mesh;
+        public Material originalMesh;
     };
 
     public void createPlayerStruct(string name)
@@ -51,6 +55,7 @@ public class SceneManage : MonoBehaviour
         boy.chosenCharacter = "";
         boy.listID = -1;
         boy.stillAlive = false;
+        boy.originalMesh = null;
         //boy.mesh = null;
         playersInGame.Add(boy);
     }
@@ -67,6 +72,7 @@ public class SceneManage : MonoBehaviour
             if (GameObject.Find(pname).transform.GetChild(2).GetChild(y).name == character)
             {
                 GameObject.Find(pname).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                die.originalMesh = GameObject.Find(pname).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
             }
             else
             {
@@ -261,6 +267,7 @@ public class SceneManage : MonoBehaviour
 
         sceneTracker++;
 
+        /*
         if (sceneTracker == levelNames.Length)
         {
 
@@ -269,13 +276,12 @@ public class SceneManage : MonoBehaviour
         }
         else
         {
+        */
             GameplayDone = false;
 
-            //PhotonNetwork.LoadLevel("Survey Reminder");
-            //StartCoroutine("LevelTransition", 3);
-            PhotonNetwork.LoadLevel("Game Level Transition");
+            PhotonNetwork.LoadLevel("LevelResult");
 
-        }
+       // }
     }
 
 
@@ -318,6 +324,34 @@ public class SceneManage : MonoBehaviour
             {
                 allPlayersInGame.RemoveAt(i);
                 break;
+            }
+        }
+    }
+
+    public void currentLevelsLoser(string n)
+    {
+        if (levelsLoser.Count == 0)
+        {
+            for (int x = 0; x < playersInGame.Count; x++)
+            {
+                if (n == playersInGame[x].username && playersInGame[x].stillAlive)
+                {
+                    levelsLoser.Add(n);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setPlayersLifeStatus(bool state)
+    {
+        for (int x = 0; x < playersInGame.Count; x++)
+        {
+            if (levelsLoser[0] ==playersInGame[x].username)
+            {
+                GamePlayer die = playersInGame[x];
+                die.stillAlive = state;
+                playersInGame[x] = die;
             }
         }
     }

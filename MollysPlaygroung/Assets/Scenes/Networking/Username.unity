@@ -11830,7 +11830,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneTracker: 1
   levelNames:
-  - Gluttony
+  - Wrath
+  - Sloth
   allPlayersInGame: []
   allPlayersDead: []
   CurrentLevelState: 0
@@ -11850,6 +11851,8 @@ MonoBehaviour:
   rumbleScene: {fileID: 1554246842}
   charSelScene: {fileID: 1070669593}
   currentState: username
+  levelsLoser: []
+  deadSkin: {fileID: 2100000, guid: cb554240724dc9440b7d01a2824abc0c, type: 2}
 --- !u!4 &859736303
 Transform:
   m_ObjectHideFlags: 0

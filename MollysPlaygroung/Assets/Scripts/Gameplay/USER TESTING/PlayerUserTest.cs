@@ -104,13 +104,15 @@ public class PlayerUserTest : MonoBehaviour
     // WRATH
     int directionIndex = 0;
     bool directionChosen = false;
-    public bool pickUpBox = false;
+    //public bool pickUpBox = false;
     GameObject interactedBox = null;
     public GameObject carriedBox = null;
     public bool plateMoving = false;
     public int boxThrowForce;
     public int boxScore;
+
     public bool fellOffPlatform = false;
+    public bool deathRecorded = false;
 
     public int playerNumber = -1;
 
@@ -137,15 +139,18 @@ public class PlayerUserTest : MonoBehaviour
             resetAllValues();
         }
 
-        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+        try
         {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
             {
-                playerNumber = i;
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+                {
+                    playerNumber = i;
+                }
             }
         }
+        catch (NullReferenceException e) { }
 
-        
         if (SceneManager.GetActiveScene().name == "Greed")
         {
             CameraOptions.Add(GameObject.Find("Dice_MainCamera"));
@@ -185,10 +190,6 @@ public class PlayerUserTest : MonoBehaviour
             lifeSource = lifeMax;
             withinTheLight = false;
             pauseForDecrease = false;
-        }
-        else if (SceneManager.GetActiveScene().name == "Wrath")
-        {
-            transform.GetChild(1).gameObject.SetActive(true);
         }
     }
 
@@ -294,7 +295,21 @@ public class PlayerUserTest : MonoBehaviour
                                         Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
                                     }
                                 }
-
+                            }
+                            else
+                            {
+                                for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                                {
+                                    if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                                    {
+                                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
+                                    }
+                                    else
+                                    {
+                                        Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                                    }
+                                }
                             }
                         }
                     }
@@ -603,36 +618,51 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                         {
+                            /*
+                             // CAUSES ISSUES CUZ OF RANDOM RANGE I THINK
                             if (PhotonNetwork.IsMasterClient)
                             {
-                                if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().plateState)
+                                try
                                 {
-                                    if (!plateMoving)
+                                    if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().plateState)
                                     {
-                                        directionIndex = UnityEngine.Random.Range(0, 3);
-                                        plateMoving = true;
-                                    }
-                                    else
-                                    {
-                                        view.RPC("shakePlatform", RpcTarget.AllBufferedViaServer, directionIndex, view.Owner.NickName);
+                                        if (!plateMoving)
+                                        {
+                                            directionIndex = UnityEngine.Random.Range(0, 3);
+                                            plateMoving = true;
+                                        }
+                                        else
+                                        {
+                                            view.RPC("shakePlatform", RpcTarget.AllBufferedViaServer, directionIndex, view.Owner.NickName);
+                                        }
                                     }
                                 }
+                                catch (NullReferenceException e) { }
                             }
+                            */
 
-
-                            if (fellOffPlatform)
+                            if (fellOffPlatform && !deathRecorded)
                             {
                                 view.RPC("fellOffWrathPlatform", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
 
+                            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                            {
+                                if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count >= 1)
+                                {
+                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                }
+                            }
 
+                            /*
                             if (PhotonNetwork.LocalPlayer.IsMasterClient)
                             {
                                 if (!die && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
                                 {
                                     view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
-                            }
+                            } 
+                            */
                         }
                     }
                     else if (SceneManager.GetActiveScene().name == "Sloth")
@@ -708,10 +738,9 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
 
-
                             if (PhotonNetwork.LocalPlayer.IsMasterClient)
                             {
-                                if (!die && GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
+                                if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count >= 1)
                                 {
                                     view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
@@ -1003,7 +1032,14 @@ public class PlayerUserTest : MonoBehaviour
     [PunRPC]
     void getPlayersNickName(string name)
     {
-        playersUsername = name;
+        try
+        {
+            playersUsername = name;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
     }
 
     [PunRPC]
@@ -1047,11 +1083,9 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().die) 
-            {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().die = true;
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().actualEndGame();
-            }
+
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().actualEndGame();
+
 
         }
         catch (NullReferenceException e)
@@ -1080,8 +1114,11 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(pName).gameObject);
-            GameObject.Find(pName).GetComponent<PlayerUserTest>().fellOffPlatform = true;
+            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded) 
+            {
+                GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(pName).gameObject);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded = true;
+            }
         }
         catch (NullReferenceException e)
         {
@@ -1592,13 +1629,6 @@ public class PlayerUserTest : MonoBehaviour
             competitor = other.gameObject;
         }
 
-        // WRATH
-        if (other.tag == "WrathBox")
-        {
-            pickUpBox = true;
-            interactedBox = other.gameObject;
-        }
-
         // GREED
         if (other.tag == "Chip")
         {
@@ -1682,13 +1712,6 @@ public class PlayerUserTest : MonoBehaviour
         {
             interactedOpponent = null;
             competitor = null;
-        }
-
-        // WRATH
-        if (other.tag == "WrathBox")
-        {
-            pickUpBox = false;
-            interactedBox = null;
         }
 
         // GREED
@@ -1793,7 +1816,6 @@ public class PlayerUserTest : MonoBehaviour
         // WRATH
         directionIndex = 0;
         directionChosen = false;
-        pickUpBox = false;
         interactedBox = null;
         carriedBox = null;
         plateMoving = false;
