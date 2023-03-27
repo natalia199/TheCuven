@@ -33,6 +33,7 @@ public class SceneManage : MonoBehaviour
     bool gameFlowBegin = false;
 
     public List<string> levelsLoser = new List<string>();
+    public List<string> levelsWinner = new List<string>();
 
     public Material deadSkin;
 
@@ -43,9 +44,11 @@ public class SceneManage : MonoBehaviour
     {
         public string username;
         public string chosenCharacter;
+        public int characterID;
         public int listID;
         public bool stillAlive;
-        public Material originalMesh;
+        public Material originalMesh;        
+        public bool variablesSet;
     };
 
     public void createPlayerStruct(string name)
@@ -53,11 +56,13 @@ public class SceneManage : MonoBehaviour
         GamePlayer boy;
         boy.username = name;
         boy.chosenCharacter = "";
+        boy.characterID = -1;
         boy.listID = -1;
         boy.stillAlive = false;
         boy.originalMesh = null;
-        //boy.mesh = null;
+        boy.variablesSet = false;
         playersInGame.Add(boy);
+
     }
 
     public void updatePlayerCharacter(string pname, string character, int x)
@@ -71,16 +76,18 @@ public class SceneManage : MonoBehaviour
         {
             if (GameObject.Find(pname).transform.GetChild(2).GetChild(y).name == character)
             {
-                GameObject.Find(pname).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                die.originalMesh = GameObject.Find(pname).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
-            }
-            else
-            {
-                Destroy(GameObject.Find(pname).transform.GetChild(2).GetChild(y).gameObject);                
+                die.characterID = y;
+                break;
             }
         }
-            
+
+        Debug.Log("die.characterID " + die.characterID);
+
+        GameObject.Find(pname).transform.GetChild(2).GetChild(die.characterID).gameObject.SetActive(true);
+        die.originalMesh = GameObject.Find(pname).transform.GetChild(2).GetChild(die.characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material;
+
         die.stillAlive = true;
+        die.variablesSet = true;
         playersInGame[x] = die;
 
         GameObject.Find(pname).layer = 6;
@@ -135,15 +142,6 @@ public class SceneManage : MonoBehaviour
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
-
-        /*if (PhotonNetwork.IsMasterClient)
-        {
-            StartCoroutine("BeginGame", 3);
-            //StartCoroutine("TestGame", 2);
-        }
-        */
-
-        Debug.Log("start 1");
     }
 
 
@@ -247,7 +245,7 @@ public class SceneManage : MonoBehaviour
         }
     }
 
-
+    /*
     // test
     IEnumerator TestGame(int value)
     {
@@ -259,6 +257,7 @@ public class SceneManage : MonoBehaviour
 
         PhotonNetwork.LoadLevel("MovementTester");
     }
+    */
 
     public void NextGameaz()
     {
@@ -302,6 +301,7 @@ public class SceneManage : MonoBehaviour
         PhotonNetwork.LoadLevel("Game Level Transition");
     }
 
+    /*
     IEnumerator LevelTransition(int value)
     {
         PhotonNetwork.LoadLevel("Game Level Transition");
@@ -327,20 +327,12 @@ public class SceneManage : MonoBehaviour
             }
         }
     }
+    */
 
     public void currentLevelsLoser(string n)
     {
-        if (levelsLoser.Count == 0)
-        {
-            for (int x = 0; x < playersInGame.Count; x++)
-            {
-                if (n == playersInGame[x].username && playersInGame[x].stillAlive)
-                {
-                    levelsLoser.Add(n);
-                    break;
-                }
-            }
-        }
+        // saves all players that died in the level
+        levelsLoser.Add(n);
     }
 
     public void setPlayersLifeStatus(bool state)
@@ -354,5 +346,11 @@ public class SceneManage : MonoBehaviour
                 playersInGame[x] = die;
             }
         }
+    }
+
+    public void currentLevelsWinner(string n)
+    {
+        // saves all players that died in the level
+        levelsWinner.Add(n);
     }
 }

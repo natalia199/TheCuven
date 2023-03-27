@@ -197,6 +197,7 @@ public class PlayerUserTest : MonoBehaviour
     {
         if (view.IsMine)
         {
+            // PLAYER ACTIONS - if not stunned
             if (!freezePlayer)
             {
                 if (!actionPause)
@@ -239,6 +240,7 @@ public class PlayerUserTest : MonoBehaviour
 
      void FixedUpdate()
     {
+        // player name
         if (view.IsMine)
         {
             view.RPC("getPlayersNickName", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
@@ -251,8 +253,23 @@ public class PlayerUserTest : MonoBehaviour
             {
                 view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
+                // USERNAME SCENE - players picking their name and character skin
                 if (SceneManager.GetActiveScene().name == "Username")
                 {
+                    for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                        {
+                            try
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                            }
+
+                            catch (NullReferenceException e)
+                            { }
+                        }
+                    }
+                    /*
                     for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                     {
                         if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
@@ -274,47 +291,30 @@ public class PlayerUserTest : MonoBehaviour
                             catch (NullReferenceException e) { }
                         }
                     }
+                    */
                 }
+                // LEVEL SCENES - players playing the level and their level actions
                 else
                 {
-                    try
+
+                    for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                     {
-                        for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                        try
                         {
+                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+
                             if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
                             {
-
-                                for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                                {
-                                    if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                                    {
-                                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                                    }
-                                    else
-                                    {
-                                        Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                                    }
-                                }
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].originalMesh;
                             }
                             else
                             {
-                                for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                                {
-                                    if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                                    {
-                                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
-                                    }
-                                    else
-                                    {
-                                        Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                                    }
-                                }
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
                             }
                         }
-                    }
-                    catch (NullReferenceException e) { }
 
+                        catch (NullReferenceException e) { }
+                    }
 
                     if (SceneManager.GetActiveScene().name == "Greed")
                     {
@@ -613,56 +613,49 @@ public class PlayerUserTest : MonoBehaviour
                     }
                     else if (SceneManager.GetActiveScene().name == "Wrath")
                     {
-                        // Single player: quickly drop all the boxes off of the platform 
-                        // Multi player: be the last standing on the platform
-
                         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                         {
-                            /*
-                             // CAUSES ISSUES CUZ OF RANDOM RANGE I THINK
-                            if (PhotonNetwork.IsMasterClient)
+                            // CAUSES ISSUES CUZ OF RANDOM RANGE I THINK
+                            // platform rotation
+                            /*if (PhotonNetwork.IsMasterClient)
                             {
-                                try
+                                if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().plateState)
                                 {
-                                    if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().plateState)
+                                    if (!plateMoving)
                                     {
-                                        if (!plateMoving)
+                                        try
                                         {
                                             directionIndex = UnityEngine.Random.Range(0, 3);
-                                            plateMoving = true;
                                         }
-                                        else
+                                        catch (NullReferenceException e)
                                         {
-                                            view.RPC("shakePlatform", RpcTarget.AllBufferedViaServer, directionIndex, view.Owner.NickName);
+                                            directionIndex = 0;
                                         }
+
+                                        plateMoving = true;
+                                    }
+                                    else
+                                    {
+                                        view.RPC("shakePlatform", RpcTarget.AllBufferedViaServer, directionIndex, view.Owner.NickName);
                                     }
                                 }
-                                catch (NullReferenceException e) { }
                             }
                             */
 
+                            // fell of the platform and lost
                             if (fellOffPlatform && !deathRecorded)
                             {
                                 view.RPC("fellOffWrathPlatform", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
 
+                            // game ending - if the results has one less than the total of players means there 1 person left standing which is the winner
                             if (PhotonNetwork.LocalPlayer.IsMasterClient)
                             {
-                                if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count >= 1)
+                                if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
                                 {
                                     view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
                             }
-
-                            /*
-                            if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                            {
-                                if (!die && GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count - 1))
-                                {
-                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                }
-                            } 
-                            */
                         }
                     }
                     else if (SceneManager.GetActiveScene().name == "Sloth")
@@ -761,25 +754,19 @@ public class PlayerUserTest : MonoBehaviour
                 }
             }
             else if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "gameover")
-            {try
+            {
+                try
                 {
                     for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                     {
-                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                        try
                         {
+                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                        }
 
-                            for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                            {
-                                if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                                {
-                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                                }
-                                else
-                                {
-                                    Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                                }
-                            }
-
+                        catch (NullReferenceException e)
+                        {
+                            Debug.Log("naw cuh");
                         }
                     }
                 }
@@ -1058,6 +1045,67 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     [PunRPC]
+    void settingCharacterSkins()
+    {
+        try
+        {
+            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+            {
+                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+/*
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                {
+                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+
+                    
+                    for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                    {
+                        if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                        {
+                            try
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                            }
+                            catch (NullReferenceException e) { }
+                        }
+                        else
+                        {
+                            Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                        }
+
+                    }
+                    
+                }
+                else
+                {
+                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+
+                    
+                    for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                    {
+
+                        if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                        {
+                            try
+                            { 
+                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                            }
+                            catch (NullReferenceException e) { }
+                            //GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
+                        }
+                        else
+                        {
+                            Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                        }
+
+                    }
+                }*/
+            }
+        }
+        catch (NullReferenceException e) { }
+    }
+
+    [PunRPC]
     void jumpBoyJump(string pName, Vector3 vel)
     {
         try
@@ -1083,10 +1131,9 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
 
             GameObject.Find(pName).GetComponent<PlayerUserTest>().actualEndGame();
-
-
         }
         catch (NullReferenceException e)
         {

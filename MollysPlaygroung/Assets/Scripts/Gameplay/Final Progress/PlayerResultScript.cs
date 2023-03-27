@@ -45,45 +45,26 @@ public class PlayerResultScript : MonoBehaviour
         {
             view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
-            try
+            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {
-                for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                try
                 {
+                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+
                     if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
                     {
-
-                        for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                        {
-                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                            {
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                            }
-                            else
-                            {
-                                Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                            }
-                        }
-
+                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].originalMesh;
                     }
                     else
                     {
-                        for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                        {
-                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                            {
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
-                            }
-                            else
-                            {
-                                Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                            }
-                        }
+                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
                     }
                 }
+
+                catch (NullReferenceException e) { }
             }
-            catch (NullReferenceException e) { }
         }
+
     }
 
     [PunRPC]
@@ -97,9 +78,23 @@ public class PlayerResultScript : MonoBehaviour
     {
         try
         {
-            GameObject.Find(Player + "_Rect").transform.parent = GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().gridGameObject.transform;
-            GameObject.Find(Player + "_Rect").transform.position = new Vector3(GameObject.Find(Player + "_Rect").transform.position.x, GameObject.Find(Player + "_Rect").transform.position.y, GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().gridGameObject.transform.position.z);
-            GameObject.Find(Player + "_Rect").transform.localScale = GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().playerScale;
+            
+            try
+            {
+                GameObject.Find(Player + "_Rect").transform.parent = GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().gridGameObject.transform;
+            }
+            catch (NullReferenceException e) { }     
+            try
+            {
+                GameObject.Find(Player + "_Rect").transform.position = new Vector3(GameObject.Find(Player + "_Rect").transform.position.x, GameObject.Find(Player + "_Rect").transform.position.y, GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().gridGameObject.transform.position.z);
+            }
+            catch (NullReferenceException e) { }   
+            try
+            {
+                GameObject.Find(Player + "_Rect").transform.localScale = GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().playerScale;
+            }
+            catch (NullReferenceException e) { }            
+
 
             GameObject.Find(Player).GetComponent<PlayerResultScript>().username.text = Player;
             GameObject.Find(Player).GetComponent<PlayerResultScript>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
@@ -110,4 +105,58 @@ public class PlayerResultScript : MonoBehaviour
             // error
         }
     }
+
+    [PunRPC]
+    void settingCharacterSkins()
+    {
+        try
+        {
+            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+            {
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                {
+                    try
+                    {
+                        for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                        {
+                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                            }
+
+                        }
+                    }
+                    catch (NullReferenceException e) { }
+
+                }
+                else
+                {
+                    try
+                    {
+                        for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
+                        {
+                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
+                            }
+                            else
+                            {
+                                Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
+                            }
+
+                        }
+                    }
+                    catch (NullReferenceException e) { }
+
+                }
+            }
+        }
+        catch (NullReferenceException e) { }
+    }
 }
+

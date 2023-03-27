@@ -231,7 +231,7 @@ public class CharacterSelection : MonoBehaviour
         {
             for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
             {
-                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == pname)
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == pname && !GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].variablesSet)
                 {
                     GameObject.Find("Scene Manager").GetComponent<SceneManage>().updatePlayerCharacter(pname, chosenChar, i);
                     break;

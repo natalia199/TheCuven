@@ -56,6 +56,24 @@ public class TempLevelTimer : MonoBehaviour
     {
         oneTimeRun = true;
 
+        for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+        {
+            for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count; y++)
+            {
+                // if current [x] game player is found in the list of losers - dont add to winner list and move on
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[y])
+                {
+                    break;
+                }
+
+                if (y >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count - 1))
+                {
+                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
+                    break;
+                }
+            }
+        }
+
         //bgImg.SetActive(true);
 
         //resultSlots.SetActive(true);

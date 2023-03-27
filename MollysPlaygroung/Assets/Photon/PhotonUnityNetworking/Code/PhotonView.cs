@@ -531,7 +531,14 @@ namespace Photon.Pun
                 {
                     var component = this.ObservedComponents[i];
                     if (component != null)
-                        DeserializeComponent(component, stream, info);
+                        try
+                        {
+                            DeserializeComponent(component, stream, info);
+                        }
+                        catch (IndexOutOfRangeException e)  // CS0168
+                        {
+                            Debug.Log("hell no");
+                        }
                 }
             }
         }

@@ -369,7 +369,7 @@ public class EnvyGameManager : MonoBehaviour
     {
         Debug.Log("moment of silence for " + loser);
 
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().DeadPlayer(loser);
+        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().DeadPlayer(loser);
 
         yield return new WaitForSeconds(value);
 

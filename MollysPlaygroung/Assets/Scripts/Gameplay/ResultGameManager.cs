@@ -14,6 +14,7 @@ public class ResultGameManager : MonoBehaviour
     //public bool slowSmash = false;
 
     public TextMeshProUGUI loserPlayer;
+    public TextMeshProUGUI winnerPlayer;
 
     void Start()
     {
@@ -36,11 +37,13 @@ public class ResultGameManager : MonoBehaviour
 
     IEnumerator HandCrush(float time)
     {
-        loserPlayer.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[0] + " OUT!";
+        loserPlayer.text = "LOSER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[0];
+        winnerPlayer.text = "WINNER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0];
 
         yield return new WaitForSeconds(time);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser = new List<string>();
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner = new List<string>();
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
