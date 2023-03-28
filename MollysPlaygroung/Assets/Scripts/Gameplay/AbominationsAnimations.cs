@@ -23,7 +23,7 @@ public class AbominationsAnimations : MonoBehaviour
 
     void Update()
     {
-        if (view.IsMine)
+        if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)
         {
             if (getCharacterNumber() > -1)
             {
@@ -97,7 +97,7 @@ public class AbominationsAnimations : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (view.IsMine)
+        if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)            
         {
             characterNum = getCharacterNumber();
             Debug.Log("num " + characterNum);

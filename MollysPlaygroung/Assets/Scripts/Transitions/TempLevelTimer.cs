@@ -12,8 +12,11 @@ public class TempLevelTimer : MonoBehaviour
     public GameObject bgImg;
 
     public float timeRemaining;
+    public float startingCountdown;
+    public bool countdownIsRunning = false;
     public bool timerIsRunning = false;
     public TextMeshProUGUI timeText;
+    public TextMeshProUGUI countdownText;
 
     public TextMeshProUGUI finishedMsg;
 
@@ -23,8 +26,11 @@ public class TempLevelTimer : MonoBehaviour
     {
         // Starts the timer automatically
         timeRemaining = 0;
+        startingCountdown = 4;
         timerIsRunning = true;
+        countdownIsRunning = true;
         oneTimeRun = false;
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck = false;
         //resultSlots.SetActive(false);
     }
 
@@ -38,8 +44,31 @@ public class TempLevelTimer : MonoBehaviour
         else
         {
             timeText.text = "";
-        }        
-        
+        }
+
+        if (countdownIsRunning)
+        {
+            if (startingCountdown > 1)
+            {
+                countdownText.text = "" + Mathf.FloorToInt(startingCountdown);
+            }
+            else
+            {
+                countdownText.text = "START";
+            }
+
+            startingCountdown -= Time.deltaTime;
+
+            if (startingCountdown < 0)
+            {
+                countdownIsRunning = false;
+                GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck = true;
+            }
+        }
+        else
+        {
+            countdownText.text = "";
+        }
     }
 
     public void CallGameEnd()

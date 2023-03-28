@@ -16,23 +16,32 @@ public class ResultGameManager : MonoBehaviour
     public TextMeshProUGUI loserPlayer;
     public TextMeshProUGUI winnerPlayer;
 
+    public float startingCountdown;
+    public bool countdownIsRunning = true;
+
+    void Awake()
+    {
+        PhotonNetwork.Instantiate(gridPlayerTempaltePrefab.name, transform.position, transform.rotation);
+    }
+
     void Start()
     {
-
-        PhotonNetwork.Instantiate(gridPlayerTempaltePrefab.name, transform.position, transform.rotation);
-
-        StartCoroutine("HandCrush", 5);
-        /*
-         player.transform.parent = playerTemplate.transform;
-        player.transform.position = Vector3.zero;
-        player.transform.localScale *= 6;
-        */
-        //player.transform.localScale = new Vector3(6f, player.transform.localScale.y, player.transform.localScale.z);
+        startingCountdown = 2;
+        countdownIsRunning = true;
     }
 
     void Update()
     {
+        if (countdownIsRunning)
+        {
+           startingCountdown -= Time.deltaTime;
 
+            if (startingCountdown < 0)
+            {
+                countdownIsRunning = false;
+                StartCoroutine("HandCrush", 5);
+            }
+        }
     }
 
     IEnumerator HandCrush(float time)

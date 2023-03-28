@@ -37,6 +37,8 @@ public class SceneManage : MonoBehaviour
 
     public Material deadSkin;
 
+    public bool countdownLevelCheck = true;
+
     // USER DEMO VARIABLES
     //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
@@ -125,6 +127,7 @@ public class SceneManage : MonoBehaviour
         sceneTracker = 0;
 
         CurrentLevelState = false;
+        countdownLevelCheck = true;
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
@@ -221,6 +224,8 @@ public class SceneManage : MonoBehaviour
 
         else if (SceneManager.GetActiveScene().name == "Game Introduction" && !gameFlowBegin)
         {
+            countdownLevelCheck = false;
+
             if (PhotonNetwork.IsMasterClient)
             {
                 StartCoroutine("BeginGame", 3);

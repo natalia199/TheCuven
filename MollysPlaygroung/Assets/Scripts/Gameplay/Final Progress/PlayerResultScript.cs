@@ -34,6 +34,7 @@ public class PlayerResultScript : MonoBehaviour
 
     void FixedUpdate()
     {
+
         if (view.IsMine)
         {
             view.RPC("getPlayersNickName", RpcTarget.AllBufferedViaServer, PhotonNetwork.LocalPlayer.NickName);
@@ -45,26 +46,30 @@ public class PlayerResultScript : MonoBehaviour
         {
             view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
-            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+            if (!GameObject.Find("GameManager").GetComponent<ResultGameManager>().countdownIsRunning)
             {
-                try
+                view.RPC("setPlayerPosition", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+
+                for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                 {
-                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                    try
+                    {
+                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
 
-                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
-                    {
-                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].originalMesh;
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
+                        {
+                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].originalMesh;
+                        }
+                        else
+                        {
+                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
+                        }
                     }
-                    else
-                    {
-                        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
-                    }
+
+                    catch (NullReferenceException e) { }
                 }
-
-                catch (NullReferenceException e) { }
             }
         }
-
     }
 
     [PunRPC]
@@ -77,28 +82,25 @@ public class PlayerResultScript : MonoBehaviour
     void setUsername(string Player)
     {
         try
-        {
-            
-            try
-            {
-                GameObject.Find(Player + "_Rect").transform.parent = GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().gridGameObject.transform;
-            }
-            catch (NullReferenceException e) { }     
-            try
-            {
-                GameObject.Find(Player + "_Rect").transform.position = new Vector3(GameObject.Find(Player + "_Rect").transform.position.x, GameObject.Find(Player + "_Rect").transform.position.y, GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().gridGameObject.transform.position.z);
-            }
-            catch (NullReferenceException e) { }   
-            try
-            {
-                GameObject.Find(Player + "_Rect").transform.localScale = GameObject.Find("ResultGameManager").GetComponent<ResultGameManager>().playerScale;
-            }
-            catch (NullReferenceException e) { }            
-
-
+        {    
             GameObject.Find(Player).GetComponent<PlayerResultScript>().username.text = Player;
             GameObject.Find(Player).GetComponent<PlayerResultScript>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
             GameObject.Find(Player).GetComponent<PlayerResultScript>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+   
+    [PunRPC]
+    void setPlayerPosition(string Player)
+    {
+        try
+        {
+            GameObject.Find(Player + "_Rect").transform.parent = GameObject.Find("GameManager").GetComponent<ResultGameManager>().gridGameObject.transform;
+            GameObject.Find(Player + "_Rect").transform.position = new Vector3(GameObject.Find(Player + "_Rect").transform.position.x, GameObject.Find(Player + "_Rect").transform.position.y, GameObject.Find("GameManager").GetComponent<ResultGameManager>().gridGameObject.transform.position.z);
+            GameObject.Find(Player + "_Rect").transform.localScale = GameObject.Find("GameManager").GetComponent<ResultGameManager>().playerScale;
         }
         catch (NullReferenceException e)
         {
