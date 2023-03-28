@@ -15,7 +15,7 @@ public class TempLevelTimer : MonoBehaviour
     public float startingCountdown;
     public bool countdownIsRunning = false;
     public bool timerIsRunning = false;
-    public TextMeshProUGUI timeText;
+    //public TextMeshProUGUI timeText;
     public TextMeshProUGUI countdownText;
 
     public TextMeshProUGUI finishedMsg;
@@ -25,9 +25,9 @@ public class TempLevelTimer : MonoBehaviour
     void Start()
     {
         // Starts the timer automatically
-        timeRemaining = 0;
+        //timeRemaining = 0;
         startingCountdown = 4;
-        timerIsRunning = true;
+        //timerIsRunning = true;
         countdownIsRunning = true;
         oneTimeRun = false;
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck = false;
@@ -36,6 +36,7 @@ public class TempLevelTimer : MonoBehaviour
 
     void Update()
     {
+        /*
         if (timerIsRunning)
         {
             timeText.text = "" + Mathf.FloorToInt(timeRemaining);
@@ -45,6 +46,7 @@ public class TempLevelTimer : MonoBehaviour
         {
             timeText.text = "";
         }
+        */
 
         if (countdownIsRunning)
         {
@@ -118,10 +120,12 @@ public class TempLevelTimer : MonoBehaviour
     }
 
 
+    /*
     void DisplayTime(float timeToDisplay)
     {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
+    */
 }

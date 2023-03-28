@@ -554,9 +554,6 @@ public class PlayerUserTest : MonoBehaviour
                         }
                         else if (SceneManager.GetActiveScene().name == "Envy")
                         {
-                            // Single player:
-                            // Mutli player: cross your horse over the finish line before the other
-
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
                                 // assigning horses
@@ -606,11 +603,11 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
                         }
+                       // WRATH LEVEL
                         else if (SceneManager.GetActiveScene().name == "Wrath")
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
-                                // CAUSES ISSUES CUZ OF RANDOM RANGE I THINK
                                 // platform rotation
                                 if (PhotonNetwork.IsMasterClient)
                                 {
@@ -636,7 +633,6 @@ public class PlayerUserTest : MonoBehaviour
                                     }
                                 }
                                 
-
                                 // fell of the platform and lost
                                 if (fellOffPlatform && !deathRecorded)
                                 {
