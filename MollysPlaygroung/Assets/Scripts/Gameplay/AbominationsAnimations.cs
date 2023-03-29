@@ -215,6 +215,11 @@ public class AbominationsAnimations : MonoBehaviour
                                     }
                                 }
                             }
+                            
+                            if (!GetComponent<PlayerUserTest>().gotBearTrapped)
+                            {
+                                view.RPC("trappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                            }
                         }
                         else if (SceneManager.GetActiveScene().name == "Wrath")
                         {

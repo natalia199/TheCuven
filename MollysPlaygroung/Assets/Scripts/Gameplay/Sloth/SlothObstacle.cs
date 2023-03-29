@@ -13,17 +13,31 @@ public class SlothObstacle : MonoBehaviour
         trapSet = false;
     }
 
-    void Update()
+    public void selfDestruct()
     {
-
+        StartCoroutine("pauseDeath", 1f);
     }
-    void OnTriggerEnter(Collider other)
-    {
-        // GREED
 
+    IEnumerator pauseDeath(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        Destroy(this.gameObject);
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        
+        // Bear trap
         if (other.tag == "Player" && !trapSet)
         {
             caughtPlayer = other.gameObject;
+            trapSet = true;
+            this.tag = "SetBearTrap";
         }
+    }
+    void OnTriggerExit(Collider other)
+    {
+
     }
 }

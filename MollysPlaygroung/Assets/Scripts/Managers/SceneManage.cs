@@ -344,7 +344,7 @@ public class SceneManage : MonoBehaviour
     {
         for (int x = 0; x < playersInGame.Count; x++)
         {
-            if (levelsLoser[0] ==playersInGame[x].username)
+            if (levelsLoser[0] == playersInGame[x].username)
             {
                 GamePlayer die = playersInGame[x];
                 die.stillAlive = state;

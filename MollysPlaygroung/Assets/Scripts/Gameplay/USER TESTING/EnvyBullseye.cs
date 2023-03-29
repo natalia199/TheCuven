@@ -6,6 +6,7 @@ public class EnvyBullseye : MonoBehaviour
 {
     public bool Bullseye = false;
 
+    // Water touches the target
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "squirtTarget")
@@ -14,6 +15,7 @@ public class EnvyBullseye : MonoBehaviour
         }
     }
 
+    // Water isn't touching the target
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "squirtTarget")

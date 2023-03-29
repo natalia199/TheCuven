@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4130822563309893853}
   m_Layer: 0
   m_Name: Obstacle
-  m_TagString: SlothObstacle
+  m_TagString: BearTrap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -145,6 +145,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trapSet: 0
   caughtPlayer: {fileID: 0}
+  interactivePlayer: {fileID: 0}
+  destructingNow: 0
 --- !u!65 &5182883301323483916
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ using Photon.Pun;
 public class TempLevelTimer : MonoBehaviour
 {
     //public GameObject resultSlots;
-    public GameObject bgImg;
+    //public GameObject bgImg;
 
     public float timeRemaining;
     public float startingCountdown;
@@ -87,20 +87,43 @@ public class TempLevelTimer : MonoBehaviour
     {
         oneTimeRun = true;
 
-        for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth")
         {
-            for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count; y++)
+            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {
-                // if current [x] game player is found in the list of losers - dont add to winner list and move on
-                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[y])
+                for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count; y++)
                 {
-                    break;
-                }
+                    // if current [x] game player is found in the list of losers - dont add to winner list and move on
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[y])
+                    {
+                        break;
+                    }
 
-                if (y >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count - 1))
+                    if (y >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count - 1))
+                    {
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
+                        break;
+                    }
+                }
+            }
+        }
+        else if (SceneManager.GetActiveScene().name == "Envy")
+        {
+            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+            {
+                for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner.Count; y++)
                 {
-                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
-                    break;
+                    // if current [x] game player is found in the list of winners - dont add to loser list and move on
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[y])
+                    {
+                        break;
+                    }
+
+                    if (y >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner.Count - 1))
+                    {
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
+                        break;
+                    }
                 }
             }
         }
@@ -111,7 +134,7 @@ public class TempLevelTimer : MonoBehaviour
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
 
-        finishedMsg.text = "FINISHED";        
+        finishedMsg.text = "FINISHED";
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
 
         yield return new WaitForSeconds(time);

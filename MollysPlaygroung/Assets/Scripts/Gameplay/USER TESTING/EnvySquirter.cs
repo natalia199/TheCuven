@@ -9,13 +9,10 @@ public class EnvySquirter : MonoBehaviour
 
     public string correlatingHorse;
 
-    void Start()
-    {
-        
-    }
 
     void FixedUpdate()
     {
+        // Squirting water
         if (squirterActivated)
         {
             float newScale = Mathf.Lerp(transform.localScale.y, 0.005f, Time.deltaTime / squirtTime);
