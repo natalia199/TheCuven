@@ -387,11 +387,8 @@ public class PlayerUserTest : MonoBehaviour
                                     {
                                         if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
                                         {
-                                            //if (bucketName == bucketNameInteracted)
-                                            //{
                                             throwChipAcces = true;
                                             view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber, bucketNameInteracted);
-                                            //}
                                         }
                                     }
                                     else

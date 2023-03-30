@@ -34,11 +34,7 @@ public class GreedGameplayManager : MonoBehaviour
 
     void Update()
     {
-        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
-        {
-            chipTracker = chipZones[0].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[1].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[2].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[3].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone;
-        }
-
+        
     }
     
     public void incChipCount()
