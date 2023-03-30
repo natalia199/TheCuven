@@ -7,8 +7,6 @@ using Photon.Pun;
 
 public class GreedGameplayManager : MonoBehaviour
 {
-    //public List<Transform> ChipSpawnPoints = new List<Transform>();
-    public List<GameObject> LifeSlots = new List<GameObject>();
     public List<GameObject> chipZones = new List<GameObject>();
 
     public GameObject ChipPrefab;
@@ -24,41 +22,20 @@ public class GreedGameplayManager : MonoBehaviour
     public int chipTracker;
     public int startingAmountOfChips;
 
-    public int singlePlayerFinishedState;
-
     void Start()
     {
         startingAmountOfChips = ChipParent.transform.childCount;
 
-
         for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
         {
             chipZones[i].SetActive(true);
-            //LifeSlots[i].transform.GetChild(2).gameObject.SetActive(true);
         }
-
-        //goodToGo = false;
-        //chipReady = true;
-        singlePlayerFinishedState = 0;
-        //chipTracker = 0;
     }
 
     void Update()
     {
         if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
         {
-            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
-            {
-                try
-                {
-                    LifeSlots[i].transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i];
-                    LifeSlots[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = "Chips: " + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().collectionTracker + "/" + GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i]).GetComponent<PlayerUserTest>().diceRollValue;
-                }
-                catch (NullReferenceException e)
-                {
-                }
-            }
-
             chipTracker = chipZones[0].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[1].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[2].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone + chipZones[3].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone;
         }
 

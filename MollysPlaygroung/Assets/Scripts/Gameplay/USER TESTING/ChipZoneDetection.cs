@@ -13,6 +13,7 @@ public class ChipZoneDetection : MonoBehaviour
     public TextMeshProUGUI scoreZoneTxt;
 
     public int chipsInZone;
+    public int chipZoneID;
 
     void Start()
     {

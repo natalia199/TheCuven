@@ -132,6 +132,8 @@ public class PlayerUserTest : MonoBehaviour
     public bool actionPause = false;
     public bool onetimebruvidek = false;
 
+    public bool diceRollFreeze = true;
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -318,14 +320,13 @@ public class PlayerUserTest : MonoBehaviour
 
                         if (SceneManager.GetActiveScene().name == "Greed")
                         {
-                            // Single player: quickly collect as many chips as possible before the time runs out
-                            // Multi player: collect the most chips before the time runs out
-
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
                                 // Dice Roll baby
                                 if (!cameraSwitch)
                                 {
+                                    diceRollFreeze = true;
+
                                     CameraOptions[0].SetActive(true);
                                     CameraOptions[1].SetActive(false);
 
@@ -335,7 +336,7 @@ public class PlayerUserTest : MonoBehaviour
                                         GameObject.Find("Dice").GetComponent<Dice>().RollDice();
                                     }
 
-                                    // next step
+                                    //  Heading to poker table
                                     if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo)
                                     {
                                         collectionTracker = 0;
@@ -346,23 +347,16 @@ public class PlayerUserTest : MonoBehaviour
                                         view.RPC("setDiceValue", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue);
                                         GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = false;
                                     }
-
-                                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                                    {
-                                        if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
-                                        {
-                                            view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                        }
-                                    }
-
                                 }
                                 // Chip extravaganza
                                 else if (cameraSwitch)
                                 {
+                                    diceRollFreeze = false;
+
                                     CameraOptions[0].SetActive(false);
                                     CameraOptions[1].SetActive(true);
 
-                                    // ne
+                                    // heading to dice roll scene
                                     if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue && !die)
                                     {
                                         cameraSwitch = false;
@@ -405,15 +399,13 @@ public class PlayerUserTest : MonoBehaviour
                                         oneChipAtATimeCarry = false;
                                         throwChipAcces = false;
                                     }
+                                }
 
-
-                                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                                if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                                {
+                                    if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
                                     {
-                                        if (!die && GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
-                                        {
-                                            view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                        }
-
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
                                 }
                             }
@@ -641,7 +633,7 @@ public class PlayerUserTest : MonoBehaviour
                                         }
                                     }
                                 }
-                                
+
                                 // fell of the platform and lost
                                 if (fellOffPlatform && !deathRecorded)
                                 {
@@ -654,10 +646,11 @@ public class PlayerUserTest : MonoBehaviour
                                     if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
                                     {
                                         view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                    }                                    
+                                    }
                                 }
                             }
                         }
+                        // SLOTH LEVEL
                         else if (SceneManager.GetActiveScene().name == "Sloth")
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
@@ -756,14 +749,30 @@ public class PlayerUserTest : MonoBehaviour
                         }
 
 
-                        if (!freezePlayer)
+                        if (SceneManager.GetActiveScene().name == "Greed")
                         {
-                            MovePlayer();
-
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (!freezePlayer && !diceRollFreeze)
                             {
-                                Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-                                view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
+                                MovePlayer();
+
+                                if (Input.GetKeyDown(KeyCode.Space))
+                                {
+                                    Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+                                    view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (!freezePlayer)
+                            {
+                                MovePlayer();
+
+                                if (Input.GetKeyDown(KeyCode.Space))
+                                {
+                                    Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+                                    view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
+                                }
                             }
                         }
                     }
