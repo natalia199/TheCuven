@@ -134,6 +134,8 @@ public class PlayerUserTest : MonoBehaviour
 
     public bool diceRollFreeze = true;
 
+    public bool playerIsGrounded = false;
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -203,7 +205,7 @@ public class PlayerUserTest : MonoBehaviour
         if (view.IsMine)
         {
             // PLAYER ACTIONS - if not stunned
-            if (!freezePlayer)
+            if (!freezePlayer && playerIsGrounded)
             {
                 if (!actionPause)
                 {
@@ -277,7 +279,7 @@ public class PlayerUserTest : MonoBehaviour
 
                     MovePlayer();
 
-                    if (Input.GetKeyDown(KeyCode.Space))
+                    if (Input.GetKeyDown(KeyCode.Space) && playerIsGrounded)
                     {
                         Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                         view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
@@ -765,7 +767,7 @@ public class PlayerUserTest : MonoBehaviour
                             {
                                 MovePlayer();
 
-                                if (Input.GetKeyDown(KeyCode.Space))
+                                if (Input.GetKeyDown(KeyCode.Space) && playerIsGrounded)
                                 {
                                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                                     view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
@@ -796,7 +798,7 @@ public class PlayerUserTest : MonoBehaviour
 
                 MovePlayer();
 
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) && playerIsGrounded)
                 {
                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                     view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
@@ -970,7 +972,6 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            Debug.Log("y u not freezing");
             GameObject.Find(victim).GetComponent<PlayerUserTest>().freezePlayer = true;
 
             GameObject.Find(victim).GetComponent<PlayerUserTest>().oopsyGotHit = true;
@@ -1089,54 +1090,6 @@ public class PlayerUserTest : MonoBehaviour
             for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {
                 GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-/*
-                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
-                {
-                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-
-                    
-                    for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                    {
-                        if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                        {
-                            try
-                            {
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                            }
-                            catch (NullReferenceException e) { }
-                        }
-                        else
-                        {
-                            Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                        }
-
-                    }
-                    
-                }
-                else
-                {
-                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-
-                    
-                    for (int y = 0; y < GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).childCount; y++)
-                    {
-
-                        if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).name == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].chosenCharacter)
-                        {
-                            try
-                            { 
-                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject.SetActive(true);
-                            }
-                            catch (NullReferenceException e) { }
-                            //GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
-                        }
-                        else
-                        {
-                            Destroy(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(y).gameObject);
-                        }
-
-                    }
-                }*/
             }
         }
         catch (NullReferenceException e) { }

@@ -31,48 +31,51 @@ public class AbominationsAnimations : MonoBehaviour
                 {
                     if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble" || GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "gameover")
                     {
-                        if (GetComponent<PlayerUserTest>().freezePlayer)
+                        if (GetComponent<PlayerUserTest>().playerIsGrounded) 
                         {
-                            view.RPC("ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GetComponent<PlayerUserTest>().oopsyGotHit, characterNum);
-
-                            view.RPC("aghhh", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GetComponent<PlayerUserTest>().oopsyGotDragged, characterNum);
-                        }
-                        else
-                        {
-                            view.RPC("ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-                            view.RPC("aghhh", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-
-                            if (Input.GetKeyDown(KeyCode.Space))
+                            if (GetComponent<PlayerUserTest>().freezePlayer)
                             {
-                                view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-                            }
+                                view.RPC("ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GetComponent<PlayerUserTest>().oopsyGotHit, characterNum);
 
-                            if (!GetComponent<PlayerUserTest>().actionPause)
-                            {
-                                if (Input.GetKeyDown(KeyCode.O))
-                                {
-                                    view.RPC("pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-                                }
-                            }
-
-                            if (Input.GetKeyDown(KeyCode.I))
-                            {
-                                view.RPC("hitties", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-                            }
-
-                            if (GetComponent<PlayerUserTest>().oopsyGotPushed)
-                            {
-                                GetComponent<PlayerUserTest>().oopsyGotPushed = false;
-                                view.RPC("oof", RpcTarget.AllBufferedViaServer, view.Owner.NickName, characterNum);
-                            }
-
-                            if (Input.GetKey(KeyCode.P))
-                            {
-                                view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                view.RPC("aghhh", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GetComponent<PlayerUserTest>().oopsyGotDragged, characterNum);
                             }
                             else
                             {
-                                view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                view.RPC("ouchies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                view.RPC("aghhh", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+
+                                if (Input.GetKeyDown(KeyCode.Space))
+                                {
+                                    view.RPC("jumpies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                }
+
+                                if (!GetComponent<PlayerUserTest>().actionPause)
+                                {
+                                    if (Input.GetKeyDown(KeyCode.O))
+                                    {
+                                        view.RPC("pushies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                    }
+                                }
+
+                                if (Input.GetKeyDown(KeyCode.I))
+                                {
+                                    view.RPC("hitties", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                }
+
+                                if (GetComponent<PlayerUserTest>().oopsyGotPushed)
+                                {
+                                    GetComponent<PlayerUserTest>().oopsyGotPushed = false;
+                                    view.RPC("oof", RpcTarget.AllBufferedViaServer, view.Owner.NickName, characterNum);
+                                }
+
+                                if (Input.GetKey(KeyCode.P))
+                                {
+                                    view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                }
+                                else
+                                {
+                                    view.RPC("draggies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                }
                             }
                         }
                     }
@@ -97,7 +100,7 @@ public class AbominationsAnimations : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)            
+        if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck && GetComponent<PlayerUserTest>().playerIsGrounded)            
         {
             characterNum = getCharacterNumber();
             Debug.Log("num " + characterNum);
@@ -255,6 +258,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().jumpingSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("JumpTrigger", x);
         }
         catch (NullReferenceException e)
@@ -270,6 +275,8 @@ public class AbominationsAnimations : MonoBehaviour
         {
             if (x) 
             {
+                GameObject.Find("SoundManager").GetComponent<SoundManager>().gettingSmackedSFX(name);
+
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().oopsyGotHit = false;
                 GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("HitTrigger", true);
             }
@@ -289,6 +296,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().gettingPushedSFX(name);
+
             GameObject.Find(pName).GetComponent<PlayerUserTest>().oopsyGotPushed = false;
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("PushedTrigger", true);
         }
@@ -336,6 +345,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().smackingSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("AttackTrigger", x);
         }
         catch (NullReferenceException e)

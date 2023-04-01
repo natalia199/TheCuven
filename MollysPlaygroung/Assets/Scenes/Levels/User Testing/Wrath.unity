@@ -1528,7 +1528,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a983bc733c42024eb246e33f9c3dfc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgImg: {fileID: 0}
   timeRemaining: 0
   startingCountdown: 4
   countdownIsRunning: 1
@@ -2576,6 +2575,55 @@ Transform:
   m_Father: {fileID: 411760029}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2123349597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2123349599}
+  - component: {fileID: 2123349598}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2123349598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123349597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a594661d0f449bf4ebeff2242f2b42c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gettingSmacked: {fileID: 8300000, guid: 4c80405cdbf8b194aa4534ab2632d990, type: 3}
+  smacking: {fileID: 8300000, guid: c10da8c6d17dda84d997bd1112b7f1c7, type: 3}
+  jumping: {fileID: 8300000, guid: f772312f9e8b7774a8691f686acd58dd, type: 3}
+  gettingPushed: {fileID: 8300000, guid: 367ad204483ee8a41b33efca34e73f3d, type: 3}
+  volume: 1
+--- !u!4 &2123349599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123349597}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.888765, y: -1.02, z: 2.173407}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7222458326728058646
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2583,9 +2631,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1341900057}
     m_Modifications:
+    - target: {fileID: 7222458325663386226, guid: 2ddbc5dd43b360f489b1a4b26709108f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7222458326089051066, guid: 2ddbc5dd43b360f489b1a4b26709108f, type: 3}
       propertyPath: m_Name
       value: Wrath_plate_Multi
+      objectReference: {fileID: 0}
+    - target: {fileID: 7222458326089051066, guid: 2ddbc5dd43b360f489b1a4b26709108f, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7222458326089051067, guid: 2ddbc5dd43b360f489b1a4b26709108f, type: 3}
       propertyPath: m_RootOrder

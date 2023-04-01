@@ -8,7 +8,6 @@ using Photon.Pun;
 public class GluttonyGameplayManager : MonoBehaviour
 {
     public List<Transform> FoodSpawnPoints = new List<Transform>();
-    public List<GameObject> LifeSlots = new List<GameObject>();
 
     public GameObject FoodPrefab;
     public GameObject FoodParent;
