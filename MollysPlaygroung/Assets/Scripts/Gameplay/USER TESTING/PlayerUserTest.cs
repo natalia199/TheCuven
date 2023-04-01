@@ -57,12 +57,16 @@ public class PlayerUserTest : MonoBehaviour
     // GLUTTONY
     bool eatFood = false;
     bool vomit = false;
-    public int collectedFoodies = 0;
-    public Vector3 foodPosition;
+    public bool foodCollected = false;
+    public int collectedFoodies;
+    public Vector2 foodPosition;
     public GameObject theFood;
     public GameObject theVomittedFood;
     public bool instantiateFoodOnce = false;
     public GameObject interactedFood = null;
+
+    int typeOfFood; 
+    public int preveiousTypeOfFood = -1;
 
     public bool gotPunched = false;
     public int foodInstanitationTracker;
@@ -319,7 +323,7 @@ public class PlayerUserTest : MonoBehaviour
                             }
                         }
 
-
+                        // GREED LEVEL
                         if (SceneManager.GetActiveScene().name == "Greed")
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
@@ -460,35 +464,35 @@ public class PlayerUserTest : MonoBehaviour
                         }
                         else if (SceneManager.GetActiveScene().name == "Gluttony")
                         {
-                            // Single player: Collect as many munchies as possible before the time runs out
-                            // Multi player: Collect more mucnhies than the other before the time runs out, can sabotage other by hitting them with a mallet and emptying their munchies
-
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
-
-                                /*
                                 // Instantiation
-                                if (PhotonNetwork.LocalPlayer.IsMasterClient && !GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().noMoreFoodNeeded)
+                                if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
-                                    if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().foodReady && theFood == null && GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().AmountOfFood >= GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount)
+                                    if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().foodReady && theFood == null)
                                     {
                                         if (!instantiateFoodOnce)
                                         {
                                             float xPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodSpawnPoints[0].position.x, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodSpawnPoints[2].position.x);
                                             float zPos = UnityEngine.Random.Range(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodSpawnPoints[0].position.z, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodSpawnPoints[1].position.z);
-                                            foodPosition = new Vector3(xPos, 12f, zPos);
+                                            foodPosition = new Vector2(xPos, zPos);
                                             instantiateFoodOnce = true;
+
+                                            while (true)
+                                            {
+                                                typeOfFood = UnityEngine.Random.Range(0, 3);
+
+                                                if(preveiousTypeOfFood != typeOfFood)
+                                                {
+                                                    preveiousTypeOfFood = typeOfFood;
+                                                    break;
+                                                }
+                                            }
                                         }
 
-                                        view.RPC("setFoodPosition", RpcTarget.AllBufferedViaServer, foodPosition, view.Owner.NickName);
-                                    }
-
-                                    if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().foodInstantiationTracker == GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().AmountOfFood)
-                                    {
-                                        GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().noMoreFoodNeeded = true;
+                                        view.RPC("setFoodPosition", RpcTarget.AllBufferedViaServer, foodPosition, view.Owner.NickName, typeOfFood);
                                     }
                                 }
-                                */
 
                                 if (interactedFood != null)
                                 {
@@ -499,18 +503,23 @@ public class PlayerUserTest : MonoBehaviour
                                     view.RPC("foodInteractionDeactive", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
 
-
+                                // ACTIONS
                                 // Eating
                                 if (eatFood)
                                 {
+                                    if (!foodCollected)
+                                    {
+                                        view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        foodCollected = true;
+                                    }
+
                                     view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                    //view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
 
-
+                                // game end
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
-                                    if (!die && GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0)
+                                    if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0)
                                     {
                                         view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
@@ -1064,6 +1073,10 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().lifeSource + "";
                 }
+                else if (SceneManager.GetActiveScene().name == "Gluttony" && GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies > 0)
+                {
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies + "";
+                }
                 else
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
@@ -1369,14 +1382,15 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
     [PunRPC]
-    void setFoodPosition(Vector3 pos, string pName)
+    void setFoodPosition(Vector2 pos, string pName, int food)
     {
         try
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood == null)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodPrefab, pos, Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[food], new Vector3(pos.x, 12f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
             }
+
         }
         catch (NullReferenceException e)
         {
@@ -1408,14 +1422,13 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            //GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = GameObject.Find(food).gameObject;
-
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood != null) 
             {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().foodCollected = false;
                 Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood.gameObject);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood = null;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().eatFood = false;
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies++;
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies++;
             }
         }
         catch (NullReferenceException e)
@@ -1847,7 +1860,8 @@ public class PlayerUserTest : MonoBehaviour
         // GLUTTONY
         eatFood = false;
         vomit = false;
-        collectedFoodies = 0;
+        foodCollected = false;
+        collectedFoodies = -1;
         theFood = null;
         theVomittedFood = null;
         instantiateFoodOnce = false;

@@ -8,6 +8,7 @@ using Photon.Pun;
 public class GluttonyGameplayManager : MonoBehaviour
 {
     public List<Transform> FoodSpawnPoints = new List<Transform>();
+    public List<GameObject> TypesOfFood = new List<GameObject>();
 
     public GameObject FoodPrefab;
     public GameObject FoodParent;
@@ -28,30 +29,41 @@ public class GluttonyGameplayManager : MonoBehaviour
     {
         foodReady = true;
         noMoreFoodNeeded = false;
-        foodInstantiationTracker = FoodParent.transform.childCount;
+        AmountOfFood = FoodParent.transform.childCount;
     }
 
 
     void Update()
     {
-        
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
+        {
+            // INSTANTIATIONS
+            try
+            {
+                // because of AmountOfTraps != TrapParent.transform.childCount, the last trap doesn't get a rigidbody and is on standby, so if u want X amount of traps on the field input a value of X+1
+                if (foodReady && GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood != null && AmountOfFood > FoodParent.transform.childCount)
+                {
+                    addFood(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood);
+                    foodReady = false;
+                }
+            }
+            catch (NullReferenceException e) { }
+        }
     }
 
+
+    // FOOD
     public void addFood(GameObject food)
     {
-        Debug.Log("food instant");
+        Debug.Log("trap instant");
 
-        foodInstantiationTracker++;
         food.AddComponent<Rigidbody>();
         FoodInstantiation();
     }
-
-    // BEAR TRAPS
     public void FoodInstantiation()
     {
-        StartCoroutine("FoodLifeTime", 0);
+        StartCoroutine("FoodLifeTime", 1);
     }
-
     IEnumerator FoodLifeTime(float time)
     {
         yield return new WaitForSeconds(time);
@@ -59,19 +71,6 @@ public class GluttonyGameplayManager : MonoBehaviour
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood = null;
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateFoodOnce = false;
         foodReady = true;
-    }
-
-    IEnumerator FoodLifeTimeSP(float time)
-    {
-        float xPos = UnityEngine.Random.Range(FoodSpawnPoints[0].position.x, FoodSpawnPoints[2].position.x);
-        float zPos = UnityEngine.Random.Range(FoodSpawnPoints[0].position.z, FoodSpawnPoints[1].position.z);
-        Vector3 posy = new Vector3(xPos, 12, zPos);
-
-        GameObject food = Instantiate(FoodPrefab, posy, Quaternion.identity, FoodParent.transform);
-
-        yield return new WaitForSeconds(time);
-
-        food.AddComponent<Rigidbody>();
     }
 
 
