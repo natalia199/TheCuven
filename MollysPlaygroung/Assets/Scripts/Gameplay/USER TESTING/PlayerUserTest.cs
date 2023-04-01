@@ -159,7 +159,7 @@ public class PlayerUserTest : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "Greed")
         {
             CameraOptions.Add(GameObject.Find("Dice_MainCamera"));
-            CameraOptions.Add(GameObject.Find("Collect_MainCamera"));
+            CameraOptions.Add(GameObject.Find("Main Camera"));
 
             theChip = null;
             interactedChip = null;
@@ -1068,6 +1068,8 @@ public class PlayerUserTest : MonoBehaviour
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
                 }
             }
+
+
             GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
             GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
             GameObject.Find(Player).transform.GetChild(0).GetChild(1).LookAt(GameObject.Find("Main Camera").transform);
