@@ -6,6 +6,9 @@ using TMPro;
 public class ChipZoneDetection : MonoBehaviour
 {
     bool m_Started;
+
+    public bool activatedForPlayer = true;
+
     public LayerMask m_LayerMask;
 
     public Collider[] zoneCollider;
@@ -22,13 +25,23 @@ public class ChipZoneDetection : MonoBehaviour
 
     void Update()
     {
-        chipsInZone = zoneCollider.Length / 2;
+        if (activatedForPlayer)
+        {
+            chipsInZone = zoneCollider.Length / 2;
 
-        scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips;
+            scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips;
+        }
+        else
+        {
+            chipsInZone = 0;
+        }
     }
 
     void FixedUpdate()
     {
-        zoneCollider = Physics.OverlapBox(gameObject.transform.position, transform.localScale/2, Quaternion.identity, m_LayerMask);
+        if (activatedForPlayer)
+        {
+            zoneCollider = Physics.OverlapBox(gameObject.transform.position, transform.localScale / 2, Quaternion.identity, m_LayerMask);
+        }
     }
 }

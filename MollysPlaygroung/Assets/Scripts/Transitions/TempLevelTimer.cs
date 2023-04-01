@@ -22,6 +22,8 @@ public class TempLevelTimer : MonoBehaviour
 
     public bool oneTimeRun = false;
 
+    List<int> chipValues = new List<int>();
+
     void Start()
     {
         // Starts the timer automatically
@@ -79,11 +81,17 @@ public class TempLevelTimer : MonoBehaviour
 
         if (!oneTimeRun)
         {
-            StartCoroutine("DisplayerFinalResults", 3);
-        }
+            try
+            {
+                StartCoroutine("DisplayerFinalResults");
+            }
+            catch (ArgumentOutOfRangeException e) {
+                Debug.Log("rude");
+            }
+    }
     }
 
-    IEnumerator DisplayerFinalResults(float time)
+    IEnumerator DisplayerFinalResults()
     {
         oneTimeRun = true;
 
@@ -128,20 +136,49 @@ public class TempLevelTimer : MonoBehaviour
             }
         }
 
-        //bgImg.SetActive(true);
+        else if (SceneManager.GetActiveScene().name == "Greed")
+        {
+            for (int y = 0; y < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones.Count; y++)
+            {
+                if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().activatedForPlayer) 
+                {
+                    if (y == 0)
+                    {
+                        chipValues.Add(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[0].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
+                    }
+                    else
+                    {
+                        if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone >= chipValues[0])
+                        {
+                            Debug.Log("place infront");
+                            chipValues.Insert(0, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipZoneID);
+                        }
+                        else if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone <= chipValues[chipValues.Count - 1])
+                        {
+                            Debug.Log("add to the end");
+                            chipValues.Add(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipZoneID);
+                        }
+                    }
+                }
 
-        //resultSlots.SetActive(true);
+                if (y == (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones.Count - 1))
+                {
+                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[chipValues[0]].username);
+                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[chipValues[chipValues.Count - 1]].username);
+                }
+            }
+
+        }
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
 
         finishedMsg.text = "FINISHED";
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
 
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(3f);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
     }
-
 
     /*
     void DisplayTime(float timeToDisplay)

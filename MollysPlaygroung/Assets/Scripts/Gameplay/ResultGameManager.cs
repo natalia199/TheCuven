@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class ResultGameManager : MonoBehaviour
 {
@@ -39,7 +40,13 @@ public class ResultGameManager : MonoBehaviour
             if (startingCountdown < 0)
             {
                 countdownIsRunning = false;
+                try { 
                 StartCoroutine("HandCrush", 5);
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    Debug.Log("rude");
+                }
             }
         }
     }
