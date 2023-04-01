@@ -95,7 +95,7 @@ public class TempLevelTimer : MonoBehaviour
     {
         oneTimeRun = true;
 
-        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth")
+        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony")
         {
             for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {
@@ -135,7 +135,6 @@ public class TempLevelTimer : MonoBehaviour
                 }
             }
         }
-
         else if (SceneManager.GetActiveScene().name == "Greed")
         {
             for (int y = 0; y < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones.Count; y++)

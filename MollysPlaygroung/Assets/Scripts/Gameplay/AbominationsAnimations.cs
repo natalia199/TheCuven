@@ -100,7 +100,7 @@ public class AbominationsAnimations : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck && GetComponent<PlayerUserTest>().playerIsGrounded)            
+        if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)            
         {
             characterNum = getCharacterNumber();
             Debug.Log("num " + characterNum);
@@ -117,74 +117,81 @@ public class AbominationsAnimations : MonoBehaviour
                 {
                     if (SceneManager.GetActiveScene().name != "LevelResult")
                     {
-                        if (!GetComponent<PlayerUserTest>().freezePlayer)
+                        if (GetComponent<PlayerUserTest>().playerIsGrounded)
                         {
+                            if (!GetComponent<PlayerUserTest>().freezePlayer)
+                            {
+                                if (SceneManager.GetActiveScene().name == "Greed")
+                                {
+                                    // walking
+                                    if (!isWalking && directionPressed)
+                                    {
+
+                                        if (GetComponent<PlayerUserTest>().collectedChipies.Count > 0) //holding shift toggles walk and chip walk
+                                        {
+                                            view.RPC("chipWalkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                        }
+                                        else
+                                        {
+                                            view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                            view.RPC("chipWalkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                        }
+                                    }
+
+                                    if (isWalking && !directionPressed)
+                                    {
+                                        view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                    }
+                                }
+                                else
+                                {
+                                    // walking
+                                    if (!isWalking && directionPressed)
+                                    {
+
+                                        view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+
+                                    }
+
+                                    if (isWalking && !directionPressed)
+                                    {
+                                        view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                            }
+
+
                             if (SceneManager.GetActiveScene().name == "Greed")
                             {
-                                // walking
-                                if (!isWalking && directionPressed)
-                                {
 
-                                    if (GetComponent<PlayerUserTest>().collectedChipies.Count > 0) //holding shift toggles walk and chip walk
+                                if (Input.GetKeyDown(KeyCode.R))
+                                {
+                                    // throw
+                                    view.RPC("chipThrowies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                }
+                                else
+                                {
+                                    view.RPC("chipThrowies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                }
+                            }
+                            else if (SceneManager.GetActiveScene().name == "Envy")
+                            {
+                                if (Input.GetKeyDown(KeyCode.E))
+                                {
+                                    if (GetComponent<PlayerUserTest>().squirtAccess && GetComponent<PlayerUserTest>().squirtGun != null)
                                     {
-                                        view.RPC("chipWalkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                        if (GetComponent<PlayerUserTest>().squirtGun.name == GetComponent<PlayerUserTest>().squirtGunName)
+                                        {
+                                            view.RPC("squirt", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                        }
                                     }
                                     else
                                     {
-                                        view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-                                        view.RPC("chipWalkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-                                    }
-                                }
-
-                                if (isWalking && !directionPressed)
-                                {
-                                    view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-                                }
-                            }
-                            else
-                            {
-                                // walking
-                                if (!isWalking && directionPressed)
-                                {
-
-                                    view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-
-                                }
-
-                                if (isWalking && !directionPressed)
-                                {
-                                    view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            view.RPC("walkies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-                        }
-
-
-                        if (SceneManager.GetActiveScene().name == "Greed")
-                        {
-
-                            if (Input.GetKeyDown(KeyCode.R))
-                            {
-                                // throw
-                                view.RPC("chipThrowies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-                            }
-                            else
-                            {
-                                view.RPC("chipThrowies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
-                            }
-                        }
-                        else if (SceneManager.GetActiveScene().name == "Envy")
-                        {
-                            if (Input.GetKeyDown(KeyCode.E))
-                            {
-                                if (GetComponent<PlayerUserTest>().squirtAccess && GetComponent<PlayerUserTest>().squirtGun != null)
-                                {
-                                    if (GetComponent<PlayerUserTest>().squirtGun.name == GetComponent<PlayerUserTest>().squirtGunName)
-                                    {
-                                        view.RPC("squirt", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                        view.RPC("squirt", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
                                     }
                                 }
                                 else
@@ -192,46 +199,58 @@ public class AbominationsAnimations : MonoBehaviour
                                     view.RPC("squirt", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
                                 }
                             }
-                            else
+                            else if (SceneManager.GetActiveScene().name == "Sloth")
                             {
-                                view.RPC("squirt", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                if (GetComponent<PlayerUserTest>().gotBearTrapped && GetComponent<PlayerUserTest>().interactedBearTrap != null)
+                                {
+                                    view.RPC("trappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                    view.RPC("untrappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                }
+                                else if (GetComponent<PlayerUserTest>().alreadySetBearTrap != null && !GetComponent<PlayerUserTest>().gotBearTrapped)
+                                {
+                                    if (GetComponent<PlayerUserTest>().alreadySetBearTrap.GetComponent<SlothObstacle>().trapSet)
+                                    {
+                                        if (Input.GetKeyDown(KeyCode.E))
+                                        {
+                                            view.RPC("untrappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                        }
+                                        else
+                                        {
+                                            view.RPC("untrappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                        }
+                                    }
+                                }
+
+                                if (!GetComponent<PlayerUserTest>().gotBearTrapped)
+                                {
+                                    view.RPC("trappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                }
                             }
-                        }
-                        else if (SceneManager.GetActiveScene().name == "Sloth")
-                        {
-                            if (GetComponent<PlayerUserTest>().gotBearTrapped && GetComponent<PlayerUserTest>().interactedBearTrap != null)
+                            else if (SceneManager.GetActiveScene().name == "Wrath")
                             {
-                                view.RPC("trappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
-                                view.RPC("untrappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
                             }
-                            else if (GetComponent<PlayerUserTest>().alreadySetBearTrap != null && !GetComponent<PlayerUserTest>().gotBearTrapped)
+                            else if (SceneManager.GetActiveScene().name == "Gluttony")
                             {
-                                if (GetComponent<PlayerUserTest>().alreadySetBearTrap.GetComponent<SlothObstacle>().trapSet)
+                                if (GetComponent<PlayerUserTest>().interactedOpponent != null && GetComponent<PlayerUserTest>().bigBoyMunch)
                                 {
                                     if (Input.GetKeyDown(KeyCode.E))
                                     {
-                                        view.RPC("untrappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                        view.RPC("bigBoyMunching", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
                                     }
                                     else
                                     {
-                                        view.RPC("untrappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                        view.RPC("bigBoyMunching", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
                                     }
                                 }
+                                else
+                                {
+                                    view.RPC("bigBoyMunching", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
+                                }
+
                             }
-                            
-                            if (!GetComponent<PlayerUserTest>().gotBearTrapped)
+                            else if (SceneManager.GetActiveScene().name == "Lust")
                             {
-                                view.RPC("trappies", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false, characterNum);
                             }
-                        }
-                        else if (SceneManager.GetActiveScene().name == "Wrath")
-                        {
-                        }
-                        else if (SceneManager.GetActiveScene().name == "Gluttony")
-                        {
-                        }
-                        else if (SceneManager.GetActiveScene().name == "Lust")
-                        {
                         }
                     }
                 }
@@ -427,6 +446,18 @@ public class AbominationsAnimations : MonoBehaviour
     
     [PunRPC]
     void untrappies(string pName, bool x, int charNum)
+    {
+        try
+        {
+            GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("OpenTrapTrigger", x);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void bigBoyMunching(string pName, bool x, int charNum)
     {
         try
         {

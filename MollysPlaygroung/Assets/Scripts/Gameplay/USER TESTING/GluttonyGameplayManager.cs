@@ -10,6 +10,8 @@ public class GluttonyGameplayManager : MonoBehaviour
     public List<Transform> FoodSpawnPoints = new List<Transform>();
     public List<GameObject> TypesOfFood = new List<GameObject>();
 
+    public List<GameObject> gluttonyResults = new List<GameObject>();
+
     public GameObject FoodPrefab;
     public GameObject FoodParent;
 
@@ -51,6 +53,31 @@ public class GluttonyGameplayManager : MonoBehaviour
         }
     }
 
+    public void RecordGluttonyResults(GameObject player)
+    {
+        if (gluttonyResults.Count == 0)
+        {
+            gluttonyResults.Add(player);
+        }
+        else
+        {
+            for (int y = 0; y < gluttonyResults.Count; y++)
+            {
+                if (gluttonyResults[y].name == player.name)
+                {
+                    break;
+                }
+
+                if (y >= (gluttonyResults.Count - 1))
+                {
+                    // saves all players that died in the level
+                    gluttonyResults.Add(player);
+                }
+            }
+        }
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(player.name);
+    }
 
     // FOOD
     public void addFood(GameObject food)

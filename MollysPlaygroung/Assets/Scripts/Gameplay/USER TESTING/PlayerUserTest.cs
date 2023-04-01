@@ -19,10 +19,12 @@ public class PlayerUserTest : MonoBehaviour
     [SerializeField] float jumpForce = 8f;
 
     public GameObject interactedOpponent = null;
+    public bool youLoseTheLevel = false;
 
     // GREED
     public bool cameraSwitch = false;
     public bool chipAccess = false;
+    public bool munchedYou = false;
     bool throwAccess = false;
     public float throwForce;
     public int collectionTracker = 0;
@@ -65,10 +67,11 @@ public class PlayerUserTest : MonoBehaviour
     public bool instantiateFoodOnce = false;
     public GameObject interactedFood = null;
 
-    int typeOfFood; 
+    int typeOfFood;
     public int preveiousTypeOfFood = -1;
 
     public bool gotPunched = false;
+    public bool bigBoyMunch = false;
     public int foodInstanitationTracker;
 
     // SLOTH
@@ -132,6 +135,7 @@ public class PlayerUserTest : MonoBehaviour
     public bool oopsyGotHit = false;
     public bool oopsyGotDragged = false;
     public bool imDraggingMan = false;
+    public bool oofGotMunched = false;
 
     public bool actionPause = false;
     public bool onetimebruvidek = false;
@@ -148,6 +152,7 @@ public class PlayerUserTest : MonoBehaviour
         if (view.IsMine)
         {
             resetAllValues();
+            youLoseTheLevel = false;
         }
 
         try
@@ -209,7 +214,7 @@ public class PlayerUserTest : MonoBehaviour
         if (view.IsMine)
         {
             // PLAYER ACTIONS - if not stunned
-            if (!freezePlayer && playerIsGrounded)
+            if (!freezePlayer && playerIsGrounded && !youLoseTheLevel)
             {
                 if (!actionPause)
                 {
@@ -249,7 +254,7 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
-     void FixedUpdate()
+    void FixedUpdate()
     {
         // player name
         if (view.IsMine)
@@ -482,7 +487,7 @@ public class PlayerUserTest : MonoBehaviour
                                             {
                                                 typeOfFood = UnityEngine.Random.Range(0, 3);
 
-                                                if(preveiousTypeOfFood != typeOfFood)
+                                                if (preveiousTypeOfFood != typeOfFood)
                                                 {
                                                     preveiousTypeOfFood = typeOfFood;
                                                     break;
@@ -494,32 +499,47 @@ public class PlayerUserTest : MonoBehaviour
                                     }
                                 }
 
-                                if (interactedFood != null)
+                                if (!youLoseTheLevel)
                                 {
-                                    view.RPC("foodInteractionActive", RpcTarget.AllBufferedViaServer, view.Owner.NickName, interactedFood.name);
-                                }
-                                else
-                                {
-                                    view.RPC("foodInteractionDeactive", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                }
-
-                                // ACTIONS
-                                // Eating
-                                if (eatFood)
-                                {
-                                    if (!foodCollected)
+                                    if (interactedFood != null)
                                     {
-                                        view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                        foodCollected = true;
+                                        view.RPC("foodInteractionActive", RpcTarget.AllBufferedViaServer, view.Owner.NickName, interactedFood.name);
+                                    }
+                                    else
+                                    {
+                                        view.RPC("foodInteractionDeactive", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
 
-                                    view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    // ACTIONS
+                                    // Eating
+                                    if (eatFood)
+                                    {
+                                        if (!foodCollected)
+                                        {
+                                            view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                            foodCollected = true;
+                                        }
+
+                                        view.RPC("eatUpFood", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    }
+                                    if (collectedFoodies >= 2)
+                                    {
+                                        view.RPC("munchersTime", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    }
+
+                                    if (Input.GetKey(KeyCode.E) && bigBoyMunch)
+                                    {
+                                        if (competitor != null)
+                                        {
+                                            view.RPC("YouMunchedThem", RpcTarget.AllBufferedViaServer, view.Owner.NickName, competitor.name);
+                                        }
+                                    }
                                 }
 
-                                // game end
+                                // game ending - if the results has one less than the total of players means there 1 person left standing which is the winner
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
-                                    if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform.childCount == 0)
+                                    if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().gluttonyResults.Count >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
                                     {
                                         view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
@@ -820,17 +840,17 @@ public class PlayerUserTest : MonoBehaviour
     {
         StartCoroutine("stunTheBitch", 5);
     }
-    
+
     public void pauseys()
     {
         StartCoroutine("pauseActions", 4);
     }
-    
+
     public void pauseForReset()
     {
         StartCoroutine("likklePause", 0.5f);
     }
-    
+
     IEnumerator stunTheBitch(float time)
     {
         freezePlayer = true;
@@ -839,7 +859,7 @@ public class PlayerUserTest : MonoBehaviour
 
         freezePlayer = false;
     }
-    
+
     IEnumerator pauseActions(float time)
     {
         actionPause = true;
@@ -962,7 +982,7 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
-    
+
     [PunRPC]
     void ZOOMBRO(string name, Vector3 hit)
     {
@@ -991,7 +1011,32 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
-    
+
+    public void gotMunched(string victim)
+    {
+        GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().RecordGluttonyResults(GameObject.Find(victim));
+        GameObject.Find(victim).GetComponent<PlayerUserTest>().youLoseTheLevel = true;
+        GameObject.Find(victim).transform.position = GameObject.Find("holdingArea").transform.GetChild(0).position;
+    }
+
+    [PunRPC]
+    void YouMunchedThem(string name, string victim)
+    {
+        try
+        {
+            GameObject.Find(victim).GetComponent<PlayerUserTest>().oofGotMunched = true;
+            GameObject.Find(name).GetComponent<PlayerUserTest>().bigBoyMunch = false;
+            GameObject.Find(name).GetComponent<PlayerUserTest>().collectedFoodies = 0;
+            GameObject.Find(name).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.white;
+            GameObject.Find(name).GetComponent<PlayerUserTest>().interactedOpponent = null;
+            GameObject.Find(victim).GetComponent<PlayerUserTest>().gotMunched(victim);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
     [PunRPC]
     void setMyParent(string name)
     {
@@ -1375,6 +1420,19 @@ public class PlayerUserTest : MonoBehaviour
         try
         {
             GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies++;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void munchersTime(string pName)
+    {
+        try
+        {            
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().bigBoyMunch = true;
+            GameObject.Find(pName).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.red;
         }
         catch (NullReferenceException e)
         {

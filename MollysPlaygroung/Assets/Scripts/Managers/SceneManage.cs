@@ -336,8 +336,26 @@ public class SceneManage : MonoBehaviour
 
     public void currentLevelsLoser(string n)
     {
-        // saves all players that died in the level
-        levelsLoser.Add(n);
+        if (levelsLoser.Count == 0)
+        {
+            levelsLoser.Add(n);
+        }
+        else 
+        { 
+            for (int y = 0; y < levelsLoser.Count; y++)
+            {
+                if (n == levelsLoser[y])
+                {
+                    break;
+                }
+
+                if (y >= (levelsLoser.Count - 1))
+                {
+                    // saves all players that died in the level
+                    levelsLoser.Add(n);
+                }
+            }
+        }
     }
 
     public void setPlayersLifeStatus(bool state)
