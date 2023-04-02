@@ -170,6 +170,7 @@ public class PrideGameplayManager : MonoBehaviour
         if (poisonedCup == drinkingCup)
         {
             playerTurnDisplay.text = listOfPridePlayers[1] + " poisoned";
+            GameObject.Find(listOfPridePlayers[1]).GetComponent<PlayerUserTest>().gotPoisoned = true;
             GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(true);
             //GameObject.Find("RoomLights").gameObject.SetActive(false);
             chosenCupText.text = "";

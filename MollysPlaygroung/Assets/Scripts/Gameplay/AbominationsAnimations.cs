@@ -251,6 +251,13 @@ public class AbominationsAnimations : MonoBehaviour
                             else if (SceneManager.GetActiveScene().name == "Lust")
                             {
                             }
+                            else if (SceneManager.GetActiveScene().name == "Pride")
+                            {
+                                if (GetComponent<PlayerUserTest>().gotPoisoned)
+                                {
+                                    view.RPC("poisonedLikeABitch", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true, characterNum);
+                                }
+                            }
                         }
                     }
                 }
@@ -462,6 +469,19 @@ public class AbominationsAnimations : MonoBehaviour
         try
         {
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("OpenTrapTrigger", x);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void poisonedLikeABitch(string pName, bool x, int charNum)
+    {
+        try
+        {
+            GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("PoisonTrigger", x);
         }
         catch (NullReferenceException e)
         {

@@ -130,6 +130,7 @@ public class PlayerUserTest : MonoBehaviour
     public bool prideTimerRunning = true;
     public float prideTimer;
     bool reverseWalk = false;
+    public bool gotPoisoned = false;
 
 
     public bool deathRecorded = false;
