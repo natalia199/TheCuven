@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.SceneManagement;
 
 public class EnvyPlayerSpawn : MonoBehaviour
 {
@@ -28,6 +29,13 @@ public class EnvyPlayerSpawn : MonoBehaviour
         }
         */
 
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), transform.rotation);
+        if (SceneManager.GetActiveScene().name != "Pride")
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), transform.rotation);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, transform.position, transform.rotation);
+        }
     }
 }

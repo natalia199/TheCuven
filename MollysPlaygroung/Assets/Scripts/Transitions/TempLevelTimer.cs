@@ -95,7 +95,7 @@ public class TempLevelTimer : MonoBehaviour
     {
         oneTimeRun = true;
 
-        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony")
+        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony" || SceneManager.GetActiveScene().name == "Pride")
         {
             for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {

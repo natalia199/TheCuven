@@ -51,6 +51,7 @@ public class SceneManage : MonoBehaviour
         public bool stillAlive;
         public Material originalMesh;        
         public bool variablesSet;
+        public int deathTracker;
     };
 
     public void createPlayerStruct(string name)
@@ -63,6 +64,7 @@ public class SceneManage : MonoBehaviour
         boy.stillAlive = false;
         boy.originalMesh = null;
         boy.variablesSet = false;
+        boy.deathTracker = 0;
         playersInGame.Add(boy);
 
     }
@@ -366,6 +368,8 @@ public class SceneManage : MonoBehaviour
             {
                 GamePlayer die = playersInGame[x];
                 die.stillAlive = state;
+                die.deathTracker++;
+                //Debug.Log(die.username + " death " + die.deathTracker);
                 playersInGame[x] = die;
             }
         }

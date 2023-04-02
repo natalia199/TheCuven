@@ -122,6 +122,16 @@ public class PlayerUserTest : MonoBehaviour
     public int boxScore;
 
     public bool fellOffPlatform = false;
+
+    // PRIDE
+    public List<GameObject> PrideCameraOptions = new List<GameObject>();
+    public GameObject selectedCup;
+    Ray ray;
+    public bool prideTimerRunning = true;
+    public float prideTimer;
+    bool reverseWalk = false;
+
+
     public bool deathRecorded = false;
 
     public int playerNumber = -1;
@@ -206,6 +216,41 @@ public class PlayerUserTest : MonoBehaviour
             lifeSource = lifeMax;
             withinTheLight = false;
             pauseForDecrease = false;
+        }
+        else if (SceneManager.GetActiveScene().name == "Pride")
+        {
+            if (view.IsMine)
+            {
+                PrideCameraOptions.Add(GameObject.Find("Main Camera"));
+                PrideCameraOptions.Add(GameObject.Find("Main Camera 2"));
+
+                for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive && GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        PrideCameraOptions[1].SetActive(false);
+                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().CupSets[1].SetActive(false);
+
+                        transform.position = GameObject.Find("PlayerSpawn").transform.GetChild(0).position;
+                        transform.rotation = GameObject.Find("PlayerSpawn").transform.GetChild(0).rotation;
+                        reverseWalk = false;
+
+                        break;
+                    }
+                    else if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive && GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username != PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        PrideCameraOptions[0].SetActive(false);
+                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().CupSets[0].SetActive(false);
+
+                        reverseWalk = true;
+
+                        break;
+                    }
+                }
+                
+            }
+
+            transform.localScale *= 5.2f;
         }
     }
 
@@ -467,6 +512,7 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
                         }
+                        // GLUTTONY LEVEL
                         else if (SceneManager.GetActiveScene().name == "Gluttony")
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
@@ -775,7 +821,90 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
                         }
+                        else if (SceneManager.GetActiveScene().name == "Pride")
+                        {
+                            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                            {
+                                // timer
+                                if (prideTimerRunning)
+                                {
+                                    if (prideTimer > 1)
+                                    {
+                                        view.RPC("setPrideTimer", RpcTarget.AllBufferedViaServer, view.Owner.NickName, "" + Mathf.FloorToInt(prideTimer));
+                                    }
+                                    else
+                                    {
+                                        view.RPC("setPrideTimer", RpcTarget.AllBufferedViaServer, view.Owner.NickName, "Time's Up");
+                                    }
 
+                                    prideTimer -= Time.deltaTime;
+
+                                    if (prideTimer < 0)
+                                    {
+                                        if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice)
+                                        {
+                                            view.RPC("outOfTime", RpcTarget.AllBufferedViaServer, view.Owner.NickName, true);
+                                        }
+                                        else
+                                        {
+                                            view.RPC("outOfTime", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
+                                        }
+
+                                        prideTimerRunning = false;
+                                    }
+                                }
+
+                                // game ending - if the results has one less than the total of players means there 1 person left standing which is the winner
+                                if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().prideResults.Count >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
+                                {
+                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                }
+                            }
+
+                            // Picking a cup
+                            if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice && GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().listOfPridePlayers[GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker] == PhotonNetwork.LocalPlayer.NickName)
+                            {
+                                // MY TURN
+                                // activate mouse clicking
+                                if (Input.GetMouseButtonDown(0))
+                                {
+                                    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                    RaycastHit[] die = Physics.RaycastAll(ray);
+                                    foreach (RaycastHit hit in die)
+                                    {
+                                        if (hit.collider.gameObject.tag == "Chalice")
+                                        {
+                                            selectedCup = hit.collider.gameObject;
+                                            Debug.Log("I hit cup " + selectedCup.name);
+                                            break;
+                                        }
+                                        else if (hit.collider.gameObject.tag == "Ignore")
+                                        {
+                                            selectedCup = null;
+                                            Debug.Log("unselected");
+                                        }
+                                    }
+                                }
+
+                                // send in results
+                                if (Input.GetKeyDown(KeyCode.Return) && selectedCup != null)
+                                {
+                                    if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker == 0)
+                                    {
+                                        view.RPC("poisoningCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, selectedCup.name);
+                                    }
+                                    else
+                                    {
+                                        view.RPC("drinkingCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, selectedCup.name);
+                                    }
+                                }
+                            }
+                            
+                            if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().resetCups)
+                            {
+                                view.RPC("resetChosenCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                            }
+                        }
 
                         if (SceneManager.GetActiveScene().name == "Greed")
                         {
@@ -788,6 +917,17 @@ public class PlayerUserTest : MonoBehaviour
                                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                                     view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
                                 }
+                            }
+                        }
+                        else if (SceneManager.GetActiveScene().name == "Pride")
+                        {
+                            if (reverseWalk)
+                            {
+                                PrideMovePlayer();
+                            }
+                            else
+                            {
+                                MovePlayer();
                             }
                         }
                         else
@@ -889,6 +1029,34 @@ public class PlayerUserTest : MonoBehaviour
         pauseForDecrease = false;
         allowNewDecrease = true;
         //view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, (int)lifeSource, false);
+    }
+
+    void PrideMovePlayer()
+    {
+        float moveHorizontal = -Input.GetAxisRaw("Horizontal");
+        float moveVertical = -Input.GetAxisRaw("Vertical");
+
+        Vector3 playerPos = rb.position;
+        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical).normalized;
+
+        Quaternion targetRotation;
+
+        if (movement == Vector3.zero)
+        {
+            return;
+        }
+        else
+        {
+            targetRotation = Quaternion.LookRotation(movement);
+
+            targetRotation = Quaternion.Lerp(transform.rotation, Quaternion.RotateTowards(
+                transform.rotation,
+                targetRotation,
+                360 * Time.fixedDeltaTime), 0.8f);
+        }
+
+        rb.MovePosition(playerPos + movement * speedModifier * speed * Time.fixedDeltaTime);
+        rb.MoveRotation(targetRotation);
     }
 
     void MovePlayer()
@@ -1121,6 +1289,10 @@ public class PlayerUserTest : MonoBehaviour
                 else if (SceneManager.GetActiveScene().name == "Gluttony" && GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies > 0)
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies + "";
+                }
+                else if (SceneManager.GetActiveScene().name == "Pride")
+                {
+                    GameObject.Find(Player).GetComponent<PlayerUserTest>().username.color = new Color(255, 255, 255, 0);
                 }
                 else
                 {
@@ -1744,10 +1916,102 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
+    public void callPoisonFunction(string name, string cup)
+    {
+        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().setPoisonedCup(name, cup);
+    }
+
+    public void callDrinkingFunction(string name, string cup)
+    {
+        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().setDrinkingCup(name, cup);
+    }
+    
+    public void callOutOfTimeFunction(bool x)
+    {
+        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().timesUpWrapItUp(x);
+    }
+
+    // PRIDE
+
+    [PunRPC]
+    void poisoningCup(string pName, string cup)
+    {
+        try
+        {
+            if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice) 
+            {
+                Debug.Log("what the hecks");
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().callPoisonFunction(pName, cup);
+                GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice = false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void drinkingCup(string pName, string cup)
+    {
+        try
+        {
+            if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice)
+            {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().callDrinkingFunction(pName, cup);
+                GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice = false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    
+    [PunRPC]
+    void resetChosenCup(string pName)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().selectedCup = null;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    
+    [PunRPC]
+    void setPrideTimer(string pName, string time)
+    {
+        try
+        {
+            GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().timeStampText.text = time;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+     
+    [PunRPC]
+    void outOfTime(string pName, bool x)
+    {
+        try
+        {
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().callOutOfTimeFunction(x);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
     public void OnToTheNextLevel()
     {
         if (PhotonNetwork.IsMasterClient)
         {
+            Debug.Log("one time foo");
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().CurrentLevelState = true;
         }
     }
