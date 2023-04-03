@@ -64,7 +64,7 @@ public class LustPianoKey : MonoBehaviour
         {
             keyPressed = true;
 
-            if (activatedPianoKey && !other.GetComponent<PlayerUserTest>().landedOnFloor && !pressedWhenSelected)
+            if (activatedPianoKey && other.GetComponent<PlayerUserTest>().resetPosition && !pressedWhenSelected)
             {
                 Debug.Log("key has been jumped on boy");
                 pressedWhenSelected = true;

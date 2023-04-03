@@ -104,6 +104,8 @@ public class PlayerUserTest : MonoBehaviour
     public bool ranOutOfLife = false;
 
     // LUST
+    public bool lustTimerRunning = true;
+    public float lustTimer;
     public int hitKeys = 0;
     public int selectedKey;
     public bool resetPosition = true;
@@ -466,11 +468,9 @@ public class PlayerUserTest : MonoBehaviour
                         }
                         else if (SceneManager.GetActiveScene().name == "Lust")
                         {
-                            // Single player: get as many correct keys as possible
-                            // Multi player: get the most correct keys
-
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
+                                // Key instantiation
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey)
@@ -495,6 +495,26 @@ public class PlayerUserTest : MonoBehaviour
                                             view.RPC("setPianoKey", RpcTarget.AllBufferedViaServer, selectedKey);
                                         }
                                     }
+
+                                    if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().timerActivated)
+                                    {
+                                        // timer
+                                        if (lustTimerRunning)
+                                        {
+                                            lustTimer -= Time.deltaTime;
+
+                                            if (lustTimer < 0)
+                                            {
+                                                view.RPC("lustOutOfTime", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                                lustTimerRunning = false;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        lustTimer = 10;
+                                        lustTimerRunning = true;
+                                    }
                                 }
 
                                 if (hitKeyScore)
@@ -502,13 +522,14 @@ public class PlayerUserTest : MonoBehaviour
                                     hitKeys++;
                                     hitKeyScore = false;
                                     view.RPC("keyScoreDisplay", RpcTarget.AllBufferedViaServer, view.Owner.NickName, hitKeys);
+                                    view.RPC("lustOutOfTime", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                 }
 
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
                                     if (!die && GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        //view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
                                 }
                             }
@@ -822,6 +843,7 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
                         }
+                        // PRIDE LEVEL
                         else if (SceneManager.GetActiveScene().name == "Pride")
                         {
                             if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -906,6 +928,7 @@ public class PlayerUserTest : MonoBehaviour
                                 view.RPC("resetChosenCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                             }
                         }
+
 
                         if (SceneManager.GetActiveScene().name == "Greed")
                         {
@@ -1294,6 +1317,10 @@ public class PlayerUserTest : MonoBehaviour
                 else if (SceneManager.GetActiveScene().name == "Pride")
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().username.color = new Color(255, 255, 255, 0);
+                }
+                else if (SceneManager.GetActiveScene().name == "Lust")
+                {
+                    GameObject.Find(Player).GetComponent<PlayerUserTest>().transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys + "";
                 }
                 else
                 {
@@ -1884,6 +1911,7 @@ public class PlayerUserTest : MonoBehaviour
             if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().newKey) 
             {
                 GameObject.Find("GameManager").GetComponent<LustGameplayManager>().NewKey(x);
+                GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyChosen = true;
             }
         }
         catch (NullReferenceException e)
@@ -1904,12 +1932,32 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
     [PunRPC]
     void keyScoreDisplay(string pName, int k)
     {
         try
         {
             GameObject.Find(pName).GetComponent<PlayerUserTest>().hitKeys = k;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    public void resetTimerAndKey()
+    {
+        GameObject.Find("GameManager").GetComponent<LustGameplayManager>().holdKeyPick();
+    }
+    
+    [PunRPC]
+    void lustOutOfTime(string pName)
+    {
+        try
+        {
+            GameObject.Find("GameManager").GetComponent<LustGameplayManager>().timerActivated = false;
+            GameObject.Find(pName).GetComponent<PlayerUserTest>().resetTimerAndKey();
         }
         catch (NullReferenceException e)
         {

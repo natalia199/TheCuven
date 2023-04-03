@@ -80,8 +80,10 @@ MonoBehaviour:
   speedModifier: 0.9
   jumpForce: 8
   interactedOpponent: {fileID: 0}
+  youLoseTheLevel: 0
   cameraSwitch: 0
   chipAccess: 0
+  munchedYou: 0
   throwForce: 200
   collectionTracker: 0
   totalChipCollection: 0
@@ -102,13 +104,16 @@ MonoBehaviour:
   horseName: 
   squirtGunName: 
   squirtGun: {fileID: 0}
+  foodCollected: 0
   collectedFoodies: 0
-  foodPosition: {x: 0, y: 0, z: 0}
+  foodPosition: {x: 0, y: 0}
   theFood: {fileID: 0}
   theVomittedFood: {fileID: 0}
   instantiateFoodOnce: 0
   interactedFood: {fileID: 0}
+  preveiousTypeOfFood: -1
   gotPunched: 0
+  bigBoyMunch: 0
   foodInstanitationTracker: 0
   withinTheLight: 0
   gotBearTrapped: 0
@@ -139,6 +144,11 @@ MonoBehaviour:
   boxThrowForce: 200
   boxScore: 0
   fellOffPlatform: 0
+  PrideCameraOptions: []
+  selectedCup: {fileID: 0}
+  prideTimerRunning: 1
+  prideTimer: 0
+  gotPoisoned: 0
   deathRecorded: 0
   playerNumber: -1
   finishedSinglePlayer: 0
@@ -148,8 +158,11 @@ MonoBehaviour:
   oopsyGotHit: 0
   oopsyGotDragged: 0
   imDraggingMan: 0
+  oofGotMunched: 0
   actionPause: 0
   onetimebruvidek: 0
+  diceRollFreeze: 1
+  playerIsGrounded: 0
 --- !u!65 &59713313233630251
 BoxCollider:
   m_ObjectHideFlags: 0
