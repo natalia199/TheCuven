@@ -527,9 +527,9 @@ public class PlayerUserTest : MonoBehaviour
 
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
-                                    if (!die && GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
+                                    if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
                                     {
-                                        //view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
                                 }
                             }
