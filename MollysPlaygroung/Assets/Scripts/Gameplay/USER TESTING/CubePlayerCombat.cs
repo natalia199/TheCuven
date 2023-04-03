@@ -11,6 +11,7 @@ public class CubePlayerCombat : MonoBehaviour
     /// Each level will have these actions no matter what
     /// </summary>
 
+    /*
     PhotonView view;
 
     private main_PlayerMovement movementScript;
@@ -362,4 +363,5 @@ public class CubePlayerCombat : MonoBehaviour
 
         stunned = false;
     }
+    */
 }

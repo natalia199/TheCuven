@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnvyHorse : MonoBehaviour
 {
     public Transform finishLinePoint;
+    public Vector3 startingLinePoint;
 
     public bool finished;
     public bool squirterActivated;
@@ -15,9 +16,13 @@ public class EnvyHorse : MonoBehaviour
 
     public int id;
 
+    public bool resetingVars = false;
+
     void Start()
     {
         finished = false;
+
+        startingLinePoint = this.transform.position;
 
         // Setting gun name based on ID
         GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
@@ -44,6 +49,11 @@ public class EnvyHorse : MonoBehaviour
             float rY = Mathf.SmoothStep(0, 0, Mathf.PingPong(Time.time * speed, 1));
             transform.rotation = Quaternion.Euler(0, 0, rY);
         }
+
+        if (resetingVars)
+        {
+            resetAll();
+        }
     }
 
     public void MoveYourHorse()
@@ -66,5 +76,14 @@ public class EnvyHorse : MonoBehaviour
             GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(false);                    // turning off gun light
             GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().RecordHorseResult(this.gameObject);              // adding winning horse to result list
         }
+    }
+
+    public void resetAll()
+    {        
+        this.transform.position = startingLinePoint;
+
+        GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+        squirterActivated = false;
+        finished = false;
     }
 }

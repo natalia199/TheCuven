@@ -51,10 +51,13 @@ public class PlayerUserTest : MonoBehaviour
     public string bucketNameInteracted;
 
     // ENVY
+    public bool envySetOneTime = false;
     public bool squirtAccess = false;
     public string horseName;
     public string squirtGunName;
     public GameObject squirtGun;
+    public string votedHead;
+    public List<GameObject> EnvyCameraOptions = new List<GameObject>();
 
     // GLUTTONY
     bool eatFood = false;
@@ -202,6 +205,9 @@ public class PlayerUserTest : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "Envy")
         {
+            EnvyCameraOptions.Add(GameObject.Find("Main Camera"));
+            EnvyCameraOptions.Add(GameObject.Find("Main Camera 2"));
+
             if (view.IsMine)
             {
                 for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
@@ -212,7 +218,19 @@ public class PlayerUserTest : MonoBehaviour
                         squirtGunName = "SquirtGun" + i;
                     }
                 }
-            }
+
+                for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username != PhotonNetwork.LocalPlayer.NickName)
+                    {
+                        GameObject.Find("VotingGrid").transform.GetChild(i).gameObject.SetActive(true);
+                        GameObject.Find("VotingGrid").transform.GetChild(i).GetChild(1).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).gameObject.SetActive(true);
+                        GameObject.Find("VotingGrid").transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username;
+                    }
+
+                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult.Add(0);
+                }
+            }            
         }
         else if (SceneManager.GetActiveScene().name == "Sloth")
         {
@@ -466,6 +484,7 @@ public class PlayerUserTest : MonoBehaviour
                                 }
                             }
                         }
+                        // LUST LEVEL
                         else if (SceneManager.GetActiveScene().name == "Lust")
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
@@ -660,22 +679,119 @@ public class PlayerUserTest : MonoBehaviour
                                     }
                                 }
 
-                                // Move Horse
-                                if (Input.GetKey(KeyCode.E))
+                                if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
-                                    // Checking if player is properly interacting with a gun
-                                    if (squirtAccess && squirtGun != null)
+                                    if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().levelRounds >= 3)
                                     {
-                                        // Checking if interacted gun is the ASSIGNED gun
-                                        if (squirtGun.name == squirtGunName)
-                                        {
-                                            view.RPC("increaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    }
+                                }
 
-                                            // once water of gun INTERACTS with target
-                                            if (GameObject.Find(squirtGunName).transform.GetChild(0).GetChild(0).GetComponent<EnvyBullseye>().Bullseye)
+                                if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().votingSystem)
+                                {
+                                    EnvyCameraOptions[0].SetActive(false);
+                                    EnvyCameraOptions[1].SetActive(true);
+
+                                    if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().oneTimeRound)
+                                    {
+                                        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().setLoser();
+                                        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().setPlayerPoints();
+
+                                        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().oneTimeRound = false;
+                                    }
+                                    else
+                                    {
+                                        envySetOneTime = false;
+
+                                        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                                        {
+                                            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
                                             {
-                                                view.RPC("moveHorsey", RpcTarget.AllBufferedViaServer, horseName);
+                                                if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username).GetComponent<PlayerUserTest>().votedHead == "")
+                                                {
+                                                    break;
+                                                }
+
+                                                if (i >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
+                                                {
+                                                    view.RPC("switchingVotingAndGame", RpcTarget.AllBufferedViaServer, false);
+                                                }
                                             }
+                                        }
+
+                                        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().betTxt.text = "Bet: " + votedHead;
+
+                                        // BETTING
+                                        if (Input.GetMouseButtonDown(0))
+                                        {
+                                            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                                            RaycastHit[] die = Physics.RaycastAll(ray);
+                                            foreach (RaycastHit hit in die)
+                                            {
+                                                if (hit.collider.gameObject.tag == "VoteHead")
+                                                {
+                                                    votedHead = hit.collider.gameObject.name;
+
+                                                    view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
+
+                                                    for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+                                                    {
+                                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName)
+                                                        {
+                                                            GameObject.Find("VotingGrid").transform.GetChild(i).GetChild(1).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().chosenMesh;
+                                                        }
+                                                    }
+
+                                                    Debug.Log("I hit head " + votedHead);
+                                                    break;
+                                                }
+                                                else if (hit.collider.gameObject.tag == "Ignore")
+                                                {
+                                                    votedHead = "";
+
+                                                    for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+                                                    {
+                                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName)
+                                                        {
+                                                            GameObject.Find("VotingGrid").transform.GetChild(i).GetChild(1).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().unchosenMesh[GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID];
+                                                        }
+                                                    }
+
+                                                    view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    EnvyCameraOptions[0].SetActive(true);
+                                    EnvyCameraOptions[1].SetActive(false);
+
+                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().betTxt.text = "";
+
+                                    // Move Horse
+                                    if (Input.GetKey(KeyCode.E))
+                                    {
+                                        // Checking if player is properly interacting with a gun
+                                        if (squirtAccess && squirtGun != null)
+                                        {
+                                            // Checking if interacted gun is the ASSIGNED gun
+                                            if (squirtGun.name == squirtGunName)
+                                            {
+                                                view.RPC("increaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
+
+                                                // once water of gun INTERACTS with target
+                                                if (GameObject.Find(squirtGunName).transform.GetChild(0).GetChild(0).GetComponent<EnvyBullseye>().Bullseye)
+                                                {
+                                                    view.RPC("moveHorsey", RpcTarget.AllBufferedViaServer, horseName);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            view.RPC("stopHorsey", RpcTarget.AllBufferedViaServer, horseName);
+                                            view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
                                         }
                                     }
                                     else
@@ -683,19 +799,19 @@ public class PlayerUserTest : MonoBehaviour
                                         view.RPC("stopHorsey", RpcTarget.AllBufferedViaServer, horseName);
                                         view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
                                     }
-                                }
-                                else
-                                {
-                                    view.RPC("stopHorsey", RpcTarget.AllBufferedViaServer, horseName);
-                                    view.RPC("decreaseSquirt", RpcTarget.AllBufferedViaServer, squirtGunName);
-                                }
 
 
-                                if (PhotonNetwork.LocalPlayer.IsMasterClient)
-                                {
-                                    if ((GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyResults.Count)
+                                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        if (!envySetOneTime)
+                                        {
+                                            if ((GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1) == GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyResults.Count)
+                                            {
+                                                view.RPC("nextEnvyRound", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+
+                                                envySetOneTime = true;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -930,6 +1046,7 @@ public class PlayerUserTest : MonoBehaviour
                         }
 
 
+                        // Level movement
                         if (SceneManager.GetActiveScene().name == "Greed")
                         {
                             if (!freezePlayer && !diceRollFreeze)
@@ -940,6 +1057,26 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                                     view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
+                                }
+                            }
+                        }
+                        else if (SceneManager.GetActiveScene().name == "Envy")
+                        {
+                            if (!GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().votingSystem)
+                            {
+                                MovePlayer();
+
+                                if (Input.GetKeyDown(KeyCode.Space))
+                                {
+                                    Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
+                                    view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyHorses.Count; i++)
+                                {
+                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyHorses[i].GetComponent<EnvyHorse>().resetAll();
                                 }
                             }
                         }
@@ -1894,6 +2031,52 @@ public class PlayerUserTest : MonoBehaviour
         try
         {
             GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().desquirtWater(pName);
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    public void nextEnvyRoundFunction()
+    {
+        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().setLoser();
+    }
+
+    [PunRPC]
+    void nextEnvyRound(string pName)
+    {
+        try
+        {            
+            //GameObject.Find(pName).GetComponent<PlayerUserTest>().envySetOneTime = true;
+            GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().votingSystem = true;
+            GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().oneTimeRound = true;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void switchingVotingAndGame(bool x)
+    {
+        try
+        {
+            GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().votingSystem = x;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    
+    [PunRPC]
+    void setVotedHead(string pname, string vote)
+    {
+        try
+        {
+            GameObject.Find(pname).GetComponent<PlayerUserTest>().votedHead = vote;
         }
         catch (NullReferenceException e)
         {

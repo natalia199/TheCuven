@@ -1178,8 +1178,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeRemaining: 20
+  startingCountdown: 0
+  countdownIsRunning: 0
   timerIsRunning: 0
-  timeText: {fileID: 1159764632}
+  countdownText: {fileID: 0}
+  finishedMsg: {fileID: 0}
+  oneTimeRun: 0
 --- !u!4 &1781579267
 Transform:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class TempLevelTimer : MonoBehaviour
     List<int> playerLevelIDs = new List<int>();
     List<int> chipValues = new List<int>();
     List<int> keyValues = new List<int>();
+    List<int> bettingValues = new List<int>();
 
 
     void Start()
@@ -123,59 +124,117 @@ public class TempLevelTimer : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "Envy")
         {
-            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+            bool grr = false;
+
+            for (int y = 0; y < GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult.Count; y++)
             {
-                for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner.Count; y++)
+                // Organizing list in ranking
+
+                if (y == 0)
                 {
-                    // if current [x] game player is found in the list of winners - dont add to loser list and move on
-                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[y])
+                    bettingValues.Add(GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult[0]);
+                    playerLevelIDs.Add(y);
+                }
+                else
+                {
+                    // checking for top value
+                    for (int z = 0; z < bettingValues.Count; z++)
                     {
-                        break;
+                        if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult[y] >= bettingValues[z])
+                        {
+                            bettingValues.Insert(z, GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult[y]);
+                            playerLevelIDs.Insert(z, y);
+                            grr = true;
+                            break;
+                        }
+                    }
+                    if (!grr)
+                    {
+                        // checking for lowest value
+                        for (int z = (bettingValues.Count - 1); z >= 0; z--)
+                        {
+                            if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult[y] <= bettingValues[z])
+                            {
+                                // if last position
+                                if (z == (bettingValues.Count - 1))
+                                {
+                                    bettingValues.Add(GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult[y]);
+                                    playerLevelIDs.Add(y);
+                                    break;
+                                }
+                                else
+                                {
+                                    bettingValues.Insert(z + 1, GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult[y]);
+                                    playerLevelIDs.Insert(z + 1, y);
+                                    break;
+                                }
+                            }
+                        }
                     }
 
-                    if (y >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner.Count - 1))
-                    {
-                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
-                        break;
-                    }
+                    grr = false;
                 }
             }
+
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
         }
         else if (SceneManager.GetActiveScene().name == "Greed")
         {
+            bool grr = false;
+
             for (int y = 0; y < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones.Count; y++)
             {
-                if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().activatedForPlayer)
-                {
-                    if (y == 0)
-                    {
-                        chipValues.Add(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[0].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
-                        playerLevelIDs.Add(y);
-                    }
-                    else
-                    {
-                        if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone >= chipValues[0])
-                        {
-                            Debug.Log("place infront");
-                            chipValues.Insert(0, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
-                            playerLevelIDs.Insert(0, y);
-                        }
-                        else if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone <= chipValues[chipValues.Count - 1])
-                        {
-                            Debug.Log("add to the end");
-                            chipValues.Add(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
-                            playerLevelIDs.Add(y);
-                        }
-                    }
-                }
+                // Organizing list in ranking
 
-                if (y == (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones.Count - 1))
+                if (y == 0)
                 {
-                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
-                    GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+                    chipValues.Add(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[0].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
+                    playerLevelIDs.Add(y);
+                }
+                else
+                {
+                    // checking for top value
+                    for (int z = 0; z < chipValues.Count; z++)
+                    {
+                        if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone >= chipValues[z])
+                        {
+                            chipValues.Insert(z, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
+                            playerLevelIDs.Insert(z, y);
+                            grr = true;
+                            break;
+                        }
+                    }
+                    if (!grr)
+                    {
+                        // checking for lowest value
+                        for (int z = (chipValues.Count - 1); z >= 0; z--)
+                        {
+                            if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone <= chipValues[z])
+                            {
+                                // if last position
+                                if (z == (chipValues.Count - 1))
+                                {
+                                    chipValues.Add(GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
+                                    playerLevelIDs.Add(y);
+                                    break;
+                                }
+                                else
+                                {
+                                    chipValues.Insert(z + 1, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipZones[y].transform.GetChild(1).GetComponent<ChipZoneDetection>().chipsInZone);
+                                    playerLevelIDs.Insert(z + 1, y);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    grr = false;
                 }
             }
 
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
         }
         else if (SceneManager.GetActiveScene().name == "Lust")
         {
