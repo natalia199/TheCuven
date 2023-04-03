@@ -358,6 +358,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("PushTrigger", x);
         }
         catch (NullReferenceException e)
@@ -401,6 +402,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().rustyCapybaraSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("SquirtTrigger", x);
         }
         catch (NullReferenceException e)
@@ -429,6 +432,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().chipDropSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("ChipThrowTrigger", x);
         }
         catch (NullReferenceException e)
@@ -443,6 +448,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().bearTrapCloseSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("isTrapped", x);
         }
         catch (NullReferenceException e)
@@ -456,6 +463,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().bearTrapOpenSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("OpenTrapTrigger", x);
         }
         catch (NullReferenceException e)
@@ -468,6 +477,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().munchingSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("OpenTrapTrigger", x);
         }
         catch (NullReferenceException e)
@@ -481,6 +492,8 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
+            GameObject.Find("SoundManager").GetComponent<SoundManager>().poisonedSFX(name);
+
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("PoisonTrigger", x);
         }
         catch (NullReferenceException e)
@@ -488,4 +501,5 @@ public class AbominationsAnimations : MonoBehaviour
             // error
         }
     }
+
 }
