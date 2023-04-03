@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9455,6 +9455,70 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1618980688}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1624968644
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1624968646}
+  - component: {fileID: 1624968645}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1624968645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624968644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a594661d0f449bf4ebeff2242f2b42c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gettingSmacked: {fileID: 8300000, guid: 4c80405cdbf8b194aa4534ab2632d990, type: 3}
+  smacking: {fileID: 8300000, guid: c10da8c6d17dda84d997bd1112b7f1c7, type: 3}
+  jumping: {fileID: 8300000, guid: f772312f9e8b7774a8691f686acd58dd, type: 3}
+  gettingPushed: {fileID: 8300000, guid: 367ad204483ee8a41b33efca34e73f3d, type: 3}
+  bearTrapClose: {fileID: 8300000, guid: 49cd9137aa6a46d4897c2ea71fcbe321, type: 3}
+  bearTrapDrop: {fileID: 8300000, guid: 46871121da9c8af4da72b3255b0c9ee6, type: 3}
+  bearTrapOpen: {fileID: 8300000, guid: b4656240c417b6146a5e2ced526e2781, type: 3}
+  ChipDrop: {fileID: 8300000, guid: 061b465a7c3640e47be686a41e4910b9, type: 3}
+  chipSmack: {fileID: 8300000, guid: 4486a99c83eba7842bb2e789ccc12e74, type: 3}
+  diceRoll: {fileID: 8300000, guid: 7a7f3e24db108c44aa96e65b5fe4a35c, type: 3}
+  dizzy: {fileID: 8300000, guid: 0f859c765f106fd4292a1ba23e68cda4, type: 3}
+  falling: {fileID: 8300000, guid: 3004e66ff5cd97c4388a5658bda25dc5, type: 3}
+  lightFlicker: {fileID: 8300000, guid: 96c388d779ff5c44cbcdb812eb658677, type: 3}
+  meatSlap: {fileID: 8300000, guid: d0b7a8341486c0b4fbbf6ef2f1d75200, type: 3}
+  munching: {fileID: 8300000, guid: 9f551a0575f02e746b6e505ae8c7d213, type: 3}
+  poisoned: {fileID: 8300000, guid: 8f11929ad5c65ba4abd08a7707ca82df, type: 3}
+  rustyCapybara: {fileID: 8300000, guid: 6fede2fb66ea7d345913ea9f4f69270e, type: 3}
+  waterDrink: {fileID: 8300000, guid: edc0e7cb10bff7b4ca7f4f5a1782ade4, type: 3}
+  waterPour: {fileID: 8300000, guid: ea0a88c91d6238d49bd421c8cb3eb7a3, type: 3}
+  volume: 1
+--- !u!4 &1624968646
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624968644}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.888765, y: -1.02, z: 2.173407}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1627899078
 GameObject:
   m_ObjectHideFlags: 0
@@ -10616,55 +10680,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759567044}
   m_Mesh: {fileID: -1372372616503429722, guid: 8e17789de99203842a8ab080222063df, type: 3}
---- !u!1 &1774004941
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1774004943}
-  - component: {fileID: 1774004942}
-  m_Layer: 0
-  m_Name: SoundManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1774004942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1774004941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a594661d0f449bf4ebeff2242f2b42c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gettingSmacked: {fileID: 8300000, guid: 4c80405cdbf8b194aa4534ab2632d990, type: 3}
-  smacking: {fileID: 8300000, guid: c10da8c6d17dda84d997bd1112b7f1c7, type: 3}
-  jumping: {fileID: 8300000, guid: f772312f9e8b7774a8691f686acd58dd, type: 3}
-  gettingPushed: {fileID: 8300000, guid: 367ad204483ee8a41b33efca34e73f3d, type: 3}
-  volume: 1
---- !u!4 &1774004943
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1774004941}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.888765, y: -1.02, z: 2.173407}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795273451
 GameObject:
   m_ObjectHideFlags: 0
@@ -11805,7 +11820,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2009319862
 MonoBehaviour:
