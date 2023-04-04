@@ -240,6 +240,10 @@ public class TempLevelTimer : MonoBehaviour
         {
             for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {
+
+                bool grr = false;
+
+
                 if (x == 0)
                 {
                     keyValues.Add(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys);
@@ -247,36 +251,67 @@ public class TempLevelTimer : MonoBehaviour
                 }
                 else
                 {
-                    if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys >= keyValues[0])
+                    // checking for top value
+                    for (int z = 0; z < keyValues.Count; z++)
                     {
-                        keyValues.Insert(0, GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys);
-                        playerLevelIDs.Insert(0, x);
+                        if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys >= keyValues[z])
+                        {
+                            keyValues.Insert(z, GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys);
+                            playerLevelIDs.Insert(z, x);
+                            grr = true;
+                            break;
+                        }
                     }
-                    else if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys <= keyValues[keyValues.Count - 1])
+                    if (!grr)
                     {
-                        keyValues.Add(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys);
-                        playerLevelIDs.Add(x);
-                    }
+                        // checking for lowest value
+                        for (int z = (keyValues.Count - 1); z >= 0; z--)
+                        {
+                            if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys <= keyValues[z])
+                            {
+                                // if last position
+                                if (z == (keyValues.Count - 1))
+                                {
+                                    keyValues.Add(GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys);
+                                    playerLevelIDs.Add(x);
+                                    break;
+                                }
+                                else
+                                    keyValues.Insert(z + 1, GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().hitKeys);
+                                playerLevelIDs.Insert(z + 1, x);
+                                break;
+                            }
 
 
-                    if (x == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
-                    {
-                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
-                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+                        }
                     }
+
+                    grr = false;
+
                 }
+
             }
 
-            GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
 
-            finishedMsg.text = "FINISHED";
-            finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
-
-            yield return new WaitForSeconds(3f);
-
-            GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
         }
 
+
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+
+
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
+
+        finishedMsg.text = "FINISHED";
+        finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
+
+        yield return new WaitForSeconds(3f);
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
+    }
+}
         /*
         void DisplayTime(float timeToDisplay)
         {
@@ -285,5 +320,5 @@ public class TempLevelTimer : MonoBehaviour
             timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         }
         */
-    }
-}
+    
+
