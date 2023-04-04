@@ -60,13 +60,16 @@ public class ResultGameManager : MonoBehaviour
 
         loserPlayer.text = "LOSER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[0];
 
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
-
-        yield return new WaitForSeconds(5);
+        //yield return new WaitForSeconds(5);
 
         winnerPlayer.text = "WINNER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0];
 
         SpinTheWheel = true;
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
+
+
+        yield return new WaitForSeconds(4);
 
         // SHOW DEAD PERSON
 
@@ -74,7 +77,7 @@ public class ResultGameManager : MonoBehaviour
 
         // set new results and GO TO NEXT LEVEL
 
-        /*
+        
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser = new List<string>();
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner = new List<string>();
 
@@ -84,15 +87,15 @@ public class ResultGameManager : MonoBehaviour
             if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames.Length)
             {
 
-                //PhotonNetwork.LoadLevel("Game Ending");
+                PhotonNetwork.LoadLevel("Game Ending");
 
             }
             else
             {
-                //PhotonNetwork.LoadLevel("Game Level Transition");
+                PhotonNetwork.LoadLevel("Game Level Transition");
             }
         }
-        */
+        
     }
 
 }

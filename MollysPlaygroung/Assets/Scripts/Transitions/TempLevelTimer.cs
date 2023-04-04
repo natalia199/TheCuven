@@ -85,13 +85,13 @@ public class TempLevelTimer : MonoBehaviour
 
         if (!oneTimeRun)
         {
-            setResults();
+            StartCoroutine("DisplayerFinalResults");
+
         }
     }
 
-    void setResults()
+    IEnumerator DisplayerFinalResults()
     {
-
         oneTimeRun = true;
 
         playerLevelIDs = new List<int>();
@@ -369,16 +369,13 @@ public class TempLevelTimer : MonoBehaviour
 
         finishedMsg.text = "FINISHED";
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
-
-        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
-
-        StartCoroutine("DisplayerFinalResults");
-    }
-
-    IEnumerator DisplayerFinalResults()
-    {
+        
         yield return new WaitForSeconds(3f);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
+        
+        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
+
     }
+
 }

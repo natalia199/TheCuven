@@ -44,6 +44,7 @@ public class PlayerResultScript : MonoBehaviour
         {
             view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
+            /*
             if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0] == PhotonNetwork.LocalPlayer.NickName && !wheelSpun)
             {
                 GameObject.Find("GameManager").GetComponent<ResultGameManager>().WheelOfFortune.gameObject.SetActive(true);
@@ -56,6 +57,7 @@ public class PlayerResultScript : MonoBehaviour
                     Debug.Log("DONE SPIN");
                 }
             }
+            */
 
             if (!GameObject.Find("GameManager").GetComponent<ResultGameManager>().countdownIsRunning)
             {
