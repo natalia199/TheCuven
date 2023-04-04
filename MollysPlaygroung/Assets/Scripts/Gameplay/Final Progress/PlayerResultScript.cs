@@ -12,6 +12,8 @@ public class PlayerResultScript : MonoBehaviour
     public TextMeshProUGUI username;
     string playersUsername;
 
+    public bool wheelSpun = false;
+
     public int playerNumber = -1;
 
     void Start()
@@ -26,10 +28,6 @@ public class PlayerResultScript : MonoBehaviour
             }
         }
 
-        if (view.IsMine)
-        {
-            GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
-        }
     }
 
     void FixedUpdate()
@@ -45,6 +43,19 @@ public class PlayerResultScript : MonoBehaviour
         if (view.IsMine)
         {
             view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0] == PhotonNetwork.LocalPlayer.NickName && !wheelSpun)
+            {
+                GameObject.Find("GameManager").GetComponent<ResultGameManager>().WheelOfFortune.gameObject.SetActive(true);
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    GameObject.Find("GameManager").GetComponent<ResultGameManager>().WheelOfFortune.transform.GetChild(0).GetComponent<WheelSpin>().increasing = false;
+                    wheelSpun = true;
+
+                    Debug.Log("DONE SPIN");
+                }
+            }
 
             if (!GameObject.Find("GameManager").GetComponent<ResultGameManager>().countdownIsRunning)
             {

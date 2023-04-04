@@ -85,25 +85,30 @@ public class TempLevelTimer : MonoBehaviour
 
         if (!oneTimeRun)
         {
-            try
-            {
-                StartCoroutine("DisplayerFinalResults");
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                Debug.Log("rude");
-            }
+            setResults();
         }
     }
 
-    IEnumerator DisplayerFinalResults()
+    void setResults()
     {
+
         oneTimeRun = true;
 
         playerLevelIDs = new List<int>();
 
         if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony" || SceneManager.GetActiveScene().name == "Pride")
         {
+            for (int y = (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count-1); y >= 0; y--)
+            {
+                for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[y])
+                    {
+                        playerLevelIDs.Add(x);
+                    }
+                }
+            }
+
             for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
             {
                 for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count; y++)
@@ -116,10 +121,30 @@ public class TempLevelTimer : MonoBehaviour
 
                     if (y >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count - 1))
                     {
-                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
+                        playerLevelIDs.Insert(0, x);
+                        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
                         break;
                     }
                 }
+            }
+
+
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
+
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].stillAlive)
+            {
+                for (int i = (playerLevelIDs.Count - 1); i >= 0; i--)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].stillAlive)
+                    {
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].username);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
             }
         }
         else if (SceneManager.GetActiveScene().name == "Envy")
@@ -177,7 +202,22 @@ public class TempLevelTimer : MonoBehaviour
             }
 
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
-            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].stillAlive)
+            {
+                for (int i = (playerLevelIDs.Count - 1); i >= 0; i--)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].stillAlive)
+                    {
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].username);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+            }
         }
         else if (SceneManager.GetActiveScene().name == "Greed")
         {
@@ -234,7 +274,22 @@ public class TempLevelTimer : MonoBehaviour
             }
 
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
-            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].stillAlive)
+            {
+                for (int i = (playerLevelIDs.Count - 1); i >= 0; i--)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].stillAlive)
+                    {
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].username);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+            }
         }
         else if (SceneManager.GetActiveScene().name == "Lust")
         {
@@ -285,21 +340,29 @@ public class TempLevelTimer : MonoBehaviour
 
                         }
                     }
-
                     grr = false;
-
                 }
-
             }
 
+            // result calculator
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
 
+            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].stillAlive)
+            {
+                for (int i = (playerLevelIDs.Count - 1); i >= 0; i--)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].stillAlive)
+                    {
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].username);
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
+            }
         }
-
-
-
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
-
 
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
@@ -307,18 +370,15 @@ public class TempLevelTimer : MonoBehaviour
         finishedMsg.text = "FINISHED";
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
 
+        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
+
+        StartCoroutine("DisplayerFinalResults");
+    }
+
+    IEnumerator DisplayerFinalResults()
+    {
         yield return new WaitForSeconds(3f);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
     }
 }
-        /*
-        void DisplayTime(float timeToDisplay)
-        {
-            float minutes = Mathf.FloorToInt(timeToDisplay / 60);
-            float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-            timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        }
-        */
-    
-

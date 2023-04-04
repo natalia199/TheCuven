@@ -50,6 +50,14 @@ public class PlayerUserTest : MonoBehaviour
     public string bucketName;
     public string bucketNameInteracted;
 
+    // WHEEL
+    public float rotationValueWheel;
+    public bool goodToReset = true;
+    public bool rotationValueSet = false;
+    public bool stopTheWheel = false;
+    public float _rotationSpeed;
+    public float _rotationSpeedDecrease;
+
     // ENVY
     public bool envySetOneTime = false;
     public bool squirtAccess = false;
@@ -393,6 +401,7 @@ public class PlayerUserTest : MonoBehaviour
                             {
                             }
                         }
+
 
                         // GREED LEVEL
                         if (SceneManager.GetActiveScene().name == "Greed")
@@ -1477,18 +1486,48 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
+    public void resettingWheel(float z)
+    {
+        GameObject.Find("WheelOfFortune").transform.rotation = new Quaternion(0, 0, z, GameObject.Find("WheelOfFortune").transform.rotation.w);
+    }
+
+    // WHEEL
     [PunRPC]
-    void settingCharacterSkins()
+    void resetTheWheel(string pname, float val)
     {
         try
         {
-            for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
-            {
-                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-            }
+            GameObject.Find(pname).GetComponent<PlayerUserTest>().resettingWheel(val);
+            GameObject.Find(pname).GetComponent<PlayerUserTest>().goodToReset = false;
         }
         catch (NullReferenceException e) { }
     }
+    
+    [PunRPC]
+    void startTheWheel(string pname, bool x)
+    {
+        try
+        {
+            GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>().increasing = x;
+            GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>().dontStartYet = false;
+        }
+        catch (NullReferenceException e) { }
+    }
+
+    [PunRPC]
+    void spinTheWheelMath(float speed, float time)
+    {
+        try
+        {
+            GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>().currentSpeed = speed;
+            GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>().transform.Rotate(Vector3.forward, GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>().currentSpeed * time);
+            //GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>().transform.Rotate(0, 0, rotation);
+            //GameObject.Find("WheelOfFortune").GetComponent<WheelSpin>()._rotationSpeed = rotation;
+        }
+        catch (NullReferenceException e) { }
+    }
+
+
 
     [PunRPC]
     void jumpBoyJump(string pName, Vector3 vel)
