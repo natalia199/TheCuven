@@ -17,11 +17,11 @@ public class WheelSpin : MonoBehaviour
     public bool dontStartYet = true;
 
     public float maxSpeed = 1000;
-    public float increaseRate = 200f;
+    public float increaseRate = 400f;
     public float currentSpeed = 900;
     public bool increasing = true;
 
-    public bool allowedToSpin = false;
+    public bool spinningHasFinished = false;
 
     void Start()
     {
@@ -43,11 +43,12 @@ public class WheelSpin : MonoBehaviour
 
                 if (currentSpeed >= 900)
                 {
-                    allowedToSpin = true;
+                    GameObject.Find("GameManager").GetComponent<ResultGameManager>().accessToSpin = true;
                 }
             }
             else
             {
+
                 if (currentSpeed > 0)
                 {
                     if (currentSpeed <= 400 && currentSpeed > 100)
@@ -72,7 +73,8 @@ public class WheelSpin : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("option has been chosen");
+                    spinningHasFinished = true;
+
                 }
             }
         }

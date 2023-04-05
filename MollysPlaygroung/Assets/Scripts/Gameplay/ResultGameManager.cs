@@ -13,6 +13,9 @@ public class ResultGameManager : MonoBehaviour
 
     public GameObject WheelOfFortune;
     public bool SpinTheWheel = false;
+    public bool accessToSpin = false;
+
+    public TextMeshProUGUI wheelText;
 
     //public GameObject hammer;
     //public bool slowSmash = false;
@@ -22,6 +25,10 @@ public class ResultGameManager : MonoBehaviour
 
     public float startingCountdown;
     public bool countdownIsRunning = true;
+
+    public GameObject playerHeads;
+
+    public bool oneTimeRound = false;
 
     void Awake()
     {
@@ -56,7 +63,7 @@ public class ResultGameManager : MonoBehaviour
 
     IEnumerator HandCrush(float time)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         loserPlayer.text = "LOSER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[0];
 
@@ -64,38 +71,20 @@ public class ResultGameManager : MonoBehaviour
 
         winnerPlayer.text = "WINNER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0];
 
-        SpinTheWheel = true;
-
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
 
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(5);
+
+        SpinTheWheel = true;
+
 
         // SHOW DEAD PERSON
 
         // REWARD WINNER
 
         // set new results and GO TO NEXT LEVEL
-
-        
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser = new List<string>();
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner = new List<string>();
-
-
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-        {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames.Length)
-            {
-
-                PhotonNetwork.LoadLevel("Game Ending");
-
-            }
-            else
-            {
-                PhotonNetwork.LoadLevel("Game Level Transition");
-            }
-        }
-        
+        // 
     }
 
 }

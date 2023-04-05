@@ -98,7 +98,7 @@ public class TempLevelTimer : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony" || SceneManager.GetActiveScene().name == "Pride")
         {
-            for (int y = (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count-1); y >= 0; y--)
+            for (int y = (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count - 1); y >= 0; y--)
             {
                 for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                 {
@@ -369,11 +369,11 @@ public class TempLevelTimer : MonoBehaviour
 
         finishedMsg.text = "FINISHED";
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
-        
+
         yield return new WaitForSeconds(3f);
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
-        
+
         //GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
 
     }

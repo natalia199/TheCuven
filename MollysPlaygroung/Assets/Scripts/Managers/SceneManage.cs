@@ -52,6 +52,7 @@ public class SceneManage : MonoBehaviour
         public Material originalMesh;        
         public bool variablesSet;
         public int deathTracker;
+        public bool sabotaged;
     };
 
     public void createPlayerStruct(string name)
@@ -65,6 +66,7 @@ public class SceneManage : MonoBehaviour
         boy.originalMesh = null;
         boy.variablesSet = false;
         boy.deathTracker = 0;
+        boy.sabotaged = false;
         playersInGame.Add(boy);
 
     }
@@ -379,5 +381,19 @@ public class SceneManage : MonoBehaviour
     {
         // saves all players that died in the level
         levelsWinner.Add(n);
+    }
+
+    public void setPlayersSabotageStatus(bool state, int player)
+    {
+        GamePlayer die = playersInGame[player];
+        die.sabotaged = state;
+        playersInGame[player] = die;
+    }
+    
+    public void setPlayersSwitcharooStatus(bool state, int player)
+    {
+        GamePlayer die = playersInGame[player];
+        die.stillAlive = state;
+        playersInGame[player] = die;
     }
 }
