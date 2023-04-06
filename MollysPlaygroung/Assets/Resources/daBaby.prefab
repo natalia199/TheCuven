@@ -181,6 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88ca5406344f5b4a8f1048faad3368a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneChoiceDecided: 0
+  sceneDecision: 0
   username: {fileID: 7668101212038612182}
   speed: 4
   speedModifier: 0.9
@@ -240,7 +242,7 @@ MonoBehaviour:
   alreadySetBearTrap: {fileID: 0}
   trapHeight: 0
   freezePlayer: 0
-  lifeDropSpeed: 0.2
+  lifeDropSpeed: 2
   lightPosition: {x: 0, y: 0}
   theLight: {fileID: 0}
   instantiateLightOnce: 0

@@ -19,9 +19,9 @@ public class LevelTransitions : MonoBehaviour
             btn.SetActive(false);
 
 
-        text.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+        text.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex];
 
-        levelInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker].transform.GetChild(0).gameObject.SetActive(true);
+        levelInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex].transform.GetChild(0).gameObject.SetActive(true);
         
     }
 

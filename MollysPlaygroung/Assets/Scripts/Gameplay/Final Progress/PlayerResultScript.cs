@@ -300,16 +300,7 @@ public class PlayerResultScript : MonoBehaviour
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient && !oneTimeSend)
         {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames.Length)
-            {
-                oneTimeSend = true;
-                PhotonNetwork.LoadLevel("Game Ending");
-            }
-            else
-            {
-                oneTimeSend = true;
-                PhotonNetwork.LoadLevel("Game Level Transition");
-            }
+            PhotonNetwork.LoadLevel("Game Level Transition");
         }
     }
 
@@ -359,6 +350,7 @@ public class PlayerResultScript : MonoBehaviour
             GameObject.Find(pname).GetComponent<PlayerResultScript>().playerSabotageChoice = true;
             GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[sabotagedPlayerChoice].username + " Sabotaged!";
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersSabotageStatus(true, vote);
+            GameObject.Find(pname).GetComponent<PlayerResultScript>().winnersChoiceComplete = true;
         }
         catch (NullReferenceException e)
         {

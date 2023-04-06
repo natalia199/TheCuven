@@ -90,17 +90,12 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 
     public void OnClick_StartGame()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            PhotonNetwork.CurrentRoom.IsOpen = false;
-            PhotonNetwork.CurrentRoom.IsVisible = false;
-            PhotonNetwork.LoadLevel("Game Introduction");
-        }
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame = true;
     }
 
     public void Update()
     {
-        if (PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.LocalPlayer.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
             startBtn.SetActive(true);
         else
             startBtn.SetActive(false);

@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class SceneManage : MonoBehaviour
 {
     public int sceneTracker;
+    public int chosenLevelIndex;
 
     public string[] levelNames;
 
@@ -38,6 +39,8 @@ public class SceneManage : MonoBehaviour
     public Material deadSkin;
 
     public bool countdownLevelCheck = true;
+
+    public bool beginGame = false;
 
     // USER DEMO VARIABLES
     //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
@@ -124,11 +127,8 @@ public class SceneManage : MonoBehaviour
     {
         DontDestroyOnLoad(this);
 
-        usernameScene.SetActive(true);
-        rumbleScene.SetActive(false);
-        charSelScene.SetActive(false);
-
         sceneTracker = 0;
+        chosenLevelIndex = UnityEngine.Random.Range(0, levelNames.Length);
 
         CurrentLevelState = false;
         countdownLevelCheck = true;
@@ -149,6 +149,10 @@ public class SceneManage : MonoBehaviour
     void Start()
     {
         PhotonNetwork.AutomaticallySyncScene = true;                                // Syncing all players views once they're in a room
+
+        usernameScene.SetActive(true);
+        rumbleScene.SetActive(false);
+        charSelScene.SetActive(false);
     }
 
 
@@ -275,21 +279,16 @@ public class SceneManage : MonoBehaviour
 
         sceneTracker++;
 
-        /*
-        if (sceneTracker == levelNames.Length)
+
+        if (sceneTracker == (playersInGame.Count-1))
         {
-
             PhotonNetwork.LoadLevel("Game Ending");
-
         }
         else
         {
-        */
             GameplayDone = false;
-
             PhotonNetwork.LoadLevel("LevelResult");
-
-       // }
+        }
     }
 
 
@@ -299,7 +298,7 @@ public class SceneManage : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel(levelNames[sceneTracker]);
+            PhotonNetwork.LoadLevel(levelNames[chosenLevelIndex]);
         }
     }
 

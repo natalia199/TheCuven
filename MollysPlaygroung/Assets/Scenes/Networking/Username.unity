@@ -5156,7 +5156,7 @@ RectTransform:
   m_GameObject: {fileID: 400276007}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3889, y: 1.3889, z: 1.3889}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1037338491}
@@ -5166,7 +5166,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -343.4, y: -174.67}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &400276009
@@ -9313,6 +9313,7 @@ Transform:
   - {fileID: 711389908}
   - {fileID: 1924013600}
   - {fileID: 1257175934}
+  - {fileID: 1761526373}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -12456,12 +12457,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneTracker: 1
+  chosenLevelIndex: 0
   levelNames:
-  - Envy
-  - Greed
-  - Gluttony
   - Wrath
+  - Greed
+  - Envy
   - Sloth
+  - Gluttony
   - Lust
   - Pride
   allPlayersInGame: []
@@ -12487,6 +12489,7 @@ MonoBehaviour:
   levelsWinner: []
   deadSkin: {fileID: 2100000, guid: cb554240724dc9440b7d01a2824abc0c, type: 2}
   countdownLevelCheck: 1
+  beginGame: 0
 --- !u!4 &859736303
 Transform:
   m_ObjectHideFlags: 0
@@ -21232,7 +21235,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 518373033}
-  - {fileID: 1761526373}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -24437,7 +24439,7 @@ GameObject:
   - component: {fileID: 1761526375}
   - component: {fileID: 1761526374}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: WaitingRoomCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24450,20 +24452,20 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761526372}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 9.373353}
+  m_LocalScale: {x: 0.008896413, y: 0.008896413, z: 0.007830661}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 400276008}
-  m_Father: {fileID: 1554246843}
-  m_RootOrder: 1
+  m_Father: {fileID: 678674818}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 3.183744, y: -4.046997}
+  m_SizeDelta: {x: 3046.0225, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1761526374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24503,7 +24505,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &1761526376
 Canvas:
   m_ObjectHideFlags: 0
@@ -24513,7 +24515,7 @@ Canvas:
   m_GameObject: {fileID: 1761526372}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 2
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

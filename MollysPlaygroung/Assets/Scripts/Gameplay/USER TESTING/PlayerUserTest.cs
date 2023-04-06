@@ -11,6 +11,9 @@ public class PlayerUserTest : MonoBehaviour
     Rigidbody rb;
     PhotonView view;
 
+    public bool sceneChoiceDecided = false;
+    public int sceneDecision;
+
     public TextMeshProUGUI username;
     string playersUsername;
 
@@ -359,6 +362,25 @@ public class PlayerUserTest : MonoBehaviour
 
                             catch (NullReferenceException e)
                             { }
+                        }
+                    }
+
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame) 
+                        {
+                            PhotonNetwork.CurrentRoom.IsOpen = false;
+                            PhotonNetwork.CurrentRoom.IsVisible = false;
+
+                            if (!sceneChoiceDecided)
+                            {
+                                sceneDecision = UnityEngine.Random.Range(0, GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames.Length - 1);
+                                sceneChoiceDecided = true;
+                            }
+
+                            Debug.Log("scene " + sceneDecision);
+
+                            view.RPC("beginTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                         }
                     }
 
@@ -1359,6 +1381,20 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
+    public void slippyOffyWrathy(string victim)
+    {
+        GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(victim));
+        GameObject.Find(victim).GetComponent<PlayerUserTest>().youLoseTheLevel = true;
+        GameObject.Find(victim).transform.position = GameObject.Find("holdingArea").transform.GetChild(0).position;
+    }
+
+    public void noMoreLifeSource(string victim)
+    {
+        GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().RecordSlothResults(GameObject.Find(victim));
+        GameObject.Find(victim).GetComponent<PlayerUserTest>().youLoseTheLevel = true;
+        GameObject.Find(victim).transform.position = GameObject.Find("holdingArea").transform.GetChild(0).position;
+    }
+
     public void gotMunched(string victim)
     {
         GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().RecordGluttonyResults(GameObject.Find(victim));
@@ -1438,6 +1474,24 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     // Username
+
+    [PunRPC]
+    void beginTheGame(string name, int firstLvlIndex)
+    {
+        try
+        {            
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex = firstLvlIndex;
+
+            if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                PhotonNetwork.LoadLevel("Game Introduction");
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
 
     [PunRPC]
     void getPlayersNickName(string name)
@@ -1600,8 +1654,9 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded) 
             {
-                GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(pName).gameObject);
+                //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(pName).gameObject);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded = true;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().slippyOffyWrathy(pName);
             }
         }
         catch (NullReferenceException e)
@@ -1662,8 +1717,9 @@ public class PlayerUserTest : MonoBehaviour
             if (state)
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().ranOutOfLife = state;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().noMoreLifeSource(pName);
                 //GameObject.Find(pName).GetComponent<PlayerUserTest>().allowNewDecrease = false;
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().addPlayerToSlothResults(pName);
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().addPlayerToSlothResults(pName);
             }
         }
         catch (NullReferenceException e)
@@ -2406,6 +2462,10 @@ public class PlayerUserTest : MonoBehaviour
         if (other.tag == "OffLimitsWrath")
         {
             fellOffPlatform = true;
+        }
+        if (other.tag == "WrathDeath")
+        {
+            youLoseTheLevel = true;
         }
     }
 
