@@ -44,6 +44,8 @@ public class PlayerUserTest : MonoBehaviour
     bool oneChipAtATimeThorw = false;
     public bool oneChipAtATimeCarry = false;
 
+    public bool waitHoldGreed = false;
+
     public GameObject carriedChip = null;
     public bool throwChipAcces = false;
 
@@ -473,14 +475,20 @@ public class PlayerUserTest : MonoBehaviour
                                     {
                                         if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
                                         {
-                                            throwChipAcces = true;
+                                            //throwChipAcces = true;
                                             view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber, bucketNameInteracted);
+                                            //throwChipAcces = true;
                                         }
                                     }
                                     else
                                     {
                                         oneChipAtATimeCarry = false;
-                                        throwChipAcces = false;
+                                        //throwChipAcces = false;
+                                    }
+
+                                    if (throwChipAcces && !waitHoldGreed)
+                                    {
+                                        StartCoroutine("lilWaitAfterChip");
                                     }
                                 }
 
@@ -1460,6 +1468,10 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies + "";
                 }
+                else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
+                {
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) + "";
+                }
                 else if (SceneManager.GetActiveScene().name == "Pride")
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().username.color = new Color(255, 255, 255, 0);
@@ -1932,6 +1944,16 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
+    IEnumerator lilWaitAfterChip()
+    {
+        waitHoldGreed = true;
+        Debug.Log("wait");
+        yield return new WaitForSeconds(0.3f);
+        throwChipAcces = false;
+        waitHoldGreed = false;
+        Debug.Log("go");
+    }
+
     [PunRPC]
     void throwChip(string pName, float f, int pActor, string bucketName)
     {
@@ -1939,6 +1961,8 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0 && !GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces) 
             {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
+
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
                 //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + pActor).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
@@ -1949,10 +1973,8 @@ public class PlayerUserTest : MonoBehaviour
 
                 for (int i = 0; i < GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count; i++)
                 {
-                    GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position = new Vector3(GameObject.Find(pName).transform.position.x, GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position.y - 0.5f, GameObject.Find(pName).transform.position.z);
+                    GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position = new Vector3(GameObject.Find(pName).transform.GetChild(4).position.x, GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position.y - 0.5f, GameObject.Find(pName).transform.GetChild(4).position.z);
                 }
-
-                //GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
             }
         }
         catch (NullReferenceException e)
@@ -2305,6 +2327,15 @@ public class PlayerUserTest : MonoBehaviour
             chipAccess = true;
             interactedChip = other.gameObject;
         }
+
+        // GREED
+
+        if (other.tag == "ChipZone")
+        {
+            throwAccess = true;
+            bucketNameInteracted = other.transform.parent.name;
+        }
+
 
         // ENVY
         if (other.tag == "Squirter")

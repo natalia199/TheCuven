@@ -29,7 +29,16 @@ public class ChipZoneDetection : MonoBehaviour
         {
             chipsInZone = zoneCollider.Length / 2;
 
-            scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips;
+            if (chipsInZone > 0)
+            {
+                scoreZoneTxt.text = "" + chipsInZone;
+            }
+            else
+            {
+                scoreZoneTxt.text = "";
+            }
+
+            //scoreZoneTxt.text = zoneCollider.Length / 2 + "/" + GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips;
         }
         else
         {
