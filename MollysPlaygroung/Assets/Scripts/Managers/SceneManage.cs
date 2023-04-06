@@ -10,10 +10,7 @@ public class SceneManage : MonoBehaviour
 {
     public int sceneTracker;
 
-    public int currentNumberOfPlayers;
-
     public string[] levelNames;
-    public List<string> finishedLevels = new List<string>();
 
     public List<string> allPlayersInGame = new List<string>();
     public List<GamePlayer> playersInGame = new List<GamePlayer>();
@@ -42,7 +39,8 @@ public class SceneManage : MonoBehaviour
 
     public bool countdownLevelCheck = true;
 
-
+    // USER DEMO VARIABLES
+    //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
 
     public struct GamePlayer
     {
@@ -70,6 +68,7 @@ public class SceneManage : MonoBehaviour
         boy.deathTracker = 0;
         boy.sabotaged = false;
         playersInGame.Add(boy);
+
     }
 
     public void updatePlayerCharacter(string pname, string character, int x)
@@ -255,36 +254,42 @@ public class SceneManage : MonoBehaviour
         }
     }
 
+    /*
+    // test
+    IEnumerator TestGame(int value)
+    {
+        yield return new WaitForSeconds(value);
+
+        PhotonNetwork.LoadLevel("Game Level Transition");
+
+        yield return new WaitForSeconds(value);
+
+        PhotonNetwork.LoadLevel("MovementTester");
+    }
+    */
+
     public void NextGameaz()
     {
         GameplayDone = false;
         CurrentLevelState = false;
 
-        finishedLevels.Add(levelNames[sceneTracker]);
+        sceneTracker++;
 
-        currentNumberOfPlayers = 0;
-
-        for (int i = 0; i < playersInGame.Count; i++)
+        /*
+        if (sceneTracker == levelNames.Length)
         {
-            if (playersInGame[i].stillAlive)
-            {
-                currentNumberOfPlayers++;
-            }
-        }
 
-        if (currentNumberOfPlayers <= 2)
-        {
-            setPlayersLifeStatus(false);
-            GameplayDone = false;
             PhotonNetwork.LoadLevel("Game Ending");
+
         }
         else
         {
-            sceneTracker++;
+        */
             GameplayDone = false;
 
             PhotonNetwork.LoadLevel("LevelResult");
-        }
+
+       // }
     }
 
 
@@ -304,6 +309,34 @@ public class SceneManage : MonoBehaviour
 
         PhotonNetwork.LoadLevel("Game Level Transition");
     }
+
+    /*
+    IEnumerator LevelTransition(int value)
+    {
+        PhotonNetwork.LoadLevel("Game Level Transition");
+
+        GameplayDone = false;
+
+        yield return new WaitForSeconds(value);
+
+        PhotonNetwork.LoadLevel(levelNames[sceneTracker]);
+    }
+
+    // Players
+    public void DeadPlayer(string name)
+    {
+        allPlayersDead.Add(name);
+
+        for (int i = 0; 0 < allPlayersInGame.Count; i++)
+        {
+            if (allPlayersInGame[i] == name)
+            {
+                allPlayersInGame.RemoveAt(i);
+                break;
+            }
+        }
+    }
+    */
 
     public void currentLevelsLoser(string n)
     {

@@ -97,14 +97,14 @@ public class PlayerResultScript : MonoBehaviour
 
                         if (GameObject.Find("GameManager").GetComponent<ResultGameManager>().accessToSpin)
                         {
-                            GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = "Press Space to Stop";
+                            GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = "Press Space to Spin";
 
                             if (Input.GetKeyDown(KeyCode.Space))
                             {
                                 GameObject.Find("GameManager").GetComponent<ResultGameManager>().accessToSpin = false;
                                 GameObject.Find("GameManager").GetComponent<ResultGameManager>().WheelOfFortune.transform.GetChild(0).GetComponent<WheelSpin>().increasing = false;
                                 wheelSpun = true;
-                                GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = "";
+
                                 Debug.Log("DONE SPIN");
                             }
                         }
@@ -280,7 +280,7 @@ public class PlayerResultScript : MonoBehaviour
                 // LOSER
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0] != PhotonNetwork.LocalPlayer.NickName && GameObject.Find("GameManager").GetComponent<ResultGameManager>().SpinTheWheel && !wheelSpun)
                 {
-                    GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = "Winner deciding...";
+                    GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = "Outcome in Progress...";
                 }
             }
 
@@ -300,15 +300,16 @@ public class PlayerResultScript : MonoBehaviour
 
         if (PhotonNetwork.LocalPlayer.IsMasterClient && !oneTimeSend)
         {
-            oneTimeSend = true;
-
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentNumberOfPlayers <= 3)
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames.Length)
             {
-                GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker = 6;
+                oneTimeSend = true;
+                PhotonNetwork.LoadLevel("Game Ending");
             }
-
-            PhotonNetwork.LoadLevel("Game Level Transition");
-
+            else
+            {
+                oneTimeSend = true;
+                PhotonNetwork.LoadLevel("Game Level Transition");
+            }
         }
     }
 
@@ -358,9 +359,6 @@ public class PlayerResultScript : MonoBehaviour
             GameObject.Find(pname).GetComponent<PlayerResultScript>().playerSabotageChoice = true;
             GameObject.Find("GameManager").GetComponent<ResultGameManager>().wheelText.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[sabotagedPlayerChoice].username + " Sabotaged!";
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersSabotageStatus(true, vote);
-
-            GameObject.Find(pname).GetComponent<PlayerResultScript>().winnersChoiceComplete = true;
-
         }
         catch (NullReferenceException e)
         {
