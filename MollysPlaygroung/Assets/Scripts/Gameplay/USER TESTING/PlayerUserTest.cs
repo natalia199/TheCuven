@@ -25,7 +25,7 @@ public class PlayerUserTest : MonoBehaviour
     public bool cameraSwitch = false;
     public bool chipAccess = false;
     public bool munchedYou = false;
-    bool throwAccess = false;
+    public bool throwAccess = false;
     public float throwForce;
     public int collectionTracker = 0;
     int thrownTracker = 0;
@@ -473,7 +473,7 @@ public class PlayerUserTest : MonoBehaviour
                                     {
                                         if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
                                         {
-                                            throwChipAcces = true;
+                                            //throwChipAcces = true;
                                             view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber, bucketNameInteracted);
                                         }
                                     }
@@ -1062,7 +1062,7 @@ public class PlayerUserTest : MonoBehaviour
                             {
                                 MovePlayer();
 
-                                if (Input.GetKeyDown(KeyCode.Space))
+                                if (Input.GetKeyDown(KeyCode.Space) && playerIsGrounded)
                                 {
                                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                                     view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
@@ -1075,7 +1075,7 @@ public class PlayerUserTest : MonoBehaviour
                             {
                                 MovePlayer();
 
-                                if (Input.GetKeyDown(KeyCode.Space))
+                                if (Input.GetKeyDown(KeyCode.Space) && playerIsGrounded)
                                 {
                                     Vector3 vel = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
                                     view.RPC("jumpBoyJump", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vel);
@@ -1543,7 +1543,7 @@ public class PlayerUserTest : MonoBehaviour
     }
 
 
-    // Levels
+    // FInish Game
 
     void actualEndGame()
     {
@@ -1937,8 +1937,12 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0 && !GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces) 
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0 && !GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces)
             {
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
+
+                Debug.Log("yee yeet");
+
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
                 //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + pActor).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
@@ -1952,7 +1956,6 @@ public class PlayerUserTest : MonoBehaviour
                     GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position = new Vector3(GameObject.Find(pName).transform.position.x, GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position.y - 0.5f, GameObject.Find(pName).transform.position.z);
                 }
 
-                //GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
             }
         }
         catch (NullReferenceException e)
