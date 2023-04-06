@@ -24,6 +24,7 @@ public class SceneManage : MonoBehaviour
 
     public List<GameObject> characters = new List<GameObject>();
     public List<GameObject> modelledCharacters = new List<GameObject>();
+    public Material winnerMesh;
 
     public GameObject usernameScene;
     public GameObject rumbleScene;

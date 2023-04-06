@@ -1147,7 +1147,7 @@ public class PlayerUserTest : MonoBehaviour
                     }
                 }
             }
-            else if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "gameover")
+            else if (SceneManager.GetActiveScene().name == "Game Ending")
             {
                 try
                 {
@@ -1155,7 +1155,15 @@ public class PlayerUserTest : MonoBehaviour
                     {
                         try
                         {
-                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                            if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive) 
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                            }
+                            else
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().winnerMesh;
+                            }
                         }
 
                         catch (NullReferenceException e)
