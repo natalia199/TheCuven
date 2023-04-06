@@ -6,23 +6,32 @@ using TMPro;
 
 public class LevelTransitions : MonoBehaviour
 {
-    public TextMeshProUGUI text;
+    //public TextMeshProUGUI text;
     public GameObject btn;
 
-    public List<GameObject> levelInstructions = new List<GameObject>();
+    public List<Material> bookInstructions = new List<Material>();
+    public List<Material> tarotCards = new List<Material>();
+
+    public Vector3 moveHandTo;
+
+    public GameObject hand;
+    public GameObject RightHand;
+    public GameObject handCards;
+    public GameObject tarotCard;
+    public GameObject book;
+
+    public bool moveHandNow = false;
+
 
     void Start()
     {
-        if (PhotonNetwork.IsMasterClient)
-            btn.SetActive(true);
-        else
-            btn.SetActive(false);
+        // SET TAROT CARD AND BOOK MESH HERE
 
+        tarotCard.GetComponent<MeshRenderer>().material = tarotCards[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex];
+        book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex];
 
-        text.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex];
+        StartCoroutine("moveHand");
 
-        levelInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex].transform.GetChild(0).gameObject.SetActive(true);
-        
     }
 
     public void DaButton()
@@ -32,6 +41,34 @@ public class LevelTransitions : MonoBehaviour
 
     void Update()
     {
-        GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = false;
+        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = false;
+
+        if (moveHandNow)
+        {
+            hand.transform.position = Vector3.Lerp(hand.transform.position, moveHandTo, Time.deltaTime * 3f);
+        }
+
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            btn.SetActive(true);
+        }
+        else
+        {
+            btn.SetActive(false);
+        }
+
+    }
+
+    IEnumerator moveHand()
+    {
+        yield return new WaitForSeconds(3);
+
+        moveHandNow = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        RightHand.SetActive(false);
+        handCards.SetActive(false);
     }
 }
