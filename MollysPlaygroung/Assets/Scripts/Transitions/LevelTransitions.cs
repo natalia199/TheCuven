@@ -12,15 +12,15 @@ public class LevelTransitions : MonoBehaviour
     public List<Material> bookInstructions = new List<Material>();
     public List<Material> tarotCards = new List<Material>();
 
-    public Vector3 moveHandTo;
+    //public Vector3 moveHandTo;
 
-    public GameObject hand;
-    public GameObject RightHand;
-    public GameObject handCards;
+    //public GameObject hand;
+    //public GameObject RightHand;
+    //public GameObject handCards;
     public GameObject tarotCard;
     public GameObject book;
 
-    public bool moveHandNow = false;
+    //public bool moveHandNow = false;
 
 
     void Start()
@@ -38,7 +38,7 @@ public class LevelTransitions : MonoBehaviour
             book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[tarotCards.Count - 1];
         }
 
-        StartCoroutine("moveHand");
+        //StartCoroutine("moveHand");
 
     }
 
@@ -47,16 +47,9 @@ public class LevelTransitions : MonoBehaviour
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextSceneButton();
     }
 
+
     void Update()
     {
-        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = false;
-
-        if (moveHandNow)
-        {
-            hand.transform.position = Vector3.Lerp(hand.transform.position, moveHandTo, Time.deltaTime * 3f);
-        }
-
-
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             btn.SetActive(true);
@@ -65,9 +58,9 @@ public class LevelTransitions : MonoBehaviour
         {
             btn.SetActive(false);
         }
-
+        
     }
-
+/*
     IEnumerator moveHand()
     {
         yield return new WaitForSeconds(3);
@@ -78,5 +71,5 @@ public class LevelTransitions : MonoBehaviour
 
         RightHand.SetActive(false);
         handCards.SetActive(false);
-    }
+    }*/
 }

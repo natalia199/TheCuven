@@ -1492,7 +1492,7 @@ public class PlayerUserTest : MonoBehaviour
 
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
-                PhotonNetwork.LoadLevel("Game Introduction");
+                PhotonNetwork.LoadLevel("Intro_Scene");
             }
         }
         catch (NullReferenceException e)

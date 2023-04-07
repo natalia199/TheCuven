@@ -78,8 +78,8 @@ public class ResultGameManager : MonoBehaviour
         //SpinTheWheel = true;
 
 
-        PhotonNetwork.LoadLevel("Game Level Transition");
-       
+        // On to the next scene
+        PhotonNetwork.LoadLevel("Card_Scene");     
 
     }
 

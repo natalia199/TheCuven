@@ -230,13 +230,13 @@ public class SceneManage : MonoBehaviour
             }
         }
 
-        else if (SceneManager.GetActiveScene().name == "Game Introduction" && !gameFlowBegin)
+        else if (SceneManager.GetActiveScene().name == "Intro_Scene" && !gameFlowBegin)
         {
             countdownLevelCheck = false;
 
             if (PhotonNetwork.IsMasterClient)
             {
-                StartCoroutine("BeginGame", 3);
+                //StartCoroutine("BeginGame", 3);
             }
             gameFlowBegin = true;
         }
