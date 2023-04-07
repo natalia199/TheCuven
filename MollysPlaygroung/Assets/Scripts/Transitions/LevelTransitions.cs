@@ -27,8 +27,16 @@ public class LevelTransitions : MonoBehaviour
     {
         // SET TAROT CARD AND BOOK MESH HERE
 
-        tarotCard.GetComponent<MeshRenderer>().material = tarotCards[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex];
-        book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex];
+        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker < (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1))
+        {
+            tarotCard.GetComponent<MeshRenderer>().material = tarotCards[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+            book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+        }
+        else
+        {
+            tarotCard.GetComponent<MeshRenderer>().material = tarotCards[tarotCards.Count - 1];
+            book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[tarotCards.Count - 1];
+        }
 
         StartCoroutine("moveHand");
 

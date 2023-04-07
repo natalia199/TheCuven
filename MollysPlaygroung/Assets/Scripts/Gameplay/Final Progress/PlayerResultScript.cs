@@ -38,9 +38,9 @@ public class PlayerResultScript : MonoBehaviour
     {
         view = GetComponent<PhotonView>();
 
-        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++)
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
         {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName)
             {
                 playerNumber = i;
             }
@@ -86,7 +86,7 @@ public class PlayerResultScript : MonoBehaviour
                     catch (NullReferenceException e) { }
                 }
 
-
+                /*
                 // Wheel
                 // WINNER
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0] == PhotonNetwork.LocalPlayer.NickName)
@@ -290,6 +290,8 @@ public class PlayerResultScript : MonoBehaviour
                 GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner = new List<string>();
 
                 StartCoroutine("likklePause");
+            }
+                */
             }
         }
     }

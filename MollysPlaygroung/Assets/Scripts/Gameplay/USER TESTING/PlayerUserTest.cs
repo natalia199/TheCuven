@@ -374,7 +374,7 @@ public class PlayerUserTest : MonoBehaviour
 
                             if (!sceneChoiceDecided)
                             {
-                                sceneDecision = UnityEngine.Random.Range(0, GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames.Length - 1);
+                                sceneDecision = UnityEngine.Random.Range(0, GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1);
                                 sceneChoiceDecided = true;
                             }
 

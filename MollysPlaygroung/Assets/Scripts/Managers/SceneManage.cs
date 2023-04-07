@@ -11,7 +11,11 @@ public class SceneManage : MonoBehaviour
     public int sceneTracker;
     public int chosenLevelIndex;
 
-    public string[] levelNames;
+    //public string[] levelNames;
+
+    public List<string> minigameLevels = new List<string>();
+    public string finalMinigame;
+
 
     public List<string> allPlayersInGame = new List<string>();
     public List<GamePlayer> playersInGame = new List<GamePlayer>();
@@ -43,15 +47,11 @@ public class SceneManage : MonoBehaviour
 
     public bool beginGame = false;
 
-    // USER DEMO VARIABLES
-    //public bool SingleOrMultiPlayer = true;                                        // False = single player, True = multi player
-
     public struct GamePlayer
     {
         public string username;
         public string chosenCharacter;
         public int characterID;
-        public int listID;
         public bool stillAlive;
         public Material originalMesh;        
         public bool variablesSet;
@@ -65,7 +65,6 @@ public class SceneManage : MonoBehaviour
         boy.username = name;
         boy.chosenCharacter = "";
         boy.characterID = -1;
-        boy.listID = -1;
         boy.stillAlive = false;
         boy.originalMesh = null;
         boy.variablesSet = false;
@@ -129,7 +128,7 @@ public class SceneManage : MonoBehaviour
         DontDestroyOnLoad(this);
 
         sceneTracker = 0;
-        chosenLevelIndex = UnityEngine.Random.Range(0, levelNames.Length);
+        chosenLevelIndex = UnityEngine.Random.Range(0, minigameLevels.Count);
 
         CurrentLevelState = false;
         countdownLevelCheck = true;
@@ -259,19 +258,6 @@ public class SceneManage : MonoBehaviour
         }
     }
 
-    /*
-    // test
-    IEnumerator TestGame(int value)
-    {
-        yield return new WaitForSeconds(value);
-
-        PhotonNetwork.LoadLevel("Game Level Transition");
-
-        yield return new WaitForSeconds(value);
-
-        PhotonNetwork.LoadLevel("MovementTester");
-    }
-    */
 
     public void NextGameaz()
     {
@@ -280,8 +266,8 @@ public class SceneManage : MonoBehaviour
 
         sceneTracker++;
 
-
-        if (sceneTracker == (playersInGame.Count-1))
+        
+        if (sceneTracker == (minigameLevels.Count-1))
         {
             PhotonNetwork.LoadLevel("Game Ending");
         }
@@ -299,7 +285,7 @@ public class SceneManage : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel(levelNames[chosenLevelIndex]);
+            PhotonNetwork.LoadLevel(minigameLevels[sceneTracker]);
         }
     }
 
@@ -309,34 +295,6 @@ public class SceneManage : MonoBehaviour
 
         PhotonNetwork.LoadLevel("Game Level Transition");
     }
-
-    /*
-    IEnumerator LevelTransition(int value)
-    {
-        PhotonNetwork.LoadLevel("Game Level Transition");
-
-        GameplayDone = false;
-
-        yield return new WaitForSeconds(value);
-
-        PhotonNetwork.LoadLevel(levelNames[sceneTracker]);
-    }
-
-    // Players
-    public void DeadPlayer(string name)
-    {
-        allPlayersDead.Add(name);
-
-        for (int i = 0; 0 < allPlayersInGame.Count; i++)
-        {
-            if (allPlayersInGame[i] == name)
-            {
-                allPlayersInGame.RemoveAt(i);
-                break;
-            }
-        }
-    }
-    */
 
     public void currentLevelsLoser(string n)
     {
