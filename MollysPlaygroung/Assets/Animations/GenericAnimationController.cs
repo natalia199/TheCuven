@@ -119,6 +119,10 @@ public class GenericAnimationController : MonoBehaviour
         {
             animator.SetTrigger("standTrigger");
         }
+        if (Input.GetKeyDown("m"))
+        {
+            animator.SetTrigger("MunchTrigger");
+        }
 
     }
 }
