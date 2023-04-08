@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using Photon.Pun;
 using System;
+using UnityEngine.UI;
 
 public class PlayerUserTest : MonoBehaviour
 {
@@ -74,7 +75,7 @@ public class PlayerUserTest : MonoBehaviour
 
     // GLUTTONY
     bool eatFood = false;
-    bool vomit = false;
+    public bool vomit = false;
     public bool foodCollected = false;
     public int collectedFoodies;
     public Vector2 foodPosition;
@@ -599,6 +600,19 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
+                                if (vomit)
+                                {
+                                    Vector3 vomitedPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+                                    Vector3 vomitedDirection = new Vector3(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(7, 10), UnityEngine.Random.Range(-5, 5));
+
+                                    Vector3 direction = vomitedDirection;
+                                    direction = direction.normalized;
+
+                                    int typaFood = UnityEngine.Random.Range(0, 3);                                    
+
+                                    view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vomitedPos, direction, 400f, typaFood);
+                                }
+
                                 // Instantiation
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
@@ -673,36 +687,17 @@ public class PlayerUserTest : MonoBehaviour
                                     }
                                 }
 
-                                // when player gets hit by a bomb or another player hits them w hammer
                                 // Puking
-                                /*if (Input.GetKeyDown(KeyCode.P))
+                                if (Input.GetKeyDown(KeyCode.I))
                                 {
-                                    if (collectedFoodies > 0 && !vomit)
+                                    if (interactedOpponent != null) 
                                     {
-
-                                        Vector3 vomitedPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-                                        Vector3 vomitedDirection = new Vector3(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(3, 5), UnityEngine.Random.Range(-5, 5));
-
-                                        Vector3 direction = vomitedDirection;
-                                        direction = direction.normalized;
-
-                                        view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vomitedPos, direction, 300f);
-                                        collectedFoodies--;
-
-                                // split here, above was commented out
-
-                                        collectedFoodies = 0;
-                                        view.RPC("muchiesScore", RpcTarget.AllBufferedViaServer, view.Owner.NickName, collectedFoodies);
-
-                                        vomit = true;
+                                        if (interactedOpponent.GetComponent<PlayerUserTest>().collectedFoodies >= 2)
+                                        {
+                                            view.RPC("VomitBitch", RpcTarget.AllBufferedViaServer, interactedOpponent.name);
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    vomit = false;
-                                }
-                                */
-
                             }
                         }
                         // ENVY LEVEL
@@ -1428,7 +1423,6 @@ public class PlayerUserTest : MonoBehaviour
             GameObject.Find(victim).GetComponent<PlayerUserTest>().oofGotMunched = true;
             GameObject.Find(name).GetComponent<PlayerUserTest>().bigBoyMunch = false;
             GameObject.Find(name).GetComponent<PlayerUserTest>().collectedFoodies = 0;
-            GameObject.Find(name).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.white;
             GameObject.Find(name).GetComponent<PlayerUserTest>().interactedOpponent = null;
             GameObject.Find(victim).GetComponent<PlayerUserTest>().gotMunched(victim);
         }
@@ -1536,14 +1530,27 @@ public class PlayerUserTest : MonoBehaviour
                 if (SceneManager.GetActiveScene().name == "Sloth")
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().lifeSource + "";
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
                 }
                 else if (SceneManager.GetActiveScene().name == "Gluttony" && GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies > 0)
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies + "";
+
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 2)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                    }
+                    else if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies >= 2)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(true);
+                    }
                 }
                 else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) + "";
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(3).gameObject.SetActive(true);
                 }
                 else if (SceneManager.GetActiveScene().name == "Pride")
                 {
@@ -1552,18 +1559,36 @@ public class PlayerUserTest : MonoBehaviour
                 else if (SceneManager.GetActiveScene().name == "Lust")
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys + "";
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+                }
+                else if (SceneManager.GetActiveScene().name == "Envy")
+                {
+                    //GameObject.Find(Player).GetComponent<PlayerUserTest>().transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys + "";
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(true);
                 }
                 else
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
                 }
+
+                if (SceneManager.GetActiveScene().name == "Gluttony")
+                {
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 1)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                    }
+                }
             }
+            
 
 
             GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
             GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
-            GameObject.Find(Player).transform.GetChild(0).GetChild(1).LookAt(GameObject.Find("Main Camera").transform);
-            GameObject.Find(Player).transform.GetChild(0).GetChild(1).transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
+            //GameObject.Find(Player).transform.GetChild(0).GetChild(1).LookAt(GameObject.Find("Main Camera").transform);
+            //GameObject.Find(Player).transform.GetChild(0).GetChild(1).transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
+            GameObject.Find(Player).transform.GetChild(0).LookAt(GameObject.Find("Main Camera").transform);
+            GameObject.Find(Player).transform.GetChild(0).transform.rotation = Quaternion.LookRotation(GameObject.Find("Main Camera").transform.forward);
         }
         catch (NullReferenceException e)
         {
@@ -1895,7 +1920,6 @@ public class PlayerUserTest : MonoBehaviour
         try
         {            
             GameObject.Find(pName).GetComponent<PlayerUserTest>().bigBoyMunch = true;
-            GameObject.Find(pName).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.red;
         }
         catch (NullReferenceException e)
         {
@@ -1909,7 +1933,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood == null)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[food], new Vector3(pos.x, 12f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[food], new Vector3(pos.x, 15f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
             }
 
         }
@@ -1919,18 +1943,39 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
     [PunRPC]
-    void setVomitPosition(string pName, Vector3 pos, Vector3 dir, float force)
+    void VomitBitch(string victim)
     {
         try
         {
-            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood == null)
+            if (GameObject.Find(victim).GetComponent<PlayerUserTest>().collectedFoodies >= 2)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodPrefab, new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
+                GameObject.Find(victim).GetComponent<PlayerUserTest>().vomit = true;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+    [PunRPC]
+    void setVomitPosition(string pName, Vector3 pos, Vector3 dir, float force, int type)
+    //void setVomitPosition(string pName)
+    {
+        try
+        {
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().vomit)
+            {                
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[type], new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
 
                 // dir = dir.normalized;
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.AddComponent<Rigidbody>();
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.AddComponent<Rigidbody>();
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.GetComponent<Rigidbody>().AddForce(dir * force);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.GetComponent<Rigidbody>().AddTorque(dir * 50);
+
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies--;
+
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = null;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().vomit = false;
             }
         }
         catch (NullReferenceException e)

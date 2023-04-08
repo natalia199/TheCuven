@@ -53,6 +53,7 @@ public class GluttonyGameplayManager : MonoBehaviour
         }
     }
 
+
     public void RecordGluttonyResults(GameObject player)
     {
         if (gluttonyResults.Count == 0)
@@ -84,7 +85,7 @@ public class GluttonyGameplayManager : MonoBehaviour
     {
         Debug.Log("trap instant");
 
-        food.AddComponent<Rigidbody>();
+        //food.AddComponent<Rigidbody>();
         FoodInstantiation();
     }
     public void FoodInstantiation()
@@ -100,41 +101,19 @@ public class GluttonyGameplayManager : MonoBehaviour
         foodReady = true;
     }
 
-
-    /*
-    public void addFood(GameObject food)
-    {
-        food.AddComponent<Rigidbody>();
-        FoodInstantiation();
-    }
-
+/*
     public void addVomitedFood(GameObject food)
     {
         //food.AddComponent<Rigidbody>();
         VomitInstantiation();
     }
 
-    public void FoodInstantiation()
-    {
-        StartCoroutine("HoldIt", 2);
-    }
-
-    IEnumerator HoldIt(float time)
-    {
-        yield return new WaitForSeconds(time);
-
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theFood = null;
-        GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().instantiateFoodOnce = false;
-        foodReady = true;
-    }
-
     public void VomitInstantiation()
     {
         GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().theVomittedFood = null;
     }
-    */
-
-    /*
+    
+    
     public void VomittedFood(Vector3 playerPos)
     {
         GameObject food = Instantiate(FoodPrefab, new Vector3(playerPos.x, playerPos.y + 1.5f, playerPos.z), Quaternion.identity, FoodParent.transform);
@@ -164,6 +143,7 @@ public class GluttonyGameplayManager : MonoBehaviour
         food.GetComponent<Rigidbody>().AddForce(direction * force);
         food.GetComponent<Rigidbody>().AddTorque(direction * 50);
     }
+
 
     IEnumerator HoldIt(float time)
     {
