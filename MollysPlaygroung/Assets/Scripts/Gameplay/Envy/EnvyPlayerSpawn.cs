@@ -10,53 +10,31 @@ public class EnvyPlayerSpawn : MonoBehaviour
 
     void Awake()
     {
-        /*
-        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame.Count; i++) {
-
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().allPlayersInGame[i] == PhotonNetwork.LocalPlayer.NickName)
+        if (SceneManager.GetActiveScene().name == "Pride")
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name, transform.position, new Quaternion(0, 180, 0, transform.rotation.w));
+        }
+        else if (SceneManager.GetActiveScene().name == "Game Ending")
+        {
+            if (PhotonNetwork.LocalPlayer.NickName == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0])
             {
-                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().SingleOrMultiPlayer) 
-                {
-                    PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), Quaternion.identity);
-                }
-                else
-                {
-                    GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, singlePlayerSpawn.transform.position, Quaternion.identity);
-                    player.GetComponent<PhotonTransformViewClassic>().m_PositionModel.SynchronizeEnabled = false;
-                    player.GetComponent<PhotonTransformViewClassic>().m_RotationModel.SynchronizeEnabled = false;
-                }
+                PhotonNetwork.Instantiate(playerPrefab.name, GameObject.Find("WinnerSpot").transform.position, new Quaternion(0, 180, 0, transform.rotation.w));
             }
-        }
-        */
-
-        if (SceneManager.GetActiveScene().name != "Pride")
-        {
-            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), transform.rotation);
-        }
-        else if (SceneManager.GetActiveScene().name != "Game Ending")
-        {
-            for(int i= 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+            else
             {
-                if(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].stillAlive)
+                if (Random.Range(0, 2) == 0)
                 {
-                    PhotonNetwork.Instantiate(playerPrefab.name, GameObject.Find("WinnerSpot").transform.position, transform.rotation);
+                    PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(0).position.x, GameObject.Find("LoserSpots").transform.GetChild(1).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(1).position.z, GameObject.Find("LoserSpots").transform.GetChild(0).position.z)), new Quaternion(0, 180, 0, transform.rotation.w));
                 }
                 else
                 {
-                    if (Random.Range(0, 2) == 0)
-                    {
-                        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(0).position.x, GameObject.Find("LoserSpots").transform.GetChild(1).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(0).position.z, GameObject.Find("LoserSpots").transform.GetChild(1).position.z)), transform.rotation);
-                    }
-                    else
-                    {
-                        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(2).position.x, GameObject.Find("LoserSpots").transform.GetChild(3).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(2).position.z, GameObject.Find("LoserSpots").transform.GetChild(3).position.z)), transform.rotation);
-                    }
+                    PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(2).position.x, GameObject.Find("LoserSpots").transform.GetChild(3).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(3).position.z, GameObject.Find("LoserSpots").transform.GetChild(2).position.z)), new Quaternion(0, 180, 0, transform.rotation.w));
                 }
             }
         }
         else
         {
-            PhotonNetwork.Instantiate(playerPrefab.name, transform.position, transform.rotation);
+            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), new Quaternion(0, 180, 0, transform.rotation.w));
         }
     }
 }

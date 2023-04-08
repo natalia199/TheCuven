@@ -11,7 +11,7 @@ public class SurveySwitch : MonoBehaviour
 
     void Start()
     {
-        text.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelNames[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker - 1];
+        text.text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker - 1];
 
         if (PhotonNetwork.IsMasterClient)
             btn.SetActive(true);

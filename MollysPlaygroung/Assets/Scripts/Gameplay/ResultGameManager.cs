@@ -63,28 +63,24 @@ public class ResultGameManager : MonoBehaviour
 
     IEnumerator HandCrush(float time)
     {
-        yield return new WaitForSeconds(1);
 
-        loserPlayer.text = "LOSER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[0];
+        loserPlayer.text = "" + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser[0];
 
         //yield return new WaitForSeconds(5);
 
-        winnerPlayer.text = "WINNER: " + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0];
+        winnerPlayer.text = "" + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0];
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
 
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
 
-        SpinTheWheel = true;
+        //SpinTheWheel = true;
 
 
-        // SHOW DEAD PERSON
+        // On to the next scene
+        PhotonNetwork.LoadLevel("Card_Scene");     
 
-        // REWARD WINNER
-
-        // set new results and GO TO NEXT LEVEL
-        // 
     }
 
 }
