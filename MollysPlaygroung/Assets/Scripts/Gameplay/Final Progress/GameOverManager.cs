@@ -12,6 +12,11 @@ public class GameOverManager : MonoBehaviourPunCallbacks
 
     public float m_Speed;
 
+    void Awake()
+    {
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState = "game over";
+    }
+
     void Start()
     {
         StartCoroutine("CreditsFinished");
@@ -33,7 +38,7 @@ public class GameOverManager : MonoBehaviourPunCallbacks
 
     IEnumerator CreditsFinished()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(8);
 
         startCredits = true;
     }

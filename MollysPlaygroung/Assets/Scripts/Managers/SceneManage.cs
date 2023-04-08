@@ -267,7 +267,7 @@ public class SceneManage : MonoBehaviour
         sceneTracker++;
 
         
-        if (sceneTracker == (minigameLevels.Count-1))
+        if (sceneTracker == (minigameLevels.Count))
         {
             PhotonNetwork.LoadLevel("Game Ending");
         }

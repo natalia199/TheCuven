@@ -29,7 +29,7 @@ public class AbominationsAnimations : MonoBehaviour
             {
                 if (SceneManager.GetActiveScene().name != "LevelResult")
                 {
-                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble" || GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "gameover")
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble" || GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "game over")
                     {
                         if (GetComponent<PlayerUserTest>().playerIsGrounded) 
                         {
@@ -113,7 +113,7 @@ public class AbominationsAnimations : MonoBehaviour
                 float inputVertical = Input.GetAxisRaw("Vertical");
                 bool directionPressed = inputHorizontal != 0 || inputVertical != 0;
 
-                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble")
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "rumble" || GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "game over")
                 {
                     if (SceneManager.GetActiveScene().name != "LevelResult")
                     {

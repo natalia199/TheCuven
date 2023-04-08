@@ -84,16 +84,17 @@ public class PrideGameplayManager : MonoBehaviour
 
     void Update()
     {
-        if (GetComponent<TempLevelTimer>().startingCountdown <= 1f && GetComponent<TempLevelTimer>().startingCountdown > 0f)
+        /*
+        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck && )
         {
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimer = timeStamps[timeStampTrack];
         }
+        */
     }
 
     public void setPoisonedCup(string pname, string cup)
     {
         poisonedCup = cup;
-        chosenCupText.text = "Cup : " + cup;
 
         StartCoroutine("likklePause", 3f);
     }
@@ -101,7 +102,6 @@ public class PrideGameplayManager : MonoBehaviour
     public void setDrinkingCup(string pname, string cup)
     {
         drinkingCup = cup;
-        chosenCupText.text = "Cup : " + cup;
 
         StartCoroutine("likklePause", 3f);
     }
