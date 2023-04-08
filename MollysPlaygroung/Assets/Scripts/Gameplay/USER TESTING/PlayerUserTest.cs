@@ -600,26 +600,27 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
+                                /*
                                 if (vomit)
-                                {/*
+                                {
                                     Vector3 vomitedPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
                                     Vector3 vomitedDirection = new Vector3(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(3, 5), UnityEngine.Random.Range(-5, 5));
 
                                     Vector3 direction = vomitedDirection;
                                     direction = direction.normalized;
 
-                                    view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, interactedOpponent.name, vomitedPos, direction, 300f);*/
+                                    /*view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, interactedOpponent.name, vomitedPos, direction, 300f);
 
 
-                                    Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[1], new Vector3(GameObject.Find(pName).transform.position.x + 2f, GameObject.Find(pName).transform.position.y + 3f, GameObject.Find(pName).transform.position.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
+                                    Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[1], new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
 
-                                    GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies--;
+                                    collectedFoodies--;
 
-                                    GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = null;
+                                    theVomittedFood = null;
 
                                     view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, interactedOpponent.name);
                                 }
-
+                            */
                                 // Instantiation
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
