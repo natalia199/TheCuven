@@ -1556,10 +1556,9 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().username.color = new Color(255, 255, 255, 0);
                 }
-                else if (SceneManager.GetActiveScene().name == "Lust")
+                else if (SceneManager.GetActiveScene().name == "Lust" && GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys > 0)
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys + "";
-                    GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
                 }
                 else if (SceneManager.GetActiveScene().name == "Envy")
                 {
@@ -1573,10 +1572,21 @@ public class PlayerUserTest : MonoBehaviour
 
                 if (SceneManager.GetActiveScene().name == "Gluttony")
                 {
-                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 1)
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys < 1)
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                         GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                    }
+                }
+                else if (SceneManager.GetActiveScene().name == "Lust")
+                {
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().resetPosition)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(false);
                     }
                 }
             }
