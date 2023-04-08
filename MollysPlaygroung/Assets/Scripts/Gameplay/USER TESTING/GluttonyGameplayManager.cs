@@ -85,7 +85,7 @@ public class GluttonyGameplayManager : MonoBehaviour
     {
         Debug.Log("trap instant");
 
-        food.AddComponent<Rigidbody>();
+        //food.AddComponent<Rigidbody>();
         FoodInstantiation();
     }
     public void FoodInstantiation()

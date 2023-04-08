@@ -600,27 +600,19 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
-                                /*
                                 if (vomit)
                                 {
                                     Vector3 vomitedPos = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-                                    Vector3 vomitedDirection = new Vector3(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(3, 5), UnityEngine.Random.Range(-5, 5));
+                                    Vector3 vomitedDirection = new Vector3(UnityEngine.Random.Range(-5, 5), UnityEngine.Random.Range(7, 10), UnityEngine.Random.Range(-5, 5));
 
                                     Vector3 direction = vomitedDirection;
                                     direction = direction.normalized;
 
-                                    /*view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, interactedOpponent.name, vomitedPos, direction, 300f);
+                                    int typaFood = UnityEngine.Random.Range(0, 3);                                    
 
-
-                                    Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[1], new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
-
-                                    collectedFoodies--;
-
-                                    theVomittedFood = null;
-
-                                    view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, interactedOpponent.name);
+                                    view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vomitedPos, direction, 400f, typaFood);
                                 }
-                            */
+
                                 // Instantiation
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
@@ -698,7 +690,7 @@ public class PlayerUserTest : MonoBehaviour
                                 // Puking
                                 if (Input.GetKeyDown(KeyCode.I))
                                 {
-                                    if (interactedOpponent.GetComponent<PlayerUserTest>().collectedFoodies > 2)
+                                    if (interactedOpponent.GetComponent<PlayerUserTest>().collectedFoodies >= 2)
                                     {
                                         view.RPC("VomitBitch", RpcTarget.AllBufferedViaServer, interactedOpponent.name);
                                     }
@@ -1920,7 +1912,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood == null)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[food], new Vector3(pos.x, 12f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[food], new Vector3(pos.x, 15f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
             }
 
         }
@@ -1934,7 +1926,7 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (GameObject.Find(victim).GetComponent<PlayerUserTest>().collectedFoodies > 2)
+            if (GameObject.Find(victim).GetComponent<PlayerUserTest>().collectedFoodies >= 2)
             {
                 GameObject.Find(victim).GetComponent<PlayerUserTest>().vomit = true;
             }
@@ -1945,30 +1937,24 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
     [PunRPC]
-    //void setVomitPosition(string pName, Vector3 pos, Vector3 dir, float force)
-    void setVomitPosition(string pName)
+    void setVomitPosition(string pName, Vector3 pos, Vector3 dir, float force, int type)
+    //void setVomitPosition(string pName)
     {
         try
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().vomit)
-            {
-                /*
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().vomit = false;
-
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[1], new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
+            {                
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[type], new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
 
                 // dir = dir.normalized;
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.AddComponent<Rigidbody>();
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.AddComponent<Rigidbody>();
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.GetComponent<Rigidbody>().AddForce(dir * force);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood.GetComponent<Rigidbody>().AddTorque(dir * 50);
 
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedFoodies--;
 
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = null;
-                */
-
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().vomit = false;
-
             }
         }
         catch (NullReferenceException e)
