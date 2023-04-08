@@ -690,9 +690,12 @@ public class PlayerUserTest : MonoBehaviour
                                 // Puking
                                 if (Input.GetKeyDown(KeyCode.I))
                                 {
-                                    if (interactedOpponent.GetComponent<PlayerUserTest>().collectedFoodies >= 2)
+                                    if (interactedOpponent != null) 
                                     {
-                                        view.RPC("VomitBitch", RpcTarget.AllBufferedViaServer, interactedOpponent.name);
+                                        if (interactedOpponent.GetComponent<PlayerUserTest>().collectedFoodies >= 2)
+                                        {
+                                            view.RPC("VomitBitch", RpcTarget.AllBufferedViaServer, interactedOpponent.name);
+                                        }
                                     }
                                 }
                             }
@@ -1420,7 +1423,6 @@ public class PlayerUserTest : MonoBehaviour
             GameObject.Find(victim).GetComponent<PlayerUserTest>().oofGotMunched = true;
             GameObject.Find(name).GetComponent<PlayerUserTest>().bigBoyMunch = false;
             GameObject.Find(name).GetComponent<PlayerUserTest>().collectedFoodies = 0;
-            GameObject.Find(name).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.white;
             GameObject.Find(name).GetComponent<PlayerUserTest>().interactedOpponent = null;
             GameObject.Find(victim).GetComponent<PlayerUserTest>().gotMunched(victim);
         }
@@ -1533,7 +1535,17 @@ public class PlayerUserTest : MonoBehaviour
                 else if (SceneManager.GetActiveScene().name == "Gluttony" && GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies > 0)
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies + "";
-                    GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 2)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                    }
+                    else if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies >= 2)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(true);
+                    }
                 }
                 else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
                 {
@@ -1558,7 +1570,17 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "";
                 }
+
+                if (SceneManager.GetActiveScene().name == "Gluttony")
+                {
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 1)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                    }
+                }
             }
+            
 
 
             GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
@@ -1898,7 +1920,6 @@ public class PlayerUserTest : MonoBehaviour
         try
         {            
             GameObject.Find(pName).GetComponent<PlayerUserTest>().bigBoyMunch = true;
-            GameObject.Find(pName).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.red;
         }
         catch (NullReferenceException e)
         {
