@@ -40,7 +40,7 @@ public class EnvyGameplayManager : MonoBehaviour
             {
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[horse.GetComponent<EnvyHorse>().id].username)
                 {
-                    EnvyPointsResult[x] += 2;
+                    EnvyPointsResult[x] = EnvyPointsResult[x] + 2;
                     break;
                 }
             }
@@ -64,7 +64,7 @@ public class EnvyGameplayManager : MonoBehaviour
                 {
                     EnvyResults.Add(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
                     loserPos = x;
-                    EnvyPointsResult[x] -= 1;
+                    EnvyPointsResult[x] = EnvyPointsResult[x] - 1;
                     break;
                 }
             }
@@ -79,7 +79,7 @@ public class EnvyGameplayManager : MonoBehaviour
             // check if voted head of player x is the same number as the loser
             if (GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().votedHead == loserPos)
             {
-                EnvyPointsResult[x] += 1;
+                EnvyPointsResult[x] = EnvyPointsResult[x] + 1;
             }
             
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().votedHead = -1;
@@ -94,6 +94,11 @@ public class EnvyGameplayManager : MonoBehaviour
         for (int i = 0; i < EnvyHorses.Count; i++)
         {
             EnvyHorses[i].GetComponent<EnvyHorse>().resetAll();
+        }
+
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+        {
+            GameObject.Find("PointGrid").transform.GetChild(i).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = "" + EnvyPointsResult[i];
         }
     }
 
