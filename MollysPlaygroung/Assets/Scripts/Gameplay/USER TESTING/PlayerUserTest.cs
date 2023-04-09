@@ -1790,6 +1790,7 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
+
     [PunRPC]
     void setLightPosition(Vector2 pos, string pName)
     {
@@ -1797,7 +1798,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight == null)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, -1.4f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, -1.2f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
             }
         }
         catch (NullReferenceException e)
@@ -1828,12 +1829,17 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (!GameObject.Find(bearTrap).GetComponent<BoxCollider>().isTrigger)
+            if (!GameObject.Find(bearTrap).GetComponent<SlothObstacle>().oneTimeSet) 
             {
-                Destroy(GameObject.Find(bearTrap).GetComponent<BoxCollider>());
+                if (!GameObject.Find(bearTrap).GetComponent<BoxCollider>().isTrigger)
+                {
+                    Destroy(GameObject.Find(bearTrap).GetComponent<BoxCollider>());
+                    Destroy(GameObject.Find(bearTrap).GetComponent<Rigidbody>());
+
+                    GameObject.Find(bearTrap).GetComponent<SlothObstacle>().oneTimeSet = true;
+                }
             }
 
-            Destroy(GameObject.Find(bearTrap).GetComponent<Rigidbody>());
             GameObject.Find(bearTrap).tag = "SetBearTrap";
             GameObject.Find(bearTrap).GetComponent<SlothObstacle>().caughtPlayer = GameObject.Find(pName).gameObject;
             GameObject.Find(pName).GetComponent<PlayerUserTest>().gotBearTrapped = true;

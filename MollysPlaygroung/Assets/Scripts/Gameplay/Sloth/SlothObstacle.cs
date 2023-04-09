@@ -8,6 +8,8 @@ public class SlothObstacle : MonoBehaviour
 
     public GameObject caughtPlayer;
 
+    public bool oneTimeSet = false;
+
     void Start()
     {
         trapSet = false;
@@ -35,9 +37,10 @@ public class SlothObstacle : MonoBehaviour
             trapSet = true;
             this.tag = "SetBearTrap";
         }
-    }
-    void OnTriggerExit(Collider other)
-    {
-
+        
+        if (other.gameObject.layer == 7)
+        {
+            transform.tag = "BearTrap";
+        }
     }
 }
