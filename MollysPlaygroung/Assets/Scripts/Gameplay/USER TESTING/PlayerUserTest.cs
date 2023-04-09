@@ -66,6 +66,7 @@ public class PlayerUserTest : MonoBehaviour
 
     // ENVY
     public bool envySetOneTime = false;
+    public bool oneTimeSetUp = false;
     public bool squirtAccess = false;
     public string horseName;
     public string squirtGunName;
@@ -245,7 +246,7 @@ public class PlayerUserTest : MonoBehaviour
 
                     GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyPointsResult.Add(0);
                 }
-            }            
+            }
         }
         else if (SceneManager.GetActiveScene().name == "Sloth")
         {
@@ -371,7 +372,7 @@ public class PlayerUserTest : MonoBehaviour
                     // begin game
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame) 
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame)
                         {
                             PhotonNetwork.CurrentRoom.IsOpen = false;
                             PhotonNetwork.CurrentRoom.IsVisible = false;
@@ -436,6 +437,15 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
+                                if (!oneTimeSetUp)
+                                {
+                                    for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+                                    {
+                                        GameObject.Find("Pockets").transform.GetChild(i).GetChild(3).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username;
+                                    }
+                                    oneTimeSetUp = true;
+                                }
+
                                 // Dice Roll baby
                                 if (!cameraSwitch)
                                 {
@@ -516,6 +526,10 @@ public class PlayerUserTest : MonoBehaviour
                                     {
                                         StartCoroutine("lilWaitAfterChip");
                                     }
+                                    else
+                                    {
+                                        view.RPC("updateChipState", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    }
                                 }
 
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -532,7 +546,7 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
-                                if (!headsSet) 
+                                if (!headsSet)
                                 {
                                     for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
                                     {
@@ -622,7 +636,7 @@ public class PlayerUserTest : MonoBehaviour
                                     Vector3 direction = vomitedDirection;
                                     direction = direction.normalized;
 
-                                    int typaFood = UnityEngine.Random.Range(0, 3);                                    
+                                    int typaFood = UnityEngine.Random.Range(0, 3);
 
                                     view.RPC("setVomitPosition", RpcTarget.AllBufferedViaServer, view.Owner.NickName, vomitedPos, direction, 400f, typaFood);
                                 }
@@ -704,7 +718,7 @@ public class PlayerUserTest : MonoBehaviour
                                 // Puking
                                 if (Input.GetKeyDown(KeyCode.I))
                                 {
-                                    if (interactedOpponent != null) 
+                                    if (interactedOpponent != null)
                                     {
                                         if (interactedOpponent.GetComponent<PlayerUserTest>().collectedFoodies >= 2)
                                         {
@@ -1093,7 +1107,7 @@ public class PlayerUserTest : MonoBehaviour
                                     }
                                 }
                             }
-                            
+
                             if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().resetCups)
                             {
                                 view.RPC("resetChosenCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -1172,7 +1186,7 @@ public class PlayerUserTest : MonoBehaviour
                     {
                         try
                         {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0]) 
+                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0])
                             {
                                 GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
                                 GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(6).gameObject.SetActive(true);
@@ -1458,12 +1472,12 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
-    
+
     [PunRPC]
     void YouDraggedThem(string name, string victim, bool x)
     {
         try
-        {         
+        {
             if (x)
             {
                 GameObject.Find(victim).GetComponent<PlayerUserTest>().freezePlayer = x;
@@ -1476,10 +1490,10 @@ public class PlayerUserTest : MonoBehaviour
                 GameObject.Find(victim).transform.parent = GameObject.Find(name).transform.GetChild(3);
                 GameObject.Find(victim).GetComponent<PhotonTransformViewClassic>().m_PositionModel.TeleportEnabled = false;
                 //GameObject.Find(victim).transform.position += GameObject.Find(victim).transform.forward * 1.5f;
-                GameObject.Find(name).GetComponent<PlayerUserTest>().imDraggingMan= x;
+                GameObject.Find(name).GetComponent<PlayerUserTest>().imDraggingMan = x;
                 GameObject.Find(name).GetComponent<PlayerUserTest>().onetimebruvidek = true;
             }
-            else if(onetimebruvidek)
+            else if (onetimebruvidek)
             {
                 GameObject.Find(victim).GetComponent<PlayerUserTest>().freezePlayer = x;
                 GameObject.Find(victim).GetComponent<PlayerUserTest>().oopsyGotDragged = x;
@@ -1488,7 +1502,7 @@ public class PlayerUserTest : MonoBehaviour
                 GameObject.Find(victim).transform.SetParent(null);
                 GameObject.Find(victim).GetComponent<BoxCollider>().isTrigger = false;
                 GameObject.Find(victim).GetComponent<Rigidbody>().isKinematic = false;
-                GameObject.Find(name).GetComponent<PlayerUserTest>().imDraggingMan = x;                
+                GameObject.Find(name).GetComponent<PlayerUserTest>().imDraggingMan = x;
                 GameObject.Find(name).GetComponent<PlayerUserTest>().onetimebruvidek = false;
                 GameObject.Find(victim).GetComponent<PlayerUserTest>().pauseForReset();
             }
@@ -1505,7 +1519,7 @@ public class PlayerUserTest : MonoBehaviour
     void beginTheGame(string name, int firstLvlIndex)
     {
         try
-        {            
+        {
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex = firstLvlIndex;
 
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -1570,7 +1584,7 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().username.color = new Color(255, 255, 255, 0);
                 }
-                else if (SceneManager.GetActiveScene().name == "Lust" )
+                else if (SceneManager.GetActiveScene().name == "Lust")
                 {
                     if (GameObject.Find(Player).GetComponent<PlayerUserTest>().resetPosition)
                     {
@@ -1600,7 +1614,7 @@ public class PlayerUserTest : MonoBehaviour
                     }
                 }
             }
-            
+
 
 
             GameObject.Find(Player).GetComponent<PlayerUserTest>().username.transform.LookAt(GameObject.Find("Main Camera").transform);
@@ -1632,7 +1646,7 @@ public class PlayerUserTest : MonoBehaviour
         }
         catch (NullReferenceException e) { }
     }
-    
+
     [PunRPC]
     void startTheWheel(string pname, bool x)
     {
@@ -1715,7 +1729,7 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded) 
+            if (!GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded)
             {
                 //GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().RecordWrathResults(GameObject.Find(pName).gameObject);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().deathRecorded = true;
@@ -1829,7 +1843,7 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (!GameObject.Find(bearTrap).GetComponent<SlothObstacle>().oneTimeSet) 
+            if (!GameObject.Find(bearTrap).GetComponent<SlothObstacle>().oneTimeSet)
             {
                 if (!GameObject.Find(bearTrap).GetComponent<BoxCollider>().isTrigger)
                 {
@@ -1866,7 +1880,7 @@ public class PlayerUserTest : MonoBehaviour
             // error
         }
     }
-    
+
     [PunRPC]
     void escapedBearTrap(string pName, bool state)
     {
@@ -1944,7 +1958,7 @@ public class PlayerUserTest : MonoBehaviour
     void munchersTime(string pName)
     {
         try
-        {            
+        {
             GameObject.Find(pName).GetComponent<PlayerUserTest>().bigBoyMunch = true;
         }
         catch (NullReferenceException e)
@@ -1990,7 +2004,7 @@ public class PlayerUserTest : MonoBehaviour
         try
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().vomit)
-            {                
+            {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().theVomittedFood = Instantiate(GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().TypesOfFood[type], new Vector3(pos.x, pos.y + 1f, pos.z), Quaternion.identity, GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().FoodParent.transform);
 
                 // dir = dir.normalized;
@@ -2014,7 +2028,7 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
-            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood != null) 
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood != null)
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().foodCollected = false;
                 Destroy(GameObject.Find(pName).GetComponent<PlayerUserTest>().interactedFood.gameObject);
@@ -2099,6 +2113,11 @@ public class PlayerUserTest : MonoBehaviour
         waitHoldGreed = false;
         Debug.Log("go");
     }
+    [PunRPC]
+    void updateChipState(string pName)
+    {
+        GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = false;
+    }
 
     [PunRPC]
     void throwChip(string pName, float f, int pActor, string bucketName)
@@ -2107,8 +2126,6 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0 && !GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces) 
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
-
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
                 //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find("Bucket" + pActor).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
@@ -2121,6 +2138,8 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position = new Vector3(GameObject.Find(pName).transform.GetChild(4).position.x, GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[i].transform.position.y - 0.5f, GameObject.Find(pName).transform.GetChild(4).position.z);
                 }
+
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
             }
         }
         catch (NullReferenceException e)
