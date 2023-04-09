@@ -73,6 +73,7 @@ public class PlayerUserTest : MonoBehaviour
     public string squirtGunName;
     public GameObject squirtGun;
     public int votedHead = -1;
+    public int RacingPoints = 0;
     public List<GameObject> EnvyCameraOptions = new List<GameObject>();
 
     // GLUTTONY
@@ -744,6 +745,10 @@ public class PlayerUserTest : MonoBehaviour
                                         }
 
                                         GameObject.Find("SquirtGun" + i).transform.GetChild(4).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username;
+                                        GameObject.Find("PointGrid").transform.GetChild(i).gameObject.SetActive(true);
+                                        GameObject.Find("PointGrid").transform.GetChild(i).GetChild(0).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).gameObject.SetActive(true);
+                                        GameObject.Find("PointGrid").transform.GetChild(i).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username;
+                                        GameObject.Find("PointGrid").transform.GetChild(i).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
                                     }
 
                                     oneTimeEnvyAssign = true;
@@ -848,6 +853,7 @@ public class PlayerUserTest : MonoBehaviour
                                     EnvyCameraOptions[1].SetActive(false);
 
                                     GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().betTxt.text = "";
+                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().roundTxt.text = "";
 
                                     // Move Horse
                                     if (Input.GetKey(KeyCode.E))

@@ -95,6 +95,11 @@ public class EnvyGameplayManager : MonoBehaviour
         {
             EnvyHorses[i].GetComponent<EnvyHorse>().resetAll();
         }
+
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+        {
+            GameObject.Find("PointGrid").transform.GetChild(i).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>().text = "" + EnvyPointsResult[i];
+        }
     }
 
     // Getting horse and moving/stopping on track
