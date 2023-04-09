@@ -123,12 +123,13 @@ public class PlayerUserTest : MonoBehaviour
     // LUST
     public bool lustTimerRunning = true;
     public float lustTimer;
-    public int hitKeys = 0;
+    public int hitKeys = 1;
     public int selectedKey;
     public bool resetPosition = true;
     //public bool readyForNewKey = true;
     public bool hitKeyScore = false;
     public bool landedOnFloor = false;
+    public bool headsSet = false;
 
     // WRATH
     int directionIndex = 0;
@@ -531,6 +532,19 @@ public class PlayerUserTest : MonoBehaviour
                         {
                             if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone)
                             {
+                                if (!headsSet) 
+                                {
+                                    for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+                                    {
+                                        GameObject.Find("fireGrid").transform.GetChild(i).gameObject.SetActive(true);
+                                        GameObject.Find("fireGrid").transform.GetChild(i).GetChild(0).GetChild(0).GetComponent<TextMeshProUGUI>().text = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username;
+                                        GameObject.Find("fireGrid").transform.GetChild(i).GetChild(1).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).gameObject.SetActive(true);
+                                    }
+
+                                    headsSet = true;
+                                }
+
+
                                 // Key instantiation
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
@@ -580,7 +594,7 @@ public class PlayerUserTest : MonoBehaviour
 
                                 if (hitKeyScore)
                                 {
-                                    hitKeys++;
+                                    hitKeys += 1;
                                     hitKeyScore = false;
                                     view.RPC("keyScoreDisplay", RpcTarget.AllBufferedViaServer, view.Owner.NickName, hitKeys);
                                     view.RPC("lustOutOfTime", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
@@ -1556,9 +1570,16 @@ public class PlayerUserTest : MonoBehaviour
                 {
                     GameObject.Find(Player).GetComponent<PlayerUserTest>().username.color = new Color(255, 255, 255, 0);
                 }
-                else if (SceneManager.GetActiveScene().name == "Lust" && GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys > 0)
+                else if (SceneManager.GetActiveScene().name == "Lust" )
                 {
-                    GameObject.Find(Player).GetComponent<PlayerUserTest>().transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys + "";
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().resetPosition)
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(false);
+                    }
                 }
                 else if (SceneManager.GetActiveScene().name == "Envy")
                 {
@@ -1576,17 +1597,6 @@ public class PlayerUserTest : MonoBehaviour
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                         GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
-                    }
-                }
-                else if (SceneManager.GetActiveScene().name == "Lust")
-                {
-                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().resetPosition)
-                    {
-                        GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        GameObject.Find(Player).transform.GetChild(0).GetChild(4).gameObject.SetActive(false);
                     }
                 }
             }
@@ -2313,6 +2323,16 @@ public class PlayerUserTest : MonoBehaviour
         try
         {
             GameObject.Find(pName).GetComponent<PlayerUserTest>().hitKeys = k;
+
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+            {
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == pName)
+                {
+                    GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).gameObject.SetActive(true);
+                    GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).localScale *= 1.3f;
+                    break;
+                }
+            }
         }
         catch (NullReferenceException e)
         {
