@@ -11,10 +11,13 @@ public class EnvyGameplayManager : MonoBehaviour
     public List<Material> unchosenMesh = new List<Material>();
 
     public List<string> EnvyResults = new List<string>();
-    public string loserPos;
+    public int loserPos;
     public List<GameObject> EnvyHorses = new List<GameObject>();
 
     public List<int> EnvyPointsResult = new List<int>();
+
+
+    public List<GameObject> SquirtGuns = new List<GameObject>();
 
     public GameObject scoreBoard;
 
@@ -24,6 +27,7 @@ public class EnvyGameplayManager : MonoBehaviour
     public int levelRounds = 0;
 
     public TextMeshProUGUI betTxt;
+    public TextMeshProUGUI roundTxt;
 
     public void RecordHorseResult(GameObject horse)
     {
@@ -59,7 +63,7 @@ public class EnvyGameplayManager : MonoBehaviour
                 if (y >= (EnvyResults.Count - 1))
                 {
                     EnvyResults.Add(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username);
-                    loserPos = "" + x;
+                    loserPos = x;
                     EnvyPointsResult[x] -= 1;
                     break;
                 }
@@ -78,13 +82,13 @@ public class EnvyGameplayManager : MonoBehaviour
                 EnvyPointsResult[x] += 1;
             }
             
-            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().votedHead = "";
+            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).GetComponent<PlayerUserTest>().votedHead = -1;
         }
 
         votingSystem = true;
         EnvyResults = new List<string>();
         levelRounds++;
-        loserPos = "";
+        loserPos = -1;
         oneTimeRound = false;
 
         for (int i = 0; i < EnvyHorses.Count; i++)

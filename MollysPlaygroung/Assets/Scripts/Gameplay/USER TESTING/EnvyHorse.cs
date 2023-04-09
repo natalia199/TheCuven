@@ -25,7 +25,7 @@ public class EnvyHorse : MonoBehaviour
         startingLinePoint = this.transform.position;
 
         // Setting gun name based on ID
-        GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+        GameObject.Find("SquirtGun" + id).transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
     }
 
     void FixedUpdate()
@@ -73,7 +73,7 @@ public class EnvyHorse : MonoBehaviour
         if (other.tag == "FinishLine")
         {
             finished = true;
-            GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(false);                    // turning off gun light
+            GameObject.Find("SquirtGun" + id).transform.GetChild(2).GetChild(0).gameObject.SetActive(false);                    // turning off gun light
             GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().RecordHorseResult(this.gameObject);              // adding winning horse to result list
         }
     }
@@ -82,7 +82,7 @@ public class EnvyHorse : MonoBehaviour
     {        
         this.transform.position = startingLinePoint;
 
-        GameObject.Find("SquirtGun" + id).transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+        GameObject.Find("SquirtGun" + id).transform.GetChild(2).GetChild(0).gameObject.SetActive(true);
         squirterActivated = false;
         finished = false;
     }
