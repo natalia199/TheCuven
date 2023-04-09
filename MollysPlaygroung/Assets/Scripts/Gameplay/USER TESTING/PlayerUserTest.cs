@@ -1619,7 +1619,7 @@ public class PlayerUserTest : MonoBehaviour
                 else if (SceneManager.GetActiveScene().name == "Envy")
                 {
                     //GameObject.Find(Player).GetComponent<PlayerUserTest>().transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys + "";
-                    GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(true);
+                    //GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(true);
                 }
                 else
                 {
