@@ -468,6 +468,7 @@ public class PlayerUserTest : MonoBehaviour
 
                                         thrownTracker = 0;
                                         cameraSwitch = true;
+                                        diceRollValue = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue;
                                         view.RPC("setDiceValue", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue);
                                         GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().goodToGo = false;
                                     }
@@ -533,7 +534,7 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
                                     {
-                                        //view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
                                 }
                             }
