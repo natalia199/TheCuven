@@ -30,17 +30,13 @@ public class EnvyHorse : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Side-to-side rotation for horse
         if (!finished && squirterActivated)
         {
-            transform.position = Vector3.MoveTowards(transform.position, finishLinePoint.position, thpeed);
-
-            float rY = Mathf.SmoothStep(-RotAngleY, RotAngleY,Mathf.PingPong(Time.time * speed, 1));
-            transform.rotation = Quaternion.Euler(0,0,rY);
+            float rY = Mathf.SmoothStep(-RotAngleY, RotAngleY, Mathf.PingPong(Time.time * speed, 1));
+            transform.rotation = Quaternion.Euler(0, 0, rY);
         }
-        else if(finished)
+        else if (finished)
         {
-            transform.position = Vector3.MoveTowards(transform.position, finishLinePoint.position, thpeed);
             float rY = Mathf.SmoothStep(-RotAngleY, RotAngleY, Mathf.PingPong(Time.time * speed, 1));
             transform.rotation = Quaternion.Euler(0, 0, rY);
         }
