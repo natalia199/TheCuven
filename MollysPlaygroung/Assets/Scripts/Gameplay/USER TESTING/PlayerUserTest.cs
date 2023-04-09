@@ -870,7 +870,9 @@ public class PlayerUserTest : MonoBehaviour
                                                 //if (GameObject.Find(squirtGunName).transform.GetChild(0).GetChild(0).GetComponent<EnvyBullseye>().Bullseye)
                                                 if (GameObject.Find(squirtGunName).transform.GetChild(1).GetComponent<EnvyBullseye>().Bullseye)
                                                 {
-                                                    view.RPC("moveHorsey", RpcTarget.AllBufferedViaServer, horseName);
+                                                    // GameObject.Find(squirt).GetComponent<EnvySquirter>().correlatingHorse
+
+                                                    view.RPC("moveHorsey", RpcTarget.AllBufferedViaServer, horseName, 0.07f);
                                                 }
                                             }
                                         }
@@ -2244,10 +2246,18 @@ public class PlayerUserTest : MonoBehaviour
 
     // ENVY
     [PunRPC]
-    void moveHorsey(string pName)
+    void moveHorsey(string pName, float speed)
     {
         try
         {
+            // GameObject.Find(squirt).GetComponent<EnvySquirter>().correlatingHorse
+
+            // Side-to-side rotation for horse
+            if (!GameObject.Find(pName).GetComponent<EnvyHorse>().finished)
+            {
+                GameObject.Find(pName).transform.position = Vector3.MoveTowards(GameObject.Find(pName).transform.position, GameObject.Find(pName).GetComponent<EnvyHorse>().finishLinePoint.position, speed);
+            }
+
             GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().MoveHorseForward(pName);
         }
         catch (NullReferenceException e)
