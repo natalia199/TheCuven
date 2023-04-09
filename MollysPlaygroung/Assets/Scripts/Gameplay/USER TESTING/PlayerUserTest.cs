@@ -512,26 +512,19 @@ public class PlayerUserTest : MonoBehaviour
                                         if (collectedChipies.Count > 0 && throwAccess && !throwChipAcces && bucketNameInteracted != null)
                                         {
                                             //throwChipAcces = true;
-                                            view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber, bucketNameInteracted);
+
+                                            Vector3 dir = GameObject.Find(bucketName).transform.GetChild(0).position - transform.position;
+                                            dir = dir.normalized;
+
+                                            view.RPC("throwChip", RpcTarget.AllBufferedViaServer, view.Owner.NickName, throwForce, playerNumber, bucketNameInteracted, dir);
                                             //throwChipAcces = true;
                                         }
                                     }
                                     else
                                     {
                                         view.RPC("updateChipState", RpcTarget.AllBufferedViaServer, view.Owner.NickName, false);
-                                        //throwChipAcces = false;
+                                        oneChipAtATimeCarry = false;
                                     }
-
-                                    /*
-                                    if (throwChipAcces && !waitHoldGreed)
-                                    {
-                                        StartCoroutine("lilWaitAfterChip");
-                                    }
-                                    else
-                                    {
-                                        view.RPC("updateChipState", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
-                                    }
-                                    */
                                 }
 
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -2106,6 +2099,7 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
+    /*
     IEnumerator lilWaitAfterChip()
     {
         waitHoldGreed = true;
@@ -2115,6 +2109,7 @@ public class PlayerUserTest : MonoBehaviour
         waitHoldGreed = false;
         Debug.Log("go");
     }
+    */
     [PunRPC]
     void updateChipState(string pName, bool x)
     {
@@ -2122,15 +2117,20 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     [PunRPC]
-    void throwChip(string pName, float f, int pActor, string bucketName)
+    void throwChip(string pName, float f, int pActor, string bucketName, Vector3 dir)
     {
         try
         {
-            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0 && !GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces) 
+            if (GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.Count > 0 && !GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces)
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find(bucketName).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
+
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<Rigidbody>().AddForce(dir * f);
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<Rigidbody>().AddTorque(dir * 50);
+
+
+                //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find(bucketName).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().Available = true;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.RemoveAt(0);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().thrownTracker++;
