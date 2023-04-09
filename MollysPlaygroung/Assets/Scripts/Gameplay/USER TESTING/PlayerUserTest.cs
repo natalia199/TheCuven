@@ -481,7 +481,8 @@ public class PlayerUserTest : MonoBehaviour
                                     CameraOptions[1].SetActive(true);
 
                                     // heading to dice roll scene
-                                    if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue && !die)
+                                    //if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue && !die)
+                                    if (thrownTracker >= diceRollValue && !die)
                                     {
                                         cameraSwitch = false;
                                     }
@@ -498,7 +499,8 @@ public class PlayerUserTest : MonoBehaviour
                                     // Collecting chip
                                     if (Input.GetKeyDown(KeyCode.E))
                                     {
-                                        if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                                        //if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue)
+                                        if (!oneChipAtATimeCarry && interactedChip != null && interactedChip.GetComponent<ChipScript>().Available && collectionTracker < diceRollValue)
                                         {
                                             oneChipAtATimeCarry = true;
                                             Vector3 carriedChipPos = new Vector3(transform.GetChild(4).position.x, transform.position.y + 2f + (collectedChipies.Count * 0.5f), transform.GetChild(4).position.z);
@@ -531,7 +533,7 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        //view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
                                 }
                             }
@@ -1570,9 +1572,9 @@ public class PlayerUserTest : MonoBehaviour
                         GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(true);
                     }
                 }
-                else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
+                else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
                 {
-                    GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) + "";
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = (GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) + "";
                     GameObject.Find(Player).transform.GetChild(0).GetChild(3).gameObject.SetActive(true);
                 }
                 else if (SceneManager.GetActiveScene().name == "Pride")
@@ -2126,12 +2128,15 @@ public class PlayerUserTest : MonoBehaviour
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].transform.parent = GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().ChipParent.transform;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].AddComponent<Rigidbody>();
 
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<Rigidbody>().AddForce(dir * f);
+                Vector3 grr = GameObject.Find(bucketName).transform.GetChild(0).position - GameObject.Find(pName).transform.position;
+                grr = grr.normalized;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<Rigidbody>().AddForce(grr * f);
                 //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<Rigidbody>().AddTorque(dir * 50);
 
 
                 //GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().throwChip(GameObject.Find(bucketName).transform.GetChild(0).position, GameObject.Find(pName).transform.position, f);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<ChipScript>().Available = true;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies[0].GetComponent<MeshCollider>().isTrigger = false;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().collectedChipies.RemoveAt(0);
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().thrownTracker++;
 
@@ -2141,6 +2146,8 @@ public class PlayerUserTest : MonoBehaviour
                 }
 
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().throwChipAcces = true;
+
+                Debug.Log("yeee");
             }
         }
         catch (NullReferenceException e)
