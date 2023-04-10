@@ -372,7 +372,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().smackingSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().smackingSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("AttackTrigger", x);
         }
@@ -402,7 +402,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().rustyCapybaraSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().rustyCapybaraSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("SquirtTrigger", x);
         }
@@ -432,7 +432,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().chipDropSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().chipDropSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("ChipThrowTrigger", x);
         }
@@ -448,7 +448,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().bearTrapCloseSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().bearTrapCloseSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("isTrapped", x);
         }
@@ -463,7 +463,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().bearTrapOpenSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().bearTrapOpenSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("OpenTrapTrigger", x);
         }

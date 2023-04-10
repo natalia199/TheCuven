@@ -22,6 +22,8 @@ public class GreedGameplayManager : MonoBehaviour
     public int chipTracker;
     public int startingAmountOfChips;
 
+    public GameObject diceControls;
+
     void Start()
     {
         startingAmountOfChips = ChipParent.transform.childCount;

@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip smacking;
     public AudioClip jumping;
     public AudioClip gettingPushed;
+    /*
     public AudioClip bearTrapClose;
     public AudioClip bearTrapDrop;
     public AudioClip bearTrapOpen;
@@ -18,11 +19,12 @@ public class SoundManager : MonoBehaviour
     public AudioClip falling;
     public AudioClip lightFlicker;
     public AudioClip meatSlap;
-    public AudioClip munching;
-    public AudioClip poisoned;
     public AudioClip rustyCapybara;
     public AudioClip waterDrink;
     public AudioClip waterPour;
+    */
+    public AudioClip munching;
+    public AudioClip poisoned;
 
     public float volume = 1;
 
@@ -45,6 +47,8 @@ public class SoundManager : MonoBehaviour
     {
         AudioSource.PlayClipAtPoint(jumping, GameObject.Find(pname).transform.position, volume);
     }
+
+    /*
 
     public void bearTrapCloseSFX(string pname)
     {
@@ -96,16 +100,6 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(meatSlap, GameObject.Find(pname).transform.position, volume);
     }
 
-    public void poisonedSFX(string pname)
-    {
-        AudioSource.PlayClipAtPoint(poisoned, GameObject.Find(pname).transform.position, volume);
-    }
-
-    public void munchingSFX(string pname)
-    {
-        AudioSource.PlayClipAtPoint(munching, GameObject.Find(pname).transform.position, volume);
-    }
-
     public void rustyCapybaraSFX(string pname)
     {
         AudioSource.PlayClipAtPoint(rustyCapybara, GameObject.Find(pname).transform.position, volume);
@@ -121,4 +115,16 @@ public class SoundManager : MonoBehaviour
         AudioSource.PlayClipAtPoint(waterPour, GameObject.Find(pname).transform.position, volume);
     }
 
+
+    */
+
+    public void poisonedSFX(string pname)
+    {
+        AudioSource.PlayClipAtPoint(poisoned, GameObject.Find(pname).transform.position, volume);
+    }
+
+    public void munchingSFX(string pname)
+    {
+        AudioSource.PlayClipAtPoint(munching, GameObject.Find(pname).transform.position, volume);
+    }
 }

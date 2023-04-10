@@ -455,6 +455,7 @@ public class PlayerUserTest : MonoBehaviour
 
                                     CameraOptions[0].SetActive(true);
                                     CameraOptions[1].SetActive(false);
+                                    GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().diceControls.SetActive(true);
 
                                     // Roll Dice
                                     if (Input.GetKeyDown(KeyCode.E))
@@ -482,6 +483,8 @@ public class PlayerUserTest : MonoBehaviour
 
                                     CameraOptions[0].SetActive(false);
                                     CameraOptions[1].SetActive(true);
+                                    GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().diceControls.SetActive(false);
+
 
                                     // heading to dice roll scene
                                     //if (thrownTracker >= GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().rolledValue && !die)
@@ -877,7 +880,7 @@ public class PlayerUserTest : MonoBehaviour
                                                 {
                                                     // GameObject.Find(squirt).GetComponent<EnvySquirter>().correlatingHorse
 
-                                                    view.RPC("moveHorsey", RpcTarget.AllBufferedViaServer, horseName, 0.07f);
+                                                    view.RPC("moveHorsey", RpcTarget.AllBufferedViaServer, horseName, 0.02f);
                                                 }
                                             }
                                         }
@@ -1605,7 +1608,8 @@ public class PlayerUserTest : MonoBehaviour
                 }
                 else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
                 {
-                    GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = (GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) + "";
+                    int x = GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker;
+                    GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = x + "";
                     GameObject.Find(Player).transform.GetChild(0).GetChild(3).gameObject.SetActive(true);
                 }
                 else if (SceneManager.GetActiveScene().name == "Pride")
