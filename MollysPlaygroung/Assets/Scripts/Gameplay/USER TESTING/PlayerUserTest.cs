@@ -100,7 +100,7 @@ public class PlayerUserTest : MonoBehaviour
     bool allowNewDecrease = false;
     public bool gotBearTrapped = false;
     public bool lifeFullyDone = false;
-    public float lifeMax = 100;
+    public float lifeMax = 20;
     public float lifeSource = 100;
     public GameObject interactedBearTrap = null;
     //public string interactedBearTrapName = "";
@@ -761,7 +761,7 @@ public class PlayerUserTest : MonoBehaviour
 
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
-                                    if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().levelRounds >= 3)
+                                    if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().levelRounds >= 2)
                                     {
                                         view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                                     }
@@ -829,7 +829,7 @@ public class PlayerUserTest : MonoBehaviour
                                                     Debug.Log("I hit head " + votedHead);
                                                     break;
                                                 }
-                                                else if (hit.collider.gameObject.tag == "Ignore")
+                                                /*else if (hit.collider.gameObject.tag == "Ignore")
                                                 {
                                                     GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().selectControl.SetActive(true);
                                                     GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().confirmControl.SetActive(false);
@@ -845,7 +845,7 @@ public class PlayerUserTest : MonoBehaviour
                                                     }
 
                                                     view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
-                                                }
+                                                }*/
                                             }
                                         }
                                         else if (Input.GetKeyDown(KeyCode.E))
@@ -1031,31 +1031,31 @@ public class PlayerUserTest : MonoBehaviour
                                             view.RPC("unhookedBearTrap", RpcTarget.AllBufferedViaServer, view.Owner.NickName, alreadySetBearTrap.name);
                                         }
                                     }
+                                }
 
-                                    // LIFE SOURCE
-                                    if (!withinTheLight && lifeSource > 0f)
+                                // LIFE SOURCE
+                                if (!withinTheLight && lifeSource > 0f)
+                                {
+                                    // decrease life
+                                    if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop)
                                     {
-                                        // decrease life
-                                        if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop)
-                                        {
-                                            lifeSource--;
-                                            view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, (int)lifeSource, false);
-                                            GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop = false;
-                                            GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().DecreaseLifeForce();
-                                        }
+                                        lifeSource--;
+                                        view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, (int)lifeSource, false);
+                                        GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop = false;
+                                        GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().DecreaseLifeForce();
                                     }
-                                    else if (withinTheLight && lifeSource > 0f)
-                                    {
-                                        // stop life drop
-                                        GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop = true;
-                                    }
-                                    else if ((int)lifeSource < 1f)
-                                    {
-                                        // death
-                                        lifeSource = 0f;
-                                        view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, 0, true);
-                                        ranOutOfLife = true;
-                                    }
+                                }
+                                else if (withinTheLight && lifeSource > 0f)
+                                {
+                                    // stop life drop
+                                    GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop = true;
+                                }
+                                else if ((int)lifeSource < 1f)
+                                {
+                                    // death
+                                    lifeSource = 0f;
+                                    view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, 0, true);
+                                    ranOutOfLife = true;
                                 }
 
                                 // game ending - if the results has one less than the total of players means there 1 person left standing which is the winner
@@ -1331,7 +1331,6 @@ public class PlayerUserTest : MonoBehaviour
 
         pauseForDecrease = false;
         allowNewDecrease = true;
-        //view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, (int)lifeSource, false);
     }
 
     void PrideMovePlayer()
@@ -1859,9 +1858,8 @@ public class PlayerUserTest : MonoBehaviour
             if (state)
             {
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().ranOutOfLife = state;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().lifeSource = 0;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().noMoreLifeSource(pName);
-                //GameObject.Find(pName).GetComponent<PlayerUserTest>().allowNewDecrease = false;
-                //GameObject.Find(pName).GetComponent<PlayerUserTest>().addPlayerToSlothResults(pName);
             }
         }
         catch (NullReferenceException e)
