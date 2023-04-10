@@ -1595,12 +1595,12 @@ public class PlayerUserTest : MonoBehaviour
                     if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 2)
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
-                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(false);
                     }
                     else if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies >= 2)
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
-                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(true);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(true);
                     }
                 }
                 else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
@@ -1840,7 +1840,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight == null)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, 1.9f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform.position.y, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
             }
         }
         catch (NullReferenceException e)
