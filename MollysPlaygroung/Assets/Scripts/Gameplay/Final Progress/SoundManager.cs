@@ -22,10 +22,10 @@ public class SoundManager : MonoBehaviour
     public AudioClip rustyCapybara;
     public AudioClip waterDrink;
     public AudioClip waterPour;
-    */
+    
     public AudioClip munching;
     public AudioClip poisoned;
-
+*/
     public float volume = 1;
 
     public void gettingSmackedSFX(string pname)
@@ -113,10 +113,7 @@ public class SoundManager : MonoBehaviour
     public void waterPourSFX(string pname)
     {
         AudioSource.PlayClipAtPoint(waterPour, GameObject.Find(pname).transform.position, volume);
-    }
-
-
-    */
+    }     
 
     public void poisonedSFX(string pname)
     {
@@ -126,5 +123,5 @@ public class SoundManager : MonoBehaviour
     public void munchingSFX(string pname)
     {
         AudioSource.PlayClipAtPoint(munching, GameObject.Find(pname).transform.position, volume);
-    }
+    }  */
 }

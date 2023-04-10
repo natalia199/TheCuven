@@ -477,7 +477,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().munchingSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().munchingSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("OpenTrapTrigger", x);
         }
@@ -492,7 +492,7 @@ public class AbominationsAnimations : MonoBehaviour
     {
         try
         {
-            GameObject.Find("SoundManager").GetComponent<SoundManager>().poisonedSFX(name);
+            //GameObject.Find("SoundManager").GetComponent<SoundManager>().poisonedSFX(name);
 
             GameObject.Find(pName).transform.GetChild(2).GetChild(charNum).GetComponent<Animator>().SetBool("PoisonTrigger", x);
         }
