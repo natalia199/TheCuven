@@ -1620,7 +1620,7 @@ public class PlayerUserTest : MonoBehaviour
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().lifeSource + "";
                     GameObject.Find(Player).transform.GetChild(0).GetChild(5).gameObject.SetActive(true);
                 }
-                else if (SceneManager.GetActiveScene().name == "Gluttony" && GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies > 0)
+                else if (SceneManager.GetActiveScene().name == "Gluttony" && GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies >= 1)
                 {
                     GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies + "";
 
@@ -1628,11 +1628,13 @@ public class PlayerUserTest : MonoBehaviour
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(true);
                         GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.white;
                     }
                     else if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies >= 2)
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
                         GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(true);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.red;
                     }
                 }
                 else if (SceneManager.GetActiveScene().name == "Greed" && (GameObject.Find(Player).GetComponent<PlayerUserTest>().diceRollValue - GameObject.Find(Player).GetComponent<PlayerUserTest>().thrownTracker) > 0)
@@ -1668,10 +1670,11 @@ public class PlayerUserTest : MonoBehaviour
 
                 if (SceneManager.GetActiveScene().name == "Gluttony")
                 {
-                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().hitKeys < 1)
+                    if (GameObject.Find(Player).GetComponent<PlayerUserTest>().collectedFoodies < 1)
                     {
                         GameObject.Find(Player).transform.GetChild(0).GetChild(2).gameObject.SetActive(false);
-                        GameObject.Find(Player).transform.GetChild(0).GetChild(7).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(6).gameObject.SetActive(false);
+                        GameObject.Find(Player).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().color = Color.white;
                     }
                 }
             }
