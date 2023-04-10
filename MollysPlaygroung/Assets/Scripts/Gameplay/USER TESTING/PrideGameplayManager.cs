@@ -86,7 +86,7 @@ public class PrideGameplayManager : MonoBehaviour
         playerActionChoice = true;
         playerTurnTracker = 0;
         timeStampTrack = 0;
-        playerTurnDisplay.text = listOfPridePlayers[0] + " turn";
+        playerTurnDisplay.text = listOfPridePlayers[0] + " turn to Poison";
     }
 
     void Update()
@@ -167,7 +167,7 @@ public class PrideGameplayManager : MonoBehaviour
             timeStampTrack = 2;
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimerRunning = true;
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimer = timeStamps[timeStampTrack];
-            playerTurnDisplay.text = listOfPridePlayers[playerTurnTracker] + " turn";
+            playerTurnDisplay.text = listOfPridePlayers[playerTurnTracker] + " turn to Drink";
             playerActionChoice = true;
         }
     }
@@ -217,7 +217,7 @@ public class PrideGameplayManager : MonoBehaviour
             playerTurnTracker = 0;
 
             playerActionChoice = true;
-            playerTurnDisplay.text = listOfPridePlayers[0] + " turn";
+            playerTurnDisplay.text = listOfPridePlayers[0] + " turn to Poison";
             chosenCupText.text = "";
             timeStampTrack = 0;
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimerRunning = true;
