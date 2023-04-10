@@ -25,7 +25,7 @@ public class EnvyHorse : MonoBehaviour
         startingLinePoint = this.transform.position;
 
         // Setting gun name based on ID
-        GameObject.Find("SquirtGun" + id).transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
+        //GameObject.Find("SquirtGun" + id).transform.GetChild(2).GetChild(0).gameObject.SetActive(false);
     }
 
     void FixedUpdate()

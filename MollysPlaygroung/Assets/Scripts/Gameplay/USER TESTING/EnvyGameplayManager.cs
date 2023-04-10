@@ -28,6 +28,16 @@ public class EnvyGameplayManager : MonoBehaviour
 
     public TextMeshProUGUI betTxt;
     public TextMeshProUGUI roundTxt;
+    public GameObject selectControl;
+    public GameObject confirmControl;
+
+    public void Start()
+    {
+        for(int i = GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i < SquirtGuns.Count; i++)
+        {
+            SquirtGuns[i].SetActive(false);
+        }
+    }
 
     public void RecordHorseResult(GameObject horse)
     {
@@ -91,7 +101,7 @@ public class EnvyGameplayManager : MonoBehaviour
         loserPos = -1;
         oneTimeRound = false;
 
-        for (int i = 0; i < EnvyHorses.Count; i++)
+        for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
         {
             EnvyHorses[i].GetComponent<EnvyHorse>().resetAll();
         }

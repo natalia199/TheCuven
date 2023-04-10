@@ -772,12 +772,16 @@ public class PlayerUserTest : MonoBehaviour
                                     EnvyCameraOptions[0].SetActive(false);
                                     EnvyCameraOptions[1].SetActive(true);
 
+
                                     if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().oneTimeRound)
                                     {
                                         GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().setLoser();
                                         GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().setPlayerPoints();
 
                                         GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().oneTimeRound = false;
+
+                                        GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().selectControl.SetActive(true);
+
                                     }
                                     else
                                     {
@@ -817,6 +821,9 @@ public class PlayerUserTest : MonoBehaviour
                                             {
                                                 if (hit.collider.gameObject.tag == "VoteHead")
                                                 {
+                                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().selectControl.SetActive(false);
+                                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().confirmControl.SetActive(true);
+
                                                     votedHead = hit.collider.gameObject.GetComponent<VotedHeadInfo>().headID;
 
                                                     Debug.Log("I hit head " + votedHead);
@@ -824,6 +831,9 @@ public class PlayerUserTest : MonoBehaviour
                                                 }
                                                 else if (hit.collider.gameObject.tag == "Ignore")
                                                 {
+                                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().selectControl.SetActive(true);
+                                                    GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().confirmControl.SetActive(false);
+
                                                     votedHead = -1;
 
                                                     for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
@@ -842,6 +852,9 @@ public class PlayerUserTest : MonoBehaviour
                                         {
                                             if(votedHead != -1)
                                             {
+                                                GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().selectControl.SetActive(false);
+                                                GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().confirmControl.SetActive(false);
+
                                                 view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
 
                                                 for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
@@ -1190,7 +1203,7 @@ public class PlayerUserTest : MonoBehaviour
                             }
                             else
                             {
-                                for (int i = 0; i < GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyHorses.Count; i++)
+                                for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
                                 {
                                     GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().EnvyHorses[i].GetComponent<EnvyHorse>().resetAll();
                                 }
