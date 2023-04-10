@@ -25,6 +25,8 @@ public class PrideGameplayManager : MonoBehaviour
     public TextMeshProUGUI playerTurnDisplay;
     public TextMeshProUGUI chosenCupText;
 
+    public GameObject selectControl;
+    public GameObject confirmControl;
     
     public List<float> timeStamps = new List<float>();
     /*public List<string> timeStampNames = new List<string>();

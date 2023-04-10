@@ -1099,6 +1099,17 @@ public class PlayerUserTest : MonoBehaviour
                             // Picking a cup
                             if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice && GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().listOfPridePlayers[GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker] == PhotonNetwork.LocalPlayer.NickName)
                             {
+                                if (selectedCup == null)
+                                {
+                                    GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().selectControl.SetActive(true);
+                                    GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().confirmControl.SetActive(false);
+                                }
+                                else
+                                {
+                                    GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().confirmControl.SetActive(true);
+                                    GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().selectControl.SetActive(false);
+                                }
+
                                 // MY TURN
                                 // activate mouse clicking
                                 if (Input.GetMouseButtonDown(0))
@@ -1120,12 +1131,20 @@ public class PlayerUserTest : MonoBehaviour
                                         }
                                     }
                                 }
+                                else
+                                {
+                                    GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().selectControl.SetActive(false);
+                                    GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().confirmControl.SetActive(false);
+                                }
 
                                 // send in results
                                 if (Input.GetKeyDown(KeyCode.E) && selectedCup != null)
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker == 0)
                                     {
+                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().selectControl.SetActive(false);
+                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().confirmControl.SetActive(false);
+
                                         GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().chosenCupText.text = "Cup : " + selectedCup.name;
 
                                         view.RPC("poisoningCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, selectedCup.name);
