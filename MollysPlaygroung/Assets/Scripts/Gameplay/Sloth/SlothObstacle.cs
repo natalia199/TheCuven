@@ -7,12 +7,28 @@ public class SlothObstacle : MonoBehaviour
     public bool trapSet;
 
     public GameObject caughtPlayer;
-
     public bool oneTimeSet = false;
+
+    public Animator bearTrapAnimator;
+    private int isTrapClosed; 
 
     void Start()
     {
         trapSet = false;
+        isTrapClosed = Animator.StringToHash("trapClosed");
+    }
+
+    private void Update()
+    {
+        if (trapSet == true)
+        {
+            //
+            bearTrapAnimator.SetBool(isTrapClosed, true);
+        }
+        else {
+            //
+            bearTrapAnimator.SetBool(isTrapClosed, false);
+        }
     }
 
     public void selfDestruct()
@@ -36,6 +52,7 @@ public class SlothObstacle : MonoBehaviour
             caughtPlayer = other.gameObject;
             trapSet = true;
             this.tag = "SetBearTrap";
+            
         }
         
         if (other.gameObject.layer == 7)
