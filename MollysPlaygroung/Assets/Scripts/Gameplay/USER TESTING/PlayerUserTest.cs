@@ -2401,7 +2401,7 @@ public class PlayerUserTest : MonoBehaviour
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == pName)
                 {
                     GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).gameObject.SetActive(true);
-                    GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).localScale *= 1.3f;
+                    GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).localScale *= 1.5f;
                     break;
                 }
             }
