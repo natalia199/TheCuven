@@ -126,6 +126,9 @@ public class PrideGameplayManager : MonoBehaviour
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimer = timeStamps[timeStampTrack];
             playerTurnDisplay.text = "Discussion Time";
             discussionTime = true;
+
+            selectControl.SetActive(false);
+            confirmControl.SetActive(false);
         }
         else if(playerTurnTracker == 1)
         {

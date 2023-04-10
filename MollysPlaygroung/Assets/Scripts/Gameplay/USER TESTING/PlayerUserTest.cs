@@ -1131,7 +1131,7 @@ public class PlayerUserTest : MonoBehaviour
                                         }
                                     }
                                 }
-                                else
+                                else if(GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().listOfPridePlayers[GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker] != PhotonNetwork.LocalPlayer.NickName)
                                 {
                                     GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().selectControl.SetActive(false);
                                     GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().confirmControl.SetActive(false);
@@ -1142,9 +1142,6 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker == 0)
                                     {
-                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().selectControl.SetActive(false);
-                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().confirmControl.SetActive(false);
-
                                         GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().chosenCupText.text = "Cup : " + selectedCup.name;
 
                                         view.RPC("poisoningCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, selectedCup.name);

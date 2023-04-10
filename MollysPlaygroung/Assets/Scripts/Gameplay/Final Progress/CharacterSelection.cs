@@ -32,7 +32,8 @@ public class CharacterSelection : MonoBehaviour
     {
         if (view.IsMine)
         {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "characterSelection") {
+            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "characterSelection") 
+            {
                 if (Input.GetMouseButtonDown(0))
                 {
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -42,53 +43,8 @@ public class CharacterSelection : MonoBehaviour
                         Debug.Log("hit " + hit.transform.gameObject.name);
                         if (hit.collider.gameObject.tag == "CharacterChoice")
                         {
-                            // OP 2
-                            /*
-                            if (previousTarg != null)
-                            {
-                                for (int i = 0; i < characters.Count; i++)
-                                {
-                                    if (characters[i].name == previousTarg.name)
-                                    {
-                                        previousTarg.transform.GetChild(0).gameObject.SetActive(false);
-
-                                        if (i < 4)
-                                        {
-                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, topRowSit, previousTarg.transform.position.z);
-                                            break;
-                                        }
-                                        else if (i >= 4)
-                                        {
-                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, bottomRowSit, previousTarg.transform.position.z);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-
-                            previousTarg = hit.collider.gameObject;
-
-                            for (int i = 0; i < characters.Count; i++)
-                            {
-                                hit.collider.transform.GetChild(0).gameObject.SetActive(true);
-
-                                if (characters[i].name == hit.collider.gameObject.name)
-                                {
-                                    if (i < 4)
-                                    {
-                                        hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, topRowStand, hit.collider.gameObject.transform.position.z);
-                                        break;
-                                    }
-                                    else if (i >= 4)
-                                    {
-                                        hit.collider.gameObject.transform.position = new Vector3(hit.collider.gameObject.transform.position.x, bottomRowStand, hit.collider.gameObject.transform.position.z);
-                                        break;
-                                    }
-                                }
-                            }
-                            */
-
-                            // OP 3
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().selectControl.SetActive(false);
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().confirmControl.SetActive(true);
 
                             if (previousTarg != null)
                             {
@@ -107,7 +63,8 @@ public class CharacterSelection : MonoBehaviour
                             previousTarg = hit.collider.gameObject;
 
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.SetActive(true);
-                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = hit.collider.gameObject.name;
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = hit.collider.gameObject.GetComponent<BabiesCharacteristics>().MyName;
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().charInfo.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = hit.collider.gameObject.GetComponent<BabiesCharacteristics>().AboutMe;
 
                             for (int x = 0; x < GameObject.Find("GameManager").GetComponent<SelectionGameManager>().characters.Count; x++)
                             {
@@ -125,35 +82,9 @@ public class CharacterSelection : MonoBehaviour
                         }
                         else if (hit.collider.gameObject.tag == "Ignore")
                         {
-                            // OP 2
-                            /*
-                            if (previousTarg != null)
-                            {
-                                previousTarg.transform.GetChild(0).gameObject.SetActive(false);
-
-                                for (int i = 0; i < characters.Count; i++)
-                                {
-                                    if (characters[i].name == previousTarg.name)
-                                    {
-                                        if (i < 4)
-                                        {
-                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, topRowSit, previousTarg.transform.position.z);
-                                            break;
-                                        }
-                                        else if (i >= 4)
-                                        {
-                                            previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, bottomRowSit, previousTarg.transform.position.z);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }                    
-
-                            previousTarg = null;
-                            */
-
-                            // OP 3
-
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().selectControl.SetActive(true);
+                            GameObject.Find("GameManager").GetComponent<SelectionGameManager>().confirmControl.SetActive(false);
+                            
                             if (previousTarg != null)
                             {
                                 previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
@@ -171,38 +102,11 @@ public class CharacterSelection : MonoBehaviour
 
                             }
 
-                            //GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<SelectionGameManager>().clear;
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().spotLight.SetActive(false);
 
                         }
                     }
                 }
-
-                /*
-                if (Target != null)
-                {
-                    for (int i = 0; i < characters.Count; i++)
-                    {
-                        if (characters[i].name == Target.name)
-                        {
-                            if (i < 3) {
-                                spotLight.transform.position = new Vector3(characters[i].transform.position.x, 2, characters[i].transform.position.z);
-                                break;
-                            }
-                            else if (i >= 3 && i <= 5)
-                            {
-                                spotLight.transform.position = new Vector3(characters[i].transform.position.x, 6, characters[i].transform.position.z);
-                                break;
-                            }
-                            else if(i > 5)
-                            {
-                                spotLight.transform.position = new Vector3(characters[i].transform.position.x, 10, characters[i].transform.position.z);
-                                break;
-                            }
-                        }
-                    }
-                }*/
-
 
                 if (Input.GetKeyDown(KeyCode.Return))
                 {

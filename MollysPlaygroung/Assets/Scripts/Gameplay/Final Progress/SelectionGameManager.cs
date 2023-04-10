@@ -9,6 +9,9 @@ public class SelectionGameManager : MonoBehaviour
 {
     //public GameObject btnCanvas;
 
+    public GameObject selectControl;
+    public GameObject confirmControl;
+
     public GameObject Target;
     public GameObject spotLight;
 
@@ -22,6 +25,9 @@ public class SelectionGameManager : MonoBehaviour
     public float bottomRowStand;
     public float topRowSit;
     public float topRowStand;
+
+    public List<string> charName = new List<string>();
+    public List<string> charDesc = new List<string>();
 
     public List<GameObject> characters = new List<GameObject>();
 
