@@ -1119,7 +1119,7 @@ public class PlayerUserTest : MonoBehaviour
                                 }
 
                                 // send in results
-                                if (Input.GetKeyDown(KeyCode.Return) && selectedCup != null)
+                                if (Input.GetKeyDown(KeyCode.E) && selectedCup != null)
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker == 0)
                                     {
