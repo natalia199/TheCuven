@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -487,15 +487,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29639276}
-  m_LocalRotation: {x: -0.09323943, y: 0.00006997732, z: 0.0007472426, w: 0.9956435}
-  m_LocalPosition: {x: 0.24, y: -0.54, z: -2.3}
+  m_LocalRotation: {x: -0.090319455, y: -0.009443461, z: -0.054653056, w: 0.9943673}
+  m_LocalPosition: {x: 0.18, y: -0.92, z: -2.23}
   m_LocalScale: {x: 0.98883814, y: 1.040722, z: 0.86257094}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1350079894}
   m_Father: {fileID: 1222868213}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: -10.7, y: 0, z: 0.086}
+  m_LocalEulerAnglesHint: {x: -10.408, y: -0.519, z: -6.245}
 --- !u!1 &29720676
 GameObject:
   m_ObjectHideFlags: 0
@@ -13669,13 +13669,13 @@ MonoBehaviour:
   sceneTracker: 0
   chosenLevelIndex: 0
   minigameLevels:
+  - Pride
+  - Sloth
   - Greed
   - Lust
   - Envy
-  - Pride
   - Wrath
   - Gluttony
-  - Sloth
   finalMinigame: Pride
   allPlayersInGame: []
   allPlayersDead: []
@@ -16158,7 +16158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1070669594
 Transform:
   m_ObjectHideFlags: 0
@@ -30359,7 +30359,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 11.676}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 165, y: 460}
+  m_AnchoredPosition: {x: 465, y: 524}
   m_SizeDelta: {x: 663.0398, y: 110.55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1727842539
@@ -31476,7 +31476,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1770425221}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.000000014901159, y: 4.6566123e-10, z: 0.0055202944, w: 0.9999848}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.2298, y: 1.2298, z: 1.2298}
   m_ConstrainProportionsScale: 0
@@ -31486,7 +31486,7 @@ RectTransform:
   - {fileID: 562428804}
   m_Father: {fileID: 1350079894}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.633}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 42}
@@ -35369,7 +35369,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2079080315}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -35380,7 +35380,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.5}
+  m_AnchoredPosition: {x: 79, y: -0}
   m_SizeDelta: {x: -20, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2079080317

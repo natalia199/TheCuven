@@ -816,16 +816,6 @@ public class PlayerUserTest : MonoBehaviour
                                                 {
                                                     votedHead = hit.collider.gameObject.GetComponent<VotedHeadInfo>().headID;
 
-                                                    view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
-
-                                                    for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
-                                                    {
-                                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName)
-                                                        {
-                                                            GameObject.Find("VotingGrid").transform.GetChild(i).GetChild(1).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().chosenMesh;
-                                                        }
-                                                    }
-
                                                     Debug.Log("I hit head " + votedHead);
                                                     break;
                                                 }
@@ -842,6 +832,21 @@ public class PlayerUserTest : MonoBehaviour
                                                     }
 
                                                     view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
+                                                }
+                                            }
+                                        }
+                                        else if (Input.GetKeyDown(KeyCode.E))
+                                        {
+                                            if(votedHead != -1)
+                                            {
+                                                view.RPC("setVotedHead", RpcTarget.AllBufferedViaServer, view.Owner.NickName, votedHead);
+
+                                                for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
+                                                {
+                                                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName)
+                                                    {
+                                                        GameObject.Find("VotingGrid").transform.GetChild(i).GetChild(1).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].characterID).GetComponent<MeshRenderer>().material = GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().chosenMesh;
+                                                    }
                                                 }
                                             }
                                         }
@@ -1835,7 +1840,7 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight == null)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, 1.73f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().theLight = Instantiate(GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightPrefab, new Vector3(pos.x, 1.9f, pos.y), Quaternion.identity, GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().LightParent.transform);
             }
         }
         catch (NullReferenceException e)
