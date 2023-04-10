@@ -49,6 +49,7 @@ public class PrideGameplayManager : MonoBehaviour
     {
         //timerIsRunning = true;
 
+        /*
         for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
         {
             if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
@@ -77,6 +78,10 @@ public class PrideGameplayManager : MonoBehaviour
                 }
             }
         }
+        */
+
+        listOfPridePlayers.Add(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[0].username);
+        listOfPridePlayers.Add(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[1].username);
 
         playerActionChoice = true;
         playerTurnTracker = 0;
