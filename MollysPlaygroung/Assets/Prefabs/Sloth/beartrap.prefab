@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5134466565392679796}
   - component: {fileID: 1919443048288832301}
   - component: {fileID: 6961197822942226561}
+  - component: {fileID: 6587361662969148435}
   m_Layer: 15
   m_Name: polySurface4
   m_TagString: Untagged
@@ -166,6 +167,26 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!95 &6587361662969148435
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1083536220047617429}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: abb87240ee8ad6f498c381be4ef27529, type: 3}
+  m_Controller: {fileID: 9100000, guid: 12dda09307e2c68409ac5b1426304c17, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4629593715381051752
 GameObject:
   m_ObjectHideFlags: 0
