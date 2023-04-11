@@ -13,8 +13,6 @@ public class StartPageManager : MonoBehaviourPunCallbacks
     private float startTime;
     public Image sprite;
 
-    public AudioSource titleMusic;
-
     bool oneTime;
 
     void Start()
