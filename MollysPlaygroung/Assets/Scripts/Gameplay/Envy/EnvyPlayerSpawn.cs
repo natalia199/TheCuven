@@ -12,9 +12,13 @@ public class EnvyPlayerSpawn : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Pride")
         {
-            if (PhotonNetwork.LocalPlayer.NickName == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[0].username || PhotonNetwork.LocalPlayer.NickName == GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[1].username)
+            for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
             {
-                PhotonNetwork.Instantiate(playerPrefab.name, transform.position, new Quaternion(0, 180, 0, transform.rotation.w));
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName && GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].stillAlive)
+                {
+                    PhotonNetwork.Instantiate(playerPrefab.name, transform.position, new Quaternion(0, 180, 0, transform.rotation.w));
+                    break;
+                }
             }
         }
         else if (SceneManager.GetActiveScene().name == "Game Ending")

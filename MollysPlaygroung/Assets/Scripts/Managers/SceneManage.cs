@@ -47,6 +47,8 @@ public class SceneManage : MonoBehaviour
 
     public bool beginGame = false;
 
+    public bool LastLevelPride = false;
+
     public struct GamePlayer
     {
         public string username;
@@ -232,6 +234,12 @@ public class SceneManage : MonoBehaviour
 
         else if (SceneManager.GetActiveScene().name == "Intro_Scene" && !gameFlowBegin)
         {
+            if (playersInGame.Count == 2)
+            {
+                LastLevelPride = true;
+            }
+
+
             countdownLevelCheck = false;
 
             if (PhotonNetwork.IsMasterClient)
@@ -266,8 +274,13 @@ public class SceneManage : MonoBehaviour
 
         sceneTracker++;
 
-        
-        if (sceneTracker == (minigameLevels.Count))
+        if (sceneTracker == (playersInGame.Count - 2))
+        {
+            LastLevelPride = true;
+            GameplayDone = false;
+            PhotonNetwork.LoadLevel("LevelResult");
+        }
+        else if (sceneTracker == (playersInGame.Count - 1))
         {
             PhotonNetwork.LoadLevel("Game Ending");
         }
@@ -285,7 +298,14 @@ public class SceneManage : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.LoadLevel(minigameLevels[sceneTracker]);
+            if (!LastLevelPride)
+            {
+                PhotonNetwork.LoadLevel(minigameLevels[sceneTracker]);
+            }
+            else
+            {
+                PhotonNetwork.LoadLevel(finalMinigame);
+            }
         }
     }
 

@@ -13685,12 +13685,12 @@ MonoBehaviour:
   sceneTracker: 0
   chosenLevelIndex: 0
   minigameLevels:
-  - Wrath
+  - Envy
+  - Sloth
+  - Lust
   - Gluttony
   - Greed
-  - Lust
-  - Sloth
-  - Envy
+  - Wrath
   - Pride
   finalMinigame: Pride
   allPlayersInGame: []
@@ -13718,6 +13718,7 @@ MonoBehaviour:
   deadSkin: {fileID: 2100000, guid: cb554240724dc9440b7d01a2824abc0c, type: 2}
   countdownLevelCheck: 1
   beginGame: 0
+  LastLevelPride: 0
 --- !u!4 &859736303
 Transform:
   m_ObjectHideFlags: 0

@@ -95,7 +95,7 @@ public class TempLevelTimer : MonoBehaviour
 
         playerLevelIDs = new List<int>();
 
-        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony" || SceneManager.GetActiveScene().name == "Pride")
+        if (SceneManager.GetActiveScene().name == "Wrath" || SceneManager.GetActiveScene().name == "Sloth" || SceneManager.GetActiveScene().name == "Gluttony")
         {
             for (int y = 0; y < GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser.Count; y++)
             {
@@ -360,6 +360,11 @@ public class TempLevelTimer : MonoBehaviour
             {
                 GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsLoser(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[playerLevelIDs.Count - 1]].username);
             }
+        }
+        else if (SceneManager.GetActiveScene().name == "Pride")
+        {
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().listOfPridePlayers[0]);
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
         }
 
 

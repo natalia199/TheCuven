@@ -11,6 +11,9 @@ public class LevelTransitions : MonoBehaviour
 
     public List<Material> bookInstructions = new List<Material>();
     public List<Material> tarotCards = new List<Material>();
+    
+    public Material prideBookInstruction;
+    public Material prideTarotCard;
 
     //public Vector3 moveHandTo;
 
@@ -39,13 +42,21 @@ public class LevelTransitions : MonoBehaviour
         }
         */
 
-        tarotCard.GetComponent<MeshRenderer>().material = tarotCards[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
-        book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
-    
+        if (!GameObject.Find("Scene Manager").GetComponent<SceneManage>().LastLevelPride)
+        {
+            tarotCard.GetComponent<MeshRenderer>().material = tarotCards[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+            book.GetComponent<SkinnedMeshRenderer>().material = bookInstructions[GameObject.Find("Scene Manager").GetComponent<SceneManage>().sceneTracker];
+        }
+        else
+        {
+            tarotCard.GetComponent<MeshRenderer>().material = prideTarotCard;
+            book.GetComponent<SkinnedMeshRenderer>().material = prideBookInstruction;
+        }
 
-    //StartCoroutine("moveHand");
 
-}
+        //StartCoroutine("moveHand");
+
+    }
 
     public void DaButton()
     {

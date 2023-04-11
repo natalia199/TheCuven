@@ -49,7 +49,7 @@ public class PrideGameplayManager : MonoBehaviour
     {
         //timerIsRunning = true;
 
-        /*
+        
         for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
         {
             if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
@@ -78,15 +78,11 @@ public class PrideGameplayManager : MonoBehaviour
                 }
             }
         }
-        */
-
-        listOfPridePlayers.Add(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[0].username);
-        listOfPridePlayers.Add(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[1].username);
 
         playerActionChoice = true;
         playerTurnTracker = 0;
         timeStampTrack = 0;
-        playerTurnDisplay.text = listOfPridePlayers[0] + " turn to Poison";
+        playerTurnDisplay.text = listOfPridePlayers[0] + "'s turn to Poison";
     }
 
     void Update()
@@ -167,7 +163,7 @@ public class PrideGameplayManager : MonoBehaviour
             timeStampTrack = 2;
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimerRunning = true;
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimer = timeStamps[timeStampTrack];
-            playerTurnDisplay.text = listOfPridePlayers[playerTurnTracker] + " turn to Drink";
+            playerTurnDisplay.text = listOfPridePlayers[playerTurnTracker] + "'s turn to Drink";
             playerActionChoice = true;
         }
     }
@@ -217,7 +213,7 @@ public class PrideGameplayManager : MonoBehaviour
             playerTurnTracker = 0;
 
             playerActionChoice = true;
-            playerTurnDisplay.text = listOfPridePlayers[0] + " turn to Poison";
+            playerTurnDisplay.text = listOfPridePlayers[0] + "'s turn to Poison";
             chosenCupText.text = "";
             timeStampTrack = 0;
             GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().MasterPlayer).GetComponent<PlayerUserTest>().prideTimerRunning = true;
