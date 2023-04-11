@@ -75,6 +75,9 @@ public class ResultGameManager : MonoBehaviour
 
         yield return new WaitForSeconds(10);
 
+
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsLoser = new List<string>();
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner = new List<string>();
         //SpinTheWheel = true;
 
 

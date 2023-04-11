@@ -1006,6 +1006,7 @@ public class PlayerUserTest : MonoBehaviour
                                     }
                                 }
 
+                                // BEAR TRAP INTERACTION
                                 if (!ranOutOfLife)
                                 {
                                     // Resetting set trap after it got unset and destroyed!
@@ -1045,7 +1046,15 @@ public class PlayerUserTest : MonoBehaviour
                                         GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().DecreaseLifeForce();
                                     }
                                 }
-                                else if (withinTheLight && lifeSource > 0f)
+                                else if (lifeSource <= 0f)
+                                {
+                                    if (!ranOutOfLife)
+                                    {
+                                        view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, 0, true);
+                                    }
+                                }
+
+                                /*else if (withinTheLight && lifeSource > 0f)
                                 {
                                     // stop life drop
                                     GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().lifeDrop = true;
@@ -1056,7 +1065,7 @@ public class PlayerUserTest : MonoBehaviour
                                     lifeSource = 0f;
                                     view.RPC("displayLifePercentage", RpcTarget.AllBufferedViaServer, view.Owner.NickName, 0, true);
                                     ranOutOfLife = true;
-                                }
+                                }*/
 
                                 // game ending - if the results has one less than the total of players means there 1 person left standing which is the winner
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
@@ -1855,10 +1864,11 @@ public class PlayerUserTest : MonoBehaviour
             GameObject.Find(pName).GetComponent<PlayerUserTest>().lifeSource = v;
             GameObject.Find(pName).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = GameObject.Find(pName).GetComponent<PlayerUserTest>().lifeSource + "";
 
-            if (state)
+            if (state && !GameObject.Find(pName).GetComponent<PlayerUserTest>().ranOutOfLife)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().ranOutOfLife = state;
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().ranOutOfLife = true;
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().lifeSource = 0;
+                GameObject.Find(pName).transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = "0";
                 GameObject.Find(pName).GetComponent<PlayerUserTest>().noMoreLifeSource(pName);
             }
         }
@@ -2608,6 +2618,16 @@ public class PlayerUserTest : MonoBehaviour
             interactedFood = other.gameObject;
             //Destroy(other.gameObject);
         }
+
+        // SLOTH
+        if (other.tag == "Light")
+        {
+            withinTheLight = true;
+        }
+        else
+        {
+            withinTheLight = false;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -2620,11 +2640,7 @@ public class PlayerUserTest : MonoBehaviour
             bucketNameInteracted = other.transform.parent.name;
         }
 
-        // SLOTH
-        if (other.tag == "Light")
-        {
-            withinTheLight = true;
-        }
+        
         if (other.tag == "BearTrap" && !gotBearTrapped)
         {
             gotBearTrapped = true;
