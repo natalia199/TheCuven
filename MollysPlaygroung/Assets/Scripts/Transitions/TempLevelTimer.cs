@@ -27,6 +27,7 @@ public class TempLevelTimer : MonoBehaviour
     List<int> keyValues = new List<int>();
     List<int> bettingValues = new List<int>();
 
+    public GameObject ribbon;
 
     void Start()
     {
@@ -69,6 +70,7 @@ public class TempLevelTimer : MonoBehaviour
 
             if (startingCountdown < 0)
             {
+                ribbon.SetActive(false);
                 countdownIsRunning = false;
                 GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck = true;
             }
