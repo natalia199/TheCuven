@@ -29,6 +29,9 @@ public class EnvyPlayerSpawn : MonoBehaviour
             }
             else
             {
+                PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(0).position.x, GameObject.Find("LoserSpots").transform.GetChild(1).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(1).position.z, GameObject.Find("LoserSpots").transform.GetChild(0).position.z)), new Quaternion(0, 180, 0, transform.rotation.w));
+
+                /*
                 if (Random.Range(0, 2) == 0)
                 {
                     PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(0).position.x, GameObject.Find("LoserSpots").transform.GetChild(1).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(1).position.z, GameObject.Find("LoserSpots").transform.GetChild(0).position.z)), new Quaternion(0, 180, 0, transform.rotation.w));
@@ -37,6 +40,7 @@ public class EnvyPlayerSpawn : MonoBehaviour
                 {
                     PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("LoserSpots").transform.GetChild(2).position.x, GameObject.Find("LoserSpots").transform.GetChild(3).position.x), transform.position.y, Random.Range(GameObject.Find("LoserSpots").transform.GetChild(3).position.z, GameObject.Find("LoserSpots").transform.GetChild(2).position.z)), new Quaternion(0, 180, 0, transform.rotation.w));
                 }
+                */
             }
         }
         else
