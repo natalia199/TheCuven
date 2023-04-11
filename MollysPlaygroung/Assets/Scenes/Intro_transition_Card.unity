@@ -6609,7 +6609,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2009557770}
   - component: {fileID: 2009557769}
-  - component: {fileID: 2009557771}
   - component: {fileID: 2009557772}
   m_Layer: 0
   m_Name: Spot Light (1)
@@ -6617,7 +6616,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &2009557769
 Light:
   m_ObjectHideFlags: 0
@@ -6695,26 +6694,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 87.578, y: -218.444, z: -227.964}
---- !u!95 &2009557771
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009557768}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 32b08b21237aa42419d059aa296d5424, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!320 &2009557772
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -6724,7 +6703,7 @@ PlayableDirector:
   m_GameObject: {fileID: 2009557768}
   m_Enabled: 1
   serializedVersion: 3
-  m_PlayableAsset: {fileID: 11400000, guid: 2f6159227acc60e4b9c28f78be4f628a, type: 2}
+  m_PlayableAsset: {fileID: 11400000, guid: 72f900f8108c1a346a43016db594c2f8, type: 2}
   m_InitialState: 1
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
@@ -6747,9 +6726,11 @@ PlayableDirector:
   - key: {fileID: -6741948348444364382, guid: 7472c49c1c3f6d2479653fd801b9f390, type: 2}
     value: {fileID: 584194427}
   - key: {fileID: 8669197457456353424, guid: 0145d3aaea322624b9266a67e8b403bd, type: 2}
-    value: {fileID: 2009557771}
+    value: {fileID: 0}
   - key: {fileID: 8669197457456353424, guid: 2f6159227acc60e4b9c28f78be4f628a, type: 2}
-    value: {fileID: 2009557771}
+    value: {fileID: 0}
+  - key: {fileID: -4291181458280906057, guid: 72f900f8108c1a346a43016db594c2f8, type: 2}
+    value: {fileID: 0}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &2094377524
