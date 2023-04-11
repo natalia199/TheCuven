@@ -90,14 +90,16 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 
     public void OnClick_StartGame()
     {
-        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame = true;
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame = true;
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
+        /*
         if (PhotonNetwork.LocalPlayer.IsMasterClient)
         {
             PhotonNetwork.LoadLevel("Intro_Scene");
         }
+        */
     }
 
     public void Update()

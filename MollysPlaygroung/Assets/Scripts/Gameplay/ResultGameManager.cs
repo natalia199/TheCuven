@@ -30,6 +30,8 @@ public class ResultGameManager : MonoBehaviour
 
     public bool oneTimeRound = false;
 
+    public bool setNextLevel = false;
+
     void Awake()
     {
         PhotonNetwork.Instantiate(gridPlayerTempaltePrefab.name, transform.position, transform.rotation);
@@ -71,6 +73,8 @@ public class ResultGameManager : MonoBehaviour
         winnerPlayer.text = "" + GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0];
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().setPlayersLifeStatus(false);
+
+        setNextLevel = true;
 
 
         yield return new WaitForSeconds(10);

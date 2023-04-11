@@ -56,6 +56,7 @@ public class TempLevelTimer : MonoBehaviour
         }
         */
 
+
         if (countdownIsRunning)
         {
             if (startingCountdown > 1)
@@ -83,6 +84,10 @@ public class TempLevelTimer : MonoBehaviour
             {
                 ribbon.SetActive(false);
                 prideSecondRibbon.SetActive(false);
+            }
+            else
+            {
+                ribbon.SetActive(false);
             }
         }
     }
@@ -283,12 +288,12 @@ public class TempLevelTimer : MonoBehaviour
                 }
             }
 
-            
+
             // result calculator
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentLevelsWinner(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[0]].username);
 
-            
-            for (int i = (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1); i >= 0 ; i--)
+
+            for (int i = (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1); i >= 0; i--)
             {
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[playerLevelIDs[i]].stillAlive)
                 {
@@ -382,6 +387,8 @@ public class TempLevelTimer : MonoBehaviour
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
 
         yield return new WaitForSeconds(3f);
+
+
 
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().NextGameaz();
 

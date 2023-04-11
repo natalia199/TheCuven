@@ -10,11 +10,24 @@ public class SceneManage : MonoBehaviour
 {
     public int sceneTracker;
     public int chosenLevelIndex;
+    public int preChosenLevelIndex;
+    public int previousLevelIndex;
+
+    public int aliveTracker;
+
+    public string GameWinner;
 
     //public string[] levelNames;
 
     public List<string> minigameLevels = new List<string>();
+    public List<string> backUpminigameLevels = new List<string>();
     public string finalMinigame;
+
+    public List<Material> bookInstructions = new List<Material>();
+    public List<Material> tarotCards = new List<Material>();
+
+    public List<Material> bookInstructionBackup = new List<Material>();
+    public List<Material> tarotCardBackup = new List<Material>();
 
 
     public List<string> allPlayersInGame = new List<string>();
@@ -48,6 +61,9 @@ public class SceneManage : MonoBehaviour
     public bool beginGame = false;
 
     public bool LastLevelPride = false;
+
+    public bool skipCreditsEnding = false;
+
 
     public struct GamePlayer
     {
@@ -130,7 +146,6 @@ public class SceneManage : MonoBehaviour
         DontDestroyOnLoad(this);
 
         sceneTracker = 0;
-        chosenLevelIndex = UnityEngine.Random.Range(0, minigameLevels.Count);
 
         CurrentLevelState = false;
         countdownLevelCheck = true;
@@ -155,6 +170,13 @@ public class SceneManage : MonoBehaviour
         usernameScene.SetActive(true);
         rumbleScene.SetActive(false);
         charSelScene.SetActive(false);
+
+        for (int i = 0; i < minigameLevels.Count; i++)
+        {
+            backUpminigameLevels.Add(minigameLevels[i]);
+            bookInstructionBackup.Add(bookInstructions[i]);
+            tarotCardBackup.Add(tarotCards[i]);
+        }
     }
 
 
@@ -239,13 +261,8 @@ public class SceneManage : MonoBehaviour
                 LastLevelPride = true;
             }
 
-
             countdownLevelCheck = false;
 
-            if (PhotonNetwork.IsMasterClient)
-            {
-                //StartCoroutine("BeginGame", 3);
-            }
             gameFlowBegin = true;
         }
 
@@ -272,6 +289,34 @@ public class SceneManage : MonoBehaviour
         GameplayDone = false;
         CurrentLevelState = false;
 
+        if (!LastLevelPride)
+        {
+            minigameLevels.RemoveAt(chosenLevelIndex);
+            tarotCards.RemoveAt(chosenLevelIndex);
+            bookInstructions.RemoveAt(chosenLevelIndex);
+
+            if (minigameLevels.Count == 0)
+            {
+                for (int i = 0; i < backUpminigameLevels.Count; i++)
+                {
+                    minigameLevels.Add(backUpminigameLevels[i]);
+                    bookInstructions.Add(bookInstructionBackup[i]);
+                    tarotCards.Add(tarotCardBackup[i]);
+                }
+            }
+
+            chosenLevelIndex = preChosenLevelIndex;
+
+            GameplayDone = false;
+            PhotonNetwork.LoadLevel("LevelResult");
+        }
+        else
+        {
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState = "game over";
+            PhotonNetwork.LoadLevel("Game Ending");
+        }
+        
+        /*
         sceneTracker++;
 
         if (sceneTracker == (playersInGame.Count - 2))
@@ -289,6 +334,7 @@ public class SceneManage : MonoBehaviour
             GameplayDone = false;
             PhotonNetwork.LoadLevel("LevelResult");
         }
+        */
     }
 
 
@@ -298,14 +344,39 @@ public class SceneManage : MonoBehaviour
 
         if (PhotonNetwork.IsMasterClient)
         {
+            aliveTracker = 0;
+
+            for (int i = 0; i < playersInGame.Count; i++)
+            {
+                if (playersInGame[i].stillAlive)
+                {
+                    aliveTracker++;
+                }
+            }
+
+            if (aliveTracker == 2)
+            {
+                LastLevelPride = true;
+                GameplayDone = false;
+                PhotonNetwork.LoadLevel(finalMinigame);
+            }
+            else
+            {
+                GameplayDone = false;
+                PhotonNetwork.LoadLevel(minigameLevels[chosenLevelIndex]);
+            }
+
+            /*
             if (!LastLevelPride)
             {
-                PhotonNetwork.LoadLevel(minigameLevels[sceneTracker]);
+                //PhotonNetwork.LoadLevel(minigameLevels[sceneTracker]);
+                PhotonNetwork.LoadLevel(minigameLevels[chosenLevelIndex]);
             }
             else
             {
                 PhotonNetwork.LoadLevel(finalMinigame);
             }
+            */
         }
     }
 

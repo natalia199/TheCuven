@@ -32,6 +32,9 @@ public class PlayerResultScript : MonoBehaviour
 
     public bool oneTimeSend = false;
 
+    public bool sceneChoiceDecided = false;
+    public int sceneDecision;
+
     Ray ray;
 
     void Start()
@@ -85,6 +88,27 @@ public class PlayerResultScript : MonoBehaviour
 
                     catch (NullReferenceException e) { }
                 }
+
+                /*
+                // begin game
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame)
+                    {
+                        //PhotonNetwork.CurrentRoom.IsOpen = false;
+                        //PhotonNetwork.CurrentRoom.IsVisible = false;
+
+                        if (!sceneChoiceDecided)
+                        {
+                            sceneDecision = UnityEngine.Random.Range(0, GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count);
+                            Debug.Log("scene decided " + sceneDecision);
+                            sceneChoiceDecided = true;
+                        }
+
+                        view.RPC("beginTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
+                    }
+                }
+                */
 
                 /*
                 // Wheel

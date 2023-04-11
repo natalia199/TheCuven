@@ -31,23 +31,27 @@ public class GameOverManager : MonoBehaviourPunCallbacks
     }
 
     public void FixedUpdate()
-    {
-        /*
-        if (PhotonNetwork.LocalPlayer.IsMasterClient)
-            skipBtn.SetActive(true);
-        else
-            skipBtn.SetActive(false);
-        */
+    {        
         if (startCredits && theCredits.transform.position.y < 2600f)
         {
             theCredits.GetComponent<Rigidbody>().velocity = transform.up * m_Speed;
         }
     }
 
+    public void OnClick_EndGame()
+    {
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().skipCreditsEnding = true;
+    }
+
 
     IEnumerator CreditsFinished()
     {
         yield return new WaitForSeconds(8);
+
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+            skipBtn.SetActive(true);
+        else
+            skipBtn.SetActive(false);
 
         startCredits = true;
     }

@@ -7,16 +7,24 @@ using UnityEngine.SceneManagement;
 public class EnvyPlayerSpawn : MonoBehaviour
 {
     public GameObject playerPrefab;
+   // public GameObject playerPrideBystanderPrefab;
 
     void Awake()
     {
         if (SceneManager.GetActiveScene().name == "Pride")
         {
+
             for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
             {
+                
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName && GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].stillAlive)
                 {
                     PhotonNetwork.Instantiate(playerPrefab.name, transform.position, new Quaternion(0, 180, 0, transform.rotation.w));
+                    break;
+                }
+                else if(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == PhotonNetwork.LocalPlayer.NickName)
+                {
+                    PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(GameObject.Find("kill me pls").transform.GetChild(0).GetChild(0).position.x, GameObject.Find("kill me pls").transform.GetChild(0).GetChild(1).position.x), GameObject.Find("kill me pls").transform.GetChild(0).transform.position.y, GameObject.Find("kill me pls").transform.GetChild(0).transform.position.z), new Quaternion(0, 180, 0, transform.rotation.w));
                     break;
                 }
             }

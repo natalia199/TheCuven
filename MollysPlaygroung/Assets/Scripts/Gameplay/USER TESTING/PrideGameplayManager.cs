@@ -6,6 +6,7 @@ using UnityEngine;
 public class PrideGameplayManager : MonoBehaviour
 {
     public List<GameObject> CupSets = new List<GameObject>();
+    public List<GameObject> CupLamps = new List<GameObject>();
 
     public List<GameObject> prideResults = new List<GameObject>();
 
@@ -13,6 +14,8 @@ public class PrideGameplayManager : MonoBehaviour
     
     public string poisonedCup;                                                  // chosen cup to be poisoned
     public string drinkingCup;                                                  // chosen cup to be drank
+    public int poisonedCupVal;                                                  // chosen cup to be poisoned
+    public int drinkingCupVal;                                                  // chosen cup to be drank
 
     public bool playerActionChoice = false;
     public bool resultCheck = false;
@@ -95,16 +98,18 @@ public class PrideGameplayManager : MonoBehaviour
         */
     }
 
-    public void setPoisonedCup(string pname, string cup)
+    public void setPoisonedCup(string pname,int x)
     {
-        poisonedCup = cup;
+        //poisonedCup = cup;
+        poisonedCupVal = x;
 
         StartCoroutine("likklePause", 3f);
     }
 
-    public void setDrinkingCup(string pname, string cup)
+    public void setDrinkingCup(string pname, int x)
     {
-        drinkingCup = cup;
+        //drinkingCup = cup;
+        drinkingCupVal = x;
 
         StartCoroutine("likklePause", 3f);
     }
@@ -148,11 +153,11 @@ public class PrideGameplayManager : MonoBehaviour
         {
             if (playerTurnTracker == 0)
             {
-                setPoisonedCup(listOfPridePlayers[0], "1");
+                setPoisonedCup(listOfPridePlayers[0], 0);
             }
             else if (playerTurnTracker == 1)
             {
-                setDrinkingCup(listOfPridePlayers[1], "1");
+                setDrinkingCup(listOfPridePlayers[1], 0);
             }
         }
         // dicussiion time run out
@@ -173,12 +178,12 @@ public class PrideGameplayManager : MonoBehaviour
     {
         resetCups = true;
 
-        if (poisonedCup == drinkingCup)
+        if (poisonedCupVal == drinkingCupVal)
         {
             playerTurnDisplay.text = listOfPridePlayers[1] + " poisoned";
             GameObject.Find(listOfPridePlayers[1]).GetComponent<PlayerUserTest>().gotPoisoned = true;
-            GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(true);
-            //GameObject.Find("RoomLights").gameObject.SetActive(false);
+            CupLamps[poisonedCupVal].SetActive(true);
+            //GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(true);
             chosenCupText.text = "";
             gameOver = true;
         }
@@ -187,8 +192,11 @@ public class PrideGameplayManager : MonoBehaviour
             playerTurnDisplay.text = listOfPridePlayers[1] + " survived";
             chosenCupText.text = "Role Switch";
 
-            GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(true);
-            GameObject.Find(drinkingCup).transform.GetChild(0).gameObject.SetActive(true);
+            CupLamps[poisonedCupVal].SetActive(true);
+            CupLamps[drinkingCupVal].SetActive(true);
+
+            //GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(true);
+            //GameObject.Find(drinkingCup).transform.GetChild(0).gameObject.SetActive(true);
             //GameObject.Find("RoomLights").gameObject.SetActive(false);
 
             string player = listOfPridePlayers[0];
@@ -204,12 +212,17 @@ public class PrideGameplayManager : MonoBehaviour
         }
         else
         {
-            GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(false);
-            GameObject.Find(drinkingCup).transform.GetChild(0).gameObject.SetActive(false);
+            CupLamps[poisonedCupVal].SetActive(false);
+            CupLamps[drinkingCupVal].SetActive(false);
+
+            //GameObject.Find(poisonedCup).transform.GetChild(0).gameObject.SetActive(false);
+            //GameObject.Find(drinkingCup).transform.GetChild(0).gameObject.SetActive(false);
             //GameObject.Find("RoomLights").gameObject.SetActive(true);
 
-            poisonedCup = "";
-            drinkingCup = "";
+            //poisonedCup = "";
+            //drinkingCup = "";
+            poisonedCupVal = 0;
+            drinkingCupVal = 0;
             playerTurnTracker = 0;
 
             playerActionChoice = true;

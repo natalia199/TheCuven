@@ -178,6 +178,8 @@ public class PlayerUserTest : MonoBehaviour
 
     public bool playerIsGrounded = false;
 
+    public bool skippedTheEndingCredits = false;
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -263,6 +265,7 @@ public class PlayerUserTest : MonoBehaviour
                 PrideCameraOptions.Add(GameObject.Find("Main Camera"));
                 PrideCameraOptions.Add(GameObject.Find("Main Camera 2"));
 
+                
                 for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                 {
                     if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive && GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == PhotonNetwork.LocalPlayer.NickName)
@@ -286,6 +289,7 @@ public class PlayerUserTest : MonoBehaviour
                         break;
                     }
                 }
+                
 
                 prideTimer = GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().timeStamps[GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().timeStampTrack];
             }
@@ -376,21 +380,20 @@ public class PlayerUserTest : MonoBehaviour
                     {
                         if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame)
                         {
-                            PhotonNetwork.CurrentRoom.IsOpen = false;
-                            PhotonNetwork.CurrentRoom.IsVisible = false;
+                            //PhotonNetwork.CurrentRoom.IsOpen = false;
+                            //PhotonNetwork.CurrentRoom.IsVisible = false;
 
                             if (!sceneChoiceDecided)
                             {
-                                sceneDecision = UnityEngine.Random.Range(0, GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1);
+                                sceneDecision = UnityEngine.Random.Range(0, GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count);
+                                Debug.Log("scene decided " + sceneDecision);
                                 sceneChoiceDecided = true;
                             }
 
-                            Debug.Log("scene " + sceneDecision);
-
                             view.RPC("beginTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                         }
-                    }
-
+                    }                            
+                    
                     MovePlayer();
 
                     if (Input.GetKeyDown(KeyCode.Space) && playerIsGrounded)
@@ -538,8 +541,21 @@ public class PlayerUserTest : MonoBehaviour
                                 if (PhotonNetwork.LocalPlayer.IsMasterClient)
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().chipTracker == GameObject.Find("GameManager").GetComponent<GreedGameplayManager>().startingAmountOfChips)
-                                    {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    {                                        
+                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count == 2)
+                                        {
+                                            sceneDecision = 0;
+                                        }
+                                        else
+                                        {
+                                            if (!sceneChoiceDecided)
+                                            {
+                                                sceneDecision = UnityEngine.Random.Range(0, (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count-1));
+                                                sceneChoiceDecided = true;
+                                            }
+                                        }
+
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                     }
                                 }
                             }
@@ -621,7 +637,20 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker == GameObject.Find("GameManager").GetComponent<LustGameplayManager>().maxKeys)
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count == 2)
+                                        {
+                                            sceneDecision = 0;
+                                        }
+                                        else
+                                        {
+                                            if (!sceneChoiceDecided)
+                                            {
+                                                sceneDecision = UnityEngine.Random.Range(0, (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1));
+                                                sceneChoiceDecided = true;
+                                            }
+                                        }
+
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                     }
                                 }
                             }
@@ -714,7 +743,20 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<GluttonyGameplayManager>().gluttonyResults.Count >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count == 2)
+                                        {
+                                            sceneDecision = 0;
+                                        }
+                                        else
+                                        {
+                                            if (!sceneChoiceDecided)
+                                            {
+                                                sceneDecision = UnityEngine.Random.Range(0, (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1));
+                                                sceneChoiceDecided = true;
+                                            }
+                                        }
+
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                     }
                                 }
 
@@ -763,7 +805,20 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<EnvyGameplayManager>().levelRounds >= 2)
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count == 2)
+                                        {
+                                            sceneDecision = 0;
+                                        }
+                                        else
+                                        {
+                                            if (!sceneChoiceDecided)
+                                            {
+                                                sceneDecision = UnityEngine.Random.Range(0, (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1));
+                                                sceneChoiceDecided = true;
+                                            }
+                                        }
+
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                     }
                                 }
 
@@ -966,7 +1021,20 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<WrathGameplayManager>().wrathResults.Count == (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count == 2)
+                                        {
+                                            sceneDecision = 0;
+                                        }
+                                        else
+                                        {
+                                            if (!sceneChoiceDecided)
+                                            {
+                                                sceneDecision = UnityEngine.Random.Range(0, (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1));
+                                                sceneChoiceDecided = true;
+                                            }
+                                        }
+
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                     }
                                 }
                             }
@@ -1072,7 +1140,20 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<SlothGameplayManager>().slothResults.Count >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
                                     {
-                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count == 2)
+                                        {
+                                            sceneDecision = 0;
+                                        }
+                                        else
+                                        {
+                                            if (!sceneChoiceDecided)
+                                            {
+                                                sceneDecision = UnityEngine.Random.Range(0, (GameObject.Find("Scene Manager").GetComponent<SceneManage>().minigameLevels.Count - 1));
+                                                sceneChoiceDecided = true;
+                                            }
+                                        }
+
+                                        view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                     }
                                 }
                             }
@@ -1112,9 +1193,12 @@ public class PlayerUserTest : MonoBehaviour
                                 }
 
                                 // game ending - if the results has one less than the total of players means there 1 person left standing which is the winner
-                                if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().prideResults.Count >= (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count - 1))
+                                if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().prideResults.Count >= 1)
                                 {
-                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
+                                    sceneDecision = 0;
+
+                                    view.RPC("setGameWinner", RpcTarget.AllBufferedViaServer, GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().listOfPridePlayers[0]);
+                                    view.RPC("endTheGame", RpcTarget.AllBufferedViaServer, view.Owner.NickName, sceneDecision);
                                 }
                             }
 
@@ -1164,15 +1248,15 @@ public class PlayerUserTest : MonoBehaviour
                                 {
                                     if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerTurnTracker == 0)
                                     {
-                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().chosenCupText.text = "Cup : " + selectedCup.name;
+                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().chosenCupText.text = "Cup : " + (GameObject.Find(selectedCup.name).GetComponent<chaliceInfo>().id + 1);
 
-                                        view.RPC("poisoningCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, selectedCup.name);
+                                        view.RPC("poisoningCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GameObject.Find(selectedCup.name).GetComponent<chaliceInfo>().id);
                                     }
                                     else
                                     {
-                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().chosenCupText.text = "Cup : " + selectedCup.name;
+                                        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().chosenCupText.text = "Cup : " + (GameObject.Find(selectedCup.name).GetComponent<chaliceInfo>().id + 1);
 
-                                        view.RPC("drinkingCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, selectedCup.name);
+                                        view.RPC("drinkingCup", RpcTarget.AllBufferedViaServer, view.Owner.NickName, GameObject.Find(selectedCup.name).GetComponent<chaliceInfo>().id);
                                     }
                                 }
                             }
@@ -1249,32 +1333,43 @@ public class PlayerUserTest : MonoBehaviour
             {
                 view.RPC("setUsername", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
 
-                try
+                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)
                 {
-                    for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                    try
                     {
-                        try
+                        for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                         {
-                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0])
+                            try
                             {
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(6).gameObject.SetActive(true);
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().winnerMesh;
+                                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0])
+                                {
+                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                                    //GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(6).gameObject.SetActive(true);
+                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().winnerMesh;
+                                }
+                                else
+                                {
+                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
+                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
+                                }
                             }
-                            else
+
+                            catch (NullReferenceException e)
                             {
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
+                                Debug.Log("naw cuh");
                             }
                         }
+                    }
+                    catch (NullReferenceException e) { }
 
-                        catch (NullReferenceException e)
+                    if (PhotonNetwork.LocalPlayer.IsMasterClient)
+                    {
+                        if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().skipCreditsEnding)
                         {
-                            Debug.Log("naw cuh");
+                            view.RPC("finalSceneEnding", RpcTarget.AllBufferedViaServer, view.Owner.NickName);
                         }
                     }
                 }
-                catch (NullReferenceException e) { }
 
                 MovePlayer();
 
@@ -1588,11 +1683,30 @@ public class PlayerUserTest : MonoBehaviour
     {
         try
         {
+            Debug.Log("scene " + sceneDecision);
+
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().chosenLevelIndex = firstLvlIndex;
 
             if (PhotonNetwork.LocalPlayer.IsMasterClient)
             {
                 PhotonNetwork.LoadLevel("Intro_Scene");
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void finalSceneEnding(string name)
+    {
+        try
+        {
+            if (!GameObject.Find(name).GetComponent<PlayerUserTest>().skippedTheEndingCredits) 
+            {
+                GameObject.Find(name).GetComponent<PlayerUserTest>().skippedTheEndingCredits = true;
+                GameObject.Find("GameManager").GetComponent<GameOverManager>().SkipCredits();
             }
         }
         catch (NullReferenceException e)
@@ -1767,12 +1881,25 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     [PunRPC]
-    void endTheGame(string pName)
+    void setGameWinner(string winner)
+    {
+        try
+        {
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameWinner = winner;
+        }
+        catch (NullReferenceException e)
+        {
+            // error
+        }
+    }
+
+    [PunRPC]
+    void endTheGame(string pName, int chosenLevel)
     {
         try
         {
             GameObject.Find("Scene Manager").GetComponent<SceneManage>().GameplayDone = true;
-
+            GameObject.Find("Scene Manager").GetComponent<SceneManage>().preChosenLevelIndex = chosenLevel;
             GameObject.Find(pName).GetComponent<PlayerUserTest>().actualEndGame();
         }
         catch (NullReferenceException e)
@@ -2477,14 +2604,14 @@ public class PlayerUserTest : MonoBehaviour
         }
     }
 
-    public void callPoisonFunction(string name, string cup)
+    public void callPoisonFunction(string name, int num)
     {
-        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().setPoisonedCup(name, cup);
+        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().setPoisonedCup(name, num);
     }
 
-    public void callDrinkingFunction(string name, string cup)
+    public void callDrinkingFunction(string name, int num)
     {
-        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().setDrinkingCup(name, cup);
+        GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().setDrinkingCup(name, num);
     }
     
     public void callOutOfTimeFunction(bool x)
@@ -2495,14 +2622,14 @@ public class PlayerUserTest : MonoBehaviour
     // PRIDE
 
     [PunRPC]
-    void poisoningCup(string pName, string cup)
+    void poisoningCup(string pName, int num)
     {
         try
         {
             if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice) 
             {
                 Debug.Log("what the hecks");
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().callPoisonFunction(pName, cup);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().callPoisonFunction(pName, num);
                 GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice = false;
             }
         }
@@ -2513,13 +2640,13 @@ public class PlayerUserTest : MonoBehaviour
     }
 
     [PunRPC]
-    void drinkingCup(string pName, string cup)
+    void drinkingCup(string pName, int num)
     {
         try
         {
             if (GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice)
             {
-                GameObject.Find(pName).GetComponent<PlayerUserTest>().callDrinkingFunction(pName, cup);
+                GameObject.Find(pName).GetComponent<PlayerUserTest>().callDrinkingFunction(pName, num);
                 GameObject.Find("GameManager").GetComponent<PrideGameplayManager>().playerActionChoice = false;
             }
         }
