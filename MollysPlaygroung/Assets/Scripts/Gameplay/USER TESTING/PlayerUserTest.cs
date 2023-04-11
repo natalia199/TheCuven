@@ -2439,12 +2439,14 @@ public class PlayerUserTest : MonoBehaviour
         try
         {
             GameObject.Find(pName).GetComponent<PlayerUserTest>().hitKeys = k;
+            GameObject.Find("GameManager").GetComponent<LustGameplayManager>().keyAmountTracker++;
 
             for (int i = 0; i < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; i++)
             {
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[i].username == pName)
                 {
                     GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).gameObject.SetActive(true);
+                    GameObject.Find("fireGrid").transform.GetChild(i).GetChild(3).gameObject.SetActive(true);
                     GameObject.Find("fireGrid").transform.GetChild(i).GetChild(2).localScale *= 1.5f;
                     break;
                 }

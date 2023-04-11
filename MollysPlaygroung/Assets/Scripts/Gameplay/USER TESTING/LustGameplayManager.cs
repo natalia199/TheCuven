@@ -52,7 +52,7 @@ public class LustGameplayManager : MonoBehaviour
 
     IEnumerator holdForABit()
     {
-        keyAmountTracker++;
+        //keyAmountTracker++;
 
         pianoKeys[chosenKey].GetComponent<LustPianoKey>().deselectedKey();
 
