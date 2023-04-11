@@ -28,6 +28,7 @@ public class TempLevelTimer : MonoBehaviour
     List<int> bettingValues = new List<int>();
 
     public GameObject ribbon;
+    public GameObject prideSecondRibbon;
 
     void Start()
     {
@@ -70,7 +71,6 @@ public class TempLevelTimer : MonoBehaviour
 
             if (startingCountdown < 0)
             {
-                ribbon.SetActive(false);
                 countdownIsRunning = false;
                 GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck = true;
             }
@@ -78,6 +78,12 @@ public class TempLevelTimer : MonoBehaviour
         else
         {
             countdownText.text = "";
+
+            if (SceneManager.GetActiveScene().name == "Pride") 
+            {
+                ribbon.SetActive(false);
+                prideSecondRibbon.SetActive(false);
+            }
         }
     }
 
