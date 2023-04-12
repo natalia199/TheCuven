@@ -45,7 +45,7 @@ public class EnvyPlayerSpawn : MonoBehaviour
         }
         else
         {
-            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), transform.position.y, transform.position.z), transform.rotation);
+            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(Random.Range(transform.GetChild(0).position.x, transform.GetChild(1).position.x), Random.Range(transform.GetChild(1).position.y, transform.GetChild(0).position.y), transform.position.z), transform.rotation);
         }
     }
 }
