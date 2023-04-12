@@ -1337,32 +1337,34 @@ public class PlayerUserTest : MonoBehaviour
 
                 if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)
                 {
-                    try
+                    // character skin
+                    for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                     {
-                        for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
+                        try
                         {
-                            try
-                            {
-                                if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username == GameObject.Find("Scene Manager").GetComponent<SceneManage>().levelsWinner[0])
-                                {
-                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-                                    //GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(6).gameObject.SetActive(true);
-                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().winnerMesh;
-                                }
-                                else
-                                {
-                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
-                                    GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
-                                }
-                            }
+                            GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).gameObject.SetActive(true);
 
-                            catch (NullReferenceException e)
+                        }
+
+                        catch (NullReferenceException e)
+                        {
+                        }
+
+                        try
+                        {
+                            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
                             {
-                                Debug.Log("naw cuh");
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().winnerMesh;
+                            }
+                            else
+                            {
+                                GameObject.Find(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].username).transform.GetChild(2).GetChild(GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].characterID).GetChild(1).GetComponent<SkinnedMeshRenderer>().material = GameObject.Find("Scene Manager").GetComponent<SceneManage>().deadSkin;
                             }
                         }
+                        catch (NullReferenceException e)
+                        {
+                        }
                     }
-                    catch (NullReferenceException e) { }
 
                     if (PhotonNetwork.LocalPlayer.IsMasterClient)
                     {
@@ -1707,7 +1709,6 @@ public class PlayerUserTest : MonoBehaviour
         {
             if (!GameObject.Find(name).GetComponent<PlayerUserTest>().skippedTheEndingCredits) 
             {
-                GameObject.Find(name).GetComponent<PlayerUserTest>().skippedTheEndingCredits = true;
                 GameObject.Find("GameManager").GetComponent<GameOverManager>().SkipCredits();
             }
         }

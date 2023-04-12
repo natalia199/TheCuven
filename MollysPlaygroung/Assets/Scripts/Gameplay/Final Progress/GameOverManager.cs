@@ -59,6 +59,7 @@ public class GameOverManager : MonoBehaviourPunCallbacks
     public void SkipCredits()
     {
         startCredits = false;
+        GameObject.Find(name).GetComponent<PlayerUserTest>().skippedTheEndingCredits = true;
 
         StartCoroutine("OpacityChangePause");
 
@@ -119,7 +120,6 @@ public class GameOverManager : MonoBehaviourPunCallbacks
             yield return null;
         }
 
-        PhotonNetwork.Disconnect();
-        PhotonNetwork.LoadLevel("Loading");
+        GameObject.Find("Leave").GetComponent<LeavingRoomMenu>().OnClick_LeaveRoom();
     }
 }

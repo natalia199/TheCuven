@@ -37,6 +37,8 @@ public class EnvyHorse : MonoBehaviour
         }
         else if (finished)
         {
+            transform.position = Vector3.MoveTowards(transform.position, finishLinePoint.position, speed);
+
             float rY = Mathf.SmoothStep(-RotAngleY, RotAngleY, Mathf.PingPong(Time.time * speed, 1));
             transform.rotation = Quaternion.Euler(0, 0, rY);
         }

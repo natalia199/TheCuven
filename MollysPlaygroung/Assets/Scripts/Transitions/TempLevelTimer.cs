@@ -19,6 +19,7 @@ public class TempLevelTimer : MonoBehaviour
     public TextMeshProUGUI countdownText;
 
     public TextMeshProUGUI finishedMsg;
+    public TextMeshProUGUI gREEDSfinishedMsg;
 
     public bool oneTimeRun = false;
 
@@ -385,6 +386,12 @@ public class TempLevelTimer : MonoBehaviour
 
         finishedMsg.text = "FINISHED";
         finishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
+
+        if (SceneManager.GetActiveScene().name == "Greed") 
+        {
+            gREEDSfinishedMsg.text = "FINISHED";
+            gREEDSfinishedMsg.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "FINISHED";
+        }
 
         yield return new WaitForSeconds(3f);
 

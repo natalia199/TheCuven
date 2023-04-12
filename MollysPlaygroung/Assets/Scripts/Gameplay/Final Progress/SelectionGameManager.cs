@@ -9,6 +9,9 @@ public class SelectionGameManager : MonoBehaviour
 {
     //public GameObject btnCanvas;
 
+    public GameObject usernameScene;
+    public GameObject rumbleScene;
+
     public GameObject selectControl;
     public GameObject confirmControl;
 
@@ -33,13 +36,13 @@ public class SelectionGameManager : MonoBehaviour
 
     void Start()
     {
-
+        usernameScene.SetActive(true);
+        rumbleScene.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
-    {       
-
+    {
     }
 
     public void OnClick_PickCharacter()

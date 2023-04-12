@@ -20,7 +20,7 @@ public class RoomListingsMenu : MonoBehaviourPunCallbacks
         _listings.Clear();                                                                      // Clearing list
 
         //PhotonNetwork.LoadLevel("Room");                                                        // Sending user to the room
-        PhotonNetwork.LoadLevel("Username");                                                        // Sending user to the room
+        PhotonNetwork.LoadLevel("Username 1");                                                        // Sending user to the room
     }
 
 

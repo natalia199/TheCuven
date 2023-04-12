@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 {
@@ -88,6 +90,20 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
     }
     */
 
+    public void OnClick_StartCharSelection()
+    {
+        GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginCharSelection = true;
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsVisible = false;
+
+        /*
+        if (PhotonNetwork.LocalPlayer.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("Intro_Scene");
+        }
+        */
+    }
+
     public void OnClick_StartGame()
     {
         GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginGame = true;
@@ -104,9 +120,20 @@ public class PlayerListingsMenu : MonoBehaviourPunCallbacks
 
     public void Update()
     {
-        if (PhotonNetwork.LocalPlayer.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
-            startBtn.SetActive(true);
-        else
-            startBtn.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "Username 1")
+        {
+
+            if (PhotonNetwork.LocalPlayer.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
+                startBtn.SetActive(true);
+            else
+                startBtn.SetActive(false);
+        }
+        else if (SceneManager.GetActiveScene().name == "Username")
+        {
+            if (!PhotonNetwork.LocalPlayer.IsMasterClient)
+            {
+                startBtn.GetComponent<Button>().enabled = false;
+            }
+        }
     }
 }

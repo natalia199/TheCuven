@@ -32,8 +32,8 @@ public class CharacterSelection : MonoBehaviour
     {
         if (view.IsMine)
         {
-            if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().currentState == "characterSelection") 
-            {
+            //if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginCharSelection)
+            //{
                 if (Input.GetMouseButtonDown(0))
                 {
                     ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -68,7 +68,8 @@ public class CharacterSelection : MonoBehaviour
 
                             for (int x = 0; x < GameObject.Find("GameManager").GetComponent<SelectionGameManager>().characters.Count; x++)
                             {
-                                if (hit.collider.gameObject.name == GameObject.Find("GameManager").GetComponent<SelectionGameManager>().characters[x].name) {
+                                if (hit.collider.gameObject.name == GameObject.Find("GameManager").GetComponent<SelectionGameManager>().characters[x].name)
+                                {
                                     //GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.GetComponent<MeshRenderer>().material = hit.collider.gameObject.GetComponent<MeshRenderer>().material;
                                     GameObject.Find("GameManager").GetComponent<SelectionGameManager>().Target.transform.GetChild(1).GetChild(x).gameObject.SetActive(true);
                                 }
@@ -84,7 +85,7 @@ public class CharacterSelection : MonoBehaviour
                         {
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().selectControl.SetActive(true);
                             GameObject.Find("GameManager").GetComponent<SelectionGameManager>().confirmControl.SetActive(false);
-                            
+
                             if (previousTarg != null)
                             {
                                 previousTarg.transform.position = new Vector3(previousTarg.transform.position.x, GameObject.Find("GameManager").GetComponent<SelectionGameManager>().regPos, previousTarg.transform.position.z);
@@ -116,10 +117,11 @@ public class CharacterSelection : MonoBehaviour
 
                         readyToPost = true;
 
-                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().switchCamera(true);
+                        //GameObject.Find("Scene Manager").GetComponent<SceneManage>().beginCharSelection = false;
+                        GameObject.Find("Scene Manager").GetComponent<SceneManage>().switchCharCamera(true);
                     }
                 }
-            }
+            //}
 
             if (readyToPost)
             {

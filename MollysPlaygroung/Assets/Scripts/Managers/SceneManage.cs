@@ -45,7 +45,7 @@ public class SceneManage : MonoBehaviour
 
     public GameObject usernameScene;
     public GameObject rumbleScene;
-    public GameObject charSelScene;
+    //public GameObject charSelScene;
 
     public string currentState = "username";
 
@@ -59,6 +59,7 @@ public class SceneManage : MonoBehaviour
     public bool countdownLevelCheck = true;
 
     public bool beginGame = false;
+    public bool beginCharSelection = false;
 
     public bool LastLevelPride = false;
 
@@ -126,6 +127,12 @@ public class SceneManage : MonoBehaviour
 
     public void switchCamera(bool state)
     {
+        usernameScene.SetActive(false);
+        rumbleScene.SetActive(true);
+
+        currentState = "rumble";
+
+        /*
         if (!state)
         {
             usernameScene.SetActive(false);
@@ -142,6 +149,35 @@ public class SceneManage : MonoBehaviour
 
             currentState = "rumble";
         }
+        */
+    }
+
+    public void switchCharCamera(bool state)
+    {
+        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().usernameScene.SetActive(false);
+        GameObject.Find("GameManager").GetComponent<SelectionGameManager>().rumbleScene.SetActive(true);
+
+        Debug.Log("grr");
+        currentState = "rumble";
+
+        /*
+        if (!state)
+        {
+            usernameScene.SetActive(false);
+            rumbleScene.SetActive(false);
+            charSelScene.SetActive(true);
+
+            currentState = "characterSelection";
+        }
+        else
+        {
+            usernameScene.SetActive(false);
+            rumbleScene.SetActive(true);
+            charSelScene.SetActive(false);
+
+            currentState = "rumble";
+        }
+        */
     }
 
     void Awake()
@@ -172,7 +208,7 @@ public class SceneManage : MonoBehaviour
 
         usernameScene.SetActive(true);
         rumbleScene.SetActive(false);
-        charSelScene.SetActive(false);
+        //charSelScene.SetActive(false);
 
         for (int i = 0; i < minigameLevels.Count; i++)
         {
