@@ -361,6 +361,7 @@ public class PlayerUserTest : MonoBehaviour
                 // USERNAME SCENE - players picking their name and character skin
                 if (SceneManager.GetActiveScene().name == "Username")
                 {
+                    /*
                     for (int x = 0; x < GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame.Count; x++)
                     {
                         if (GameObject.Find("Scene Manager").GetComponent<SceneManage>().playersInGame[x].stillAlive)
@@ -374,6 +375,7 @@ public class PlayerUserTest : MonoBehaviour
                             { }
                         }
                     }
+                    */
 
                     // begin game
                     if (PhotonNetwork.IsMasterClient)

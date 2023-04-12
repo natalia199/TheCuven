@@ -124,6 +124,7 @@ public class CharacterSelection : MonoBehaviour
             if (readyToPost)
             {
                 view.RPC("settingSelectedCharacter", RpcTarget.AllBufferedViaServer, view.Owner.NickName, previousTarg.name);
+                readyToPost = false;
             }
         }
     }

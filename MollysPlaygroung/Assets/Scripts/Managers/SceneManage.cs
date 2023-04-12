@@ -75,6 +75,8 @@ public class SceneManage : MonoBehaviour
         public bool variablesSet;
         public int deathTracker;
         public bool sabotaged;
+
+        public bool characterHasBeenSet;
     };
 
     public void createPlayerStruct(string name)
@@ -88,6 +90,7 @@ public class SceneManage : MonoBehaviour
         boy.variablesSet = false;
         boy.deathTracker = 0;
         boy.sabotaged = false;
+        boy.characterHasBeenSet = false;
         playersInGame.Add(boy);
 
     }

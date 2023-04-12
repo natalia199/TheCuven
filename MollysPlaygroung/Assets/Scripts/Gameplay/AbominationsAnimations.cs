@@ -103,7 +103,7 @@ public class AbominationsAnimations : MonoBehaviour
         if (view.IsMine && GameObject.Find("Scene Manager").GetComponent<SceneManage>().countdownLevelCheck)            
         {
             characterNum = getCharacterNumber();
-            Debug.Log("num " + characterNum);
+            //Debug.Log("num " + characterNum);
 
             if (getCharacterNumber() > -1)
             {
